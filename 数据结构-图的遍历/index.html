@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favatar.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.png">
+  <link rel="mask-icon" href="/images/avatar.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhuwenq.cc","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文写于 2020 年 4 月 2 日，2022 年 3 月 20 日重新整理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构-图的遍历">
+<meta property="og:url" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/index.html">
+<meta property="og:site_name" content="zhuwenq">
+<meta property="og:description" content="本文写于 2020 年 4 月 2 日，2022 年 3 月 20 日重新整理">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/1.png">
+<meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/1.png">
+<meta property="article:published_time" content="2022-03-20T08:11:56.000Z">
+<meta property="article:modified_time" content="2023-04-02T09:37:16.997Z">
+<meta property="article:author" content="zhuwenq">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="图">
+<meta property="article:tag" content="遍历">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/1.png">
+
+
+<link rel="canonical" href="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/","path":"数据结构-图的遍历/","title":"数据结构-图的遍历"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>数据结构-图的遍历 | zhuwenq</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">zhuwenq</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">62</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">7</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">64</span></a></li><li class="menu-item menu-item-books"><a href="https://quill-vulcanodon-c7b.notion.site/77103fc77dad482c9d2eb42205a393ae?v=021dfdbe911c4929b6f0e4034996b6f4" rel="section" target="_blank"><i class="fas fa-book fa-fw"></i>读书</a></li><li class="menu-item menu-item-movies"><a href="https://quill-vulcanodon-c7b.notion.site/Movie-List-f2d5b594d437400091712ac108963427" rel="section" target="_blank"><i class="fas fa-film fa-fw"></i>电影</a></li><li class="menu-item menu-item-photograph"><a href="/categories/Photograph/" rel="section"><i class="fa fa-camera-retro fa-fw"></i>photograph</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E9%81%8D%E5%8E%86"><span class="nav-number">1.</span> <span class="nav-text"> 两种遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2-depth-first-searchdfs"><span class="nav-number">1.1.</span> <span class="nav-text"> 深度优先搜索 (Depth First Search,DFS)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2-breadth-first-searchbfs"><span class="nav-number">1.2.</span> <span class="nav-text"> 广度优先搜索 (Breadth First Search,BFS)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E7%9A%84%E4%B8%80%E4%BA%9B%E6%9C%AF%E8%AF%AD"><span class="nav-number">2.</span> <span class="nav-text"> 图的一些术语</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhuwenq"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">zhuwenq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leonezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leonezz" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://resume.zhuwenq.cc/" title="Resume → https:&#x2F;&#x2F;resume.zhuwenq.cc" rel="noopener me" target="_blank"><i class="fa-solid fa-folder-user fa-fw"></i>Resume</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="zhuwenq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhuwenq">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="数据结构-图的遍历 | zhuwenq">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据结构-图的遍历
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-20 16:11:56" itemprop="dateCreated datePublished" datetime="2022-03-20T16:11:56+08:00">2022-03-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-02 17:37:16" itemprop="dateModified" datetime="2023-04-02T17:37:16+08:00">2023-04-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">知识类</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>本文写于 2020 年 4 月 2 日，2022 年 3 月 20 日重新整理</p>
+</blockquote>
+<span id="more"></span>
+<h1 id="两种遍历"><a class="markdownIt-Anchor" href="#两种遍历"></a> 两种遍历</h1>
+<h2 id="深度优先搜索-depth-first-searchdfs"><a class="markdownIt-Anchor" href="#深度优先搜索-depth-first-searchdfs"></a> 深度优先搜索 <code>(Depth First Search,DFS)</code></h2>
+<p>深度优先搜索顾名思义就是在搜索过程中瞅准某条路径一直向下访问，直到访问到了这条路径的终点才切换到其他路径。问题是，在某条路径上一路向下访问时，需要保存住来时的路径信息，否则在到达终点的时候将无法返回到起点切换其他路径。<br />
+这种一路向下直到某个条件（终点）再原路返回的过程很像程序设计中的递归思想，因此，深度优先搜索可以方便的使用栈 <code>(Stack)</code> 实现。</p>
+<p>如下面所示的图：</p>
+<img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/1.png" class="" title="无向无权图">
+<p>假设使用深度优先搜索从节点 <code>0</code> 开始遍历，则首先对节点 <code>0</code> 的所有邻居节点（与 <code>0</code> 直接相连的节点）中的一个访问，假设访问到了节点 <code>2</code> ，则对节点 <code>2</code> 的邻居节点进行访问。首先访问邻居节点 <code>0</code> ，<code>0</code> 已经被访问，因此切换到节点 <code>1</code> 。接着对节点 <code>1</code> 的邻居节点 <code>2</code> 访问， <code>2</code> 已被访问，因此切换到 <code>3</code> 。接着访问 <code>3</code> 的邻居节点 <code>4</code> 。访问到节点 <code>4</code> 之后，对节点 <code>4</code> 的所有邻居节点访问，发现均被访问过。然后开始回溯，查找是否有尚未访问到的分支。比如此例中回溯到节点 <code>3</code> ，发现所有邻居节点都被访问过，继续回溯亦然，当回溯到起始节点 <code>0</code> 时，便知道所有节点都被访问过，遍历完成。</p>
+<p>实际的程序过程可以描述为：</p>
+<ul>
+<li>建立一个空栈，访问起始顶点 <code>0</code> ，并把 <code>0</code> 压栈</li>
+<li>访问节点 <code>0</code> 的邻居节点 <code>2</code> ，把 <code>2</code> 压栈</li>
+<li>访问节点 <code>2</code> 的未访问节点 <code>1</code> ，把 <code>1</code> 压栈</li>
+<li>访问节点 <code>3,4</code> ，把 <code>3,4</code> 压栈</li>
+<li>遍历节点 <code>4</code> 的邻居节点之后，前方无路可走，开始出栈
+<ul>
+<li>首先出栈节点 <code>3</code> ，访问节点 <code>3</code> 的未访问邻居节点并压栈，一直访问并压栈到尽头。之后对每个出栈的顶点做同样的操作，直到栈为空（顶点全部弹出）。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> Visited[Size] = <span class="number">0</span>;</span><br><span class="line"><span class="comment">//深度优先搜索</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">depthFirstSearch</span><span class="params">(Graph *graph, Vertex *vertex)</span></span><br><span class="line">&#123;</span><br><span class="line">    Stack *<span class="built_in">stack</span> = createStack();</span><br><span class="line">    Vertex *nextNode = vertex;</span><br><span class="line">    <span class="keyword">while</span> (!isEmpty(<span class="built_in">stack</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        visit(nextNode);                                <span class="comment">//visit vertex</span></span><br><span class="line">        push(<span class="built_in">stack</span>, nextNode);                          <span class="comment">//push vertex to stack</span></span><br><span class="line">        Visited[nextNode-&gt;id] = <span class="number">1</span>;                      <span class="comment">//shows that this vertex was visted</span></span><br><span class="line">        <span class="type">int</span> end = <span class="number">1</span>;                                    <span class="comment">//flag that shows if route comes to end</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; nextNode-&gt;neighborNum; ++i) <span class="comment">//neighbor of vertex</span></span><br><span class="line">        &#123;</span><br><span class="line">            Vertex *neighbor = nextNode-&gt;neighbors[i];</span><br><span class="line">            <span class="keyword">if</span> (!Visited[neighbor-&gt;id]) <span class="comment">//if not visited</span></span><br><span class="line">            &#123;</span><br><span class="line">                nextNode = neighbor; <span class="comment">//set nextNode neighbor not visited</span></span><br><span class="line">                end = <span class="number">-1</span>;            <span class="comment">//shows that end is not coming</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (end)</span><br><span class="line">        &#123;</span><br><span class="line">            nextNode = pop(<span class="built_in">stack</span>); <span class="comment">//if end comes,pop a vertex from stack</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个实现首先构造了一个顶点个数长度的数组来标识顶点是否被访问，然后利用循环和堆栈实现遍历过程。这是一个并不优雅的实现，甚至不知道是否正确。<br />
+如果直接用递归程序会非常清晰：(两段代码实际上都是伪代码，因为节点的邻居节点信息的取出是不规范的，不正确的)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> Visited[Size] = <span class="number">0</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">depthFirstSearch</span><span class="params">(Graph *graph, Vertex *vertex)</span></span><br><span class="line">&#123;   </span><br><span class="line">    visit(vertex);</span><br><span class="line">    Visted[vertex-&gt;id] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>;i &lt; vertex-&gt;neighborNum;++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(!Visited[vertex-&gt;neighbor[i]])&#123;</span><br><span class="line">            depthFirstSearch(graph,vertex);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="广度优先搜索-breadth-first-searchbfs"><a class="markdownIt-Anchor" href="#广度优先搜索-breadth-first-searchbfs"></a> 广度优先搜索 <code>(Breadth First Search,BFS)</code></h2>
+<p>广度优先搜索过程类似于二叉树的层序遍历，都是先访问某节点，然后把该节点的相邻节点挨个访问，同样类似的是，广度优先遍历的实现也可以使用 队列 <code>(Queue)</code> 实现。</p>
+<p>同一个图：</p>
+<img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/1.png" class="">
+<p>使用广度优先遍历的过程大致是，首先从起始顶点 <code>0</code> 出发，挨个访问它的邻居顶点 <code>2,4</code> 。然后访问节点 <code>2</code> 和它的邻居节点 <code>0</code> (已被访问), <code>1,3</code> ，然后访问节点 <code>4</code> 和它的邻居节点 <code>0,1,3</code> 。最后对节点 <code>0,1,3</code> 挨个进行上述的动作。</p>
+<p>使用队列实现的程序过程为：</p>
+<ul>
+<li>首先建立空的队列，将节点 <code>0</code> 入队，</li>
+<li>弹出节点 <code>0</code> 进行访问，同时把节点 <code>0</code> 的所有 未被访问过的 邻居节点 <code>2,4</code> 加入队列</li>
+<li>从队列弹出一个顶点，对其进行访问并把它的所有 未被访问过的 邻居顶点加入队列。直到队列为空，说明遍历完成。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">breadthFirstSearch</span><span class="params">(Graph *graph, Vertex *vertex)</span></span><br><span class="line">&#123;</span><br><span class="line">    visit(vertex);           <span class="comment">//visite vertex first</span></span><br><span class="line">    Visited[vertex-&gt;id] = <span class="number">1</span>; <span class="comment">//set visited true</span></span><br><span class="line">    Queue *<span class="built_in">queue</span> = createQueue();</span><br><span class="line">    add(<span class="built_in">queue</span>, vertex); <span class="comment">//add to queue to find its neighbors</span></span><br><span class="line">    <span class="keyword">while</span> (!isEmpty(<span class="built_in">queue</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        Vertex *v = delete (<span class="built_in">queue</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; v-&gt;neighborNum; ++i) <span class="comment">//find all neighbors</span></span><br><span class="line">        &#123;</span><br><span class="line">            Vertex *neighbor = v-&gt;neighbors[i];</span><br><span class="line">            <span class="keyword">if</span> (!Visited[neighbor-&gt;id]) <span class="comment">//if not visted,visit and add to queue</span></span><br><span class="line">            &#123;</span><br><span class="line">                visit(neighbor);</span><br><span class="line">                Visited[neighbor-&gt;id] = <span class="number">1</span>;</span><br><span class="line">                add(<span class="built_in">queue</span>, neighbor);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个实现仍然是伪代码，需要更加合理的查找顶点邻居信息的方法才能工作。</p>
+<p>两种遍历的时间复杂度实际上是相同的（全部遍历时），但是对于遍历的中途退出的问题，需要认真思考选择更合适的遍历方式。如寻路问题中需要根据地图的样式选择遍历方式。</p>
+<h1 id="图的一些术语"><a class="markdownIt-Anchor" href="#图的一些术语"></a> 图的一些术语</h1>
+<ul>
+<li>连通：如果从顶点 <code>v</code> 到顶点 <code>w</code> 之间存在一条（无向）路径，则称顶点 <code>v</code> 和顶点 <code>w</code> 之间是连通的。</li>
+<li>强连通：有向图中顶点 <code>v</code> 和 <code>w</code> 之间的路径是双向路径，则 <code>v</code> 和 <code>w</code> 之间是强连通的。</li>
+<li>路径：顶点 <code>v</code> 到顶点 <code>w</code> 之间的路径是一系列顶点的序列，其中任意一对相邻的顶点之间在图中都有 边 <code>(Edge)</code>  。路径的长度是路径中的边数（对于带权图，路径长度是边的权值之和）。如果路径序列中所有的顶点都不相同（路径是无环的），则称路径为 简单路径 。</li>
+<li>回路：起点等于终点的路径</li>
+<li>连通图：图的 任意两点 均连通</li>
+<li>强连通图：有向图 的 任意两点 均强连通</li>
+<li>连通分量：无向图的极大连通子图：
+<ul>
+<li>极大顶点数：子图中再加任意一个点就不是连通图了</li>
+<li>极大边数：子图中所有顶点之间的边数</li>
+</ul>
+</li>
+<li>强连通分量：有向图 的极大强连通分量<br />
+对于不连通的图，可以对图的每个连通分量调用上面两个遍历函数实现整个图的遍历。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="zhuwenq 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="zhuwenq 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"># 数据结构</a>
+              <a href="/tags/%E5%9B%BE/" rel="tag"># 图</a>
+              <a href="/tags/%E9%81%8D%E5%8E%86/" rel="tag"># 遍历</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE/" rel="prev" title="数据结构-图">
+                  <i class="fa fa-chevron-left"></i> 数据结构-图
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E9%97%AE%E9%A2%98/" rel="next" title="数据结构-图的最短路径问题">
+                  数据结构-图的最短路径问题 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhuwenq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">232k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:31</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.8/pdfobject.min.js","integrity":"sha256-tu9j5pBilBQrWSDePOOajCUdz6hWsid/lBNzK4KgEPM="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.4/katex.min.css" integrity="sha256-gMRN4/6qeELzO1wbFa8qQLU8kfuF2dnAPiUoI0ATjx8=" crossorigin="anonymous">
+
+
+<script class="next-config" data-name="exif" type="application/json">"{FocalLength}mm f/{FNumber} {ExposureTime}s. zhuwenq © 2022"</script>
+<script src="https://fastly.jsdelivr.net/npm/exif-js@2/exif.min.js"></script>
+<script src="/lib/exif.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Leonezz","repo":"blog_comment","client_id":"20caff3989e3cfce14f8","client_secret":"aeed118e17198debb7a0ee755352f15c5b08ab93","admin_user":"Leonezz","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"0776ff1c9496669fb81b09232f7efacd"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

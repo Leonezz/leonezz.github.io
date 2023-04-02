@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favatar.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.png">
+  <link rel="mask-icon" href="/images/avatar.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhuwenq.cc","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Introduction BERT 是一种新的语言表征模型，它是一种双向编码器表征的Transformers模型(Bidirectional Encoder Representions from Transformers) BERT 利用了无标签预训练文本数据的左右上下文信息，训练出一个深度双向表征模型。预训练后的模型可以通过一个额外的输出层并微调到多个下游任务，并取得 state-of-the">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding">
+<meta property="og:url" content="https://blog.zhuwenq.cc/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/index.html">
+<meta property="og:site_name" content="zhuwenq">
+<meta property="og:description" content="Introduction BERT 是一种新的语言表征模型，它是一种双向编码器表征的Transformers模型(Bidirectional Encoder Representions from Transformers) BERT 利用了无标签预训练文本数据的左右上下文信息，训练出一个深度双向表征模型。预训练后的模型可以通过一个额外的输出层并微调到多个下游任务，并取得 state-of-the">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.zhuwenq.cc/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/1.png">
+<meta property="og:image" content="https://blog.zhuwenq.cc/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/2.png">
+<meta property="article:published_time" content="2023-04-02T09:37:16.837Z">
+<meta property="article:modified_time" content="2023-04-02T09:37:16.837Z">
+<meta property="article:author" content="zhuwenq">
+<meta property="article:tag" content="PLM">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="BERT">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.zhuwenq.cc/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/1.png">
+
+
+<link rel="canonical" href="https://blog.zhuwenq.cc/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.zhuwenq.cc/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/","path":"BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/","title":"BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding | zhuwenq</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">zhuwenq</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">62</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">7</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">64</span></a></li><li class="menu-item menu-item-books"><a href="https://quill-vulcanodon-c7b.notion.site/77103fc77dad482c9d2eb42205a393ae?v=021dfdbe911c4929b6f0e4034996b6f4" rel="section" target="_blank"><i class="fas fa-book fa-fw"></i>读书</a></li><li class="menu-item menu-item-movies"><a href="https://quill-vulcanodon-c7b.notion.site/Movie-List-f2d5b594d437400091712ac108963427" rel="section" target="_blank"><i class="fas fa-film fa-fw"></i>电影</a></li><li class="menu-item menu-item-photograph"><a href="/categories/Photograph/" rel="section"><i class="fa fa-camera-retro fa-fw"></i>photograph</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#introduction"><span class="nav-number">1.</span> <span class="nav-text"> Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#background"><span class="nav-number">2.</span> <span class="nav-text"> Background</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#bert"><span class="nav-number">3.</span> <span class="nav-text"> BERT</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84"><span class="nav-number">3.1.</span> <span class="nav-text"> 模型架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E8%A1%A8%E5%BE%81"><span class="nav-number">3.2.</span> <span class="nav-text"> 输入输出表征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E8%AE%AD%E7%BB%83"><span class="nav-number">3.3.</span> <span class="nav-text"> 预训练</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AE%E8%B0%83"><span class="nav-number">3.4.</span> <span class="nav-text"> 微调</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#evaluation"><span class="nav-number">4.</span> <span class="nav-text"> Evaluation</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhuwenq"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">zhuwenq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leonezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leonezz" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://resume.zhuwenq.cc/" title="Resume → https:&#x2F;&#x2F;resume.zhuwenq.cc" rel="noopener me" target="_blank"><i class="fa-solid fa-folder-user fa-fw"></i>Resume</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.zhuwenq.cc/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="zhuwenq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhuwenq">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding | zhuwenq">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-04-02 17:37:16" itemprop="dateCreated datePublished" datetime="2023-04-02T17:37:16+08:00">2023-04-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Paper-Note/" itemprop="url" rel="index"><span itemprop="name">Paper Note</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="introduction"><a class="markdownIt-Anchor" href="#introduction"></a> Introduction</h1>
+<p><strong>BERT</strong> 是一种新的语言表征模型，它是一种双向编码器表征的Transformers模型(<strong>B</strong>idirectional <strong>E</strong>ncoder <strong>R</strong>epresentions from <strong>T</strong>ransformers)</p>
+<p>BERT 利用了无标签预训练文本数据的左右上下文信息，训练出一个深度双向表征模型。预训练后的模型可以通过一个<strong>额外的输出层</strong>并微调到多个下游任务，并取得 state-of-the-art 的结果。</p>
+<p>本文中，BERT通过使用“掩码语言模型(Masked Language Model, MLM)”作为预训练目标函数，缓解了单向性约束，改进了基于微调的方法。MLM即随机地将输入中的一些token替换为掩码，并且目标是基于上下文预测被掩码位置token的原始词典id。这种目标函数使表征有能力融合左右上下文的信息，从而使训练一个深度双向Transformer成为可能。</p>
+<p>BERT是第一个在大量句级和词级任务上取得最优结果的基于微调的表征模型，优于许多特定于任务的体系结构。</p>
+<span id="more"></span>
+<h1 id="background"><a class="markdownIt-Anchor" href="#background"></a> Background</h1>
+<p>语言模型预训练在提升NLP任务上十分有效。在把预训练模型应用在下游任务上，目前有两种策略： <em>feature-based</em> 和 <em>fine-tuning</em> 。基于特征的方法，如 <strong>ELMo</strong> ，使用特定于任务的架构作为额外的特征，其中包括预训练表征。基于微调的方法，如 <strong>GPT</strong> 引入了最小特定于任务的参数，并且在下游任务上通过微调所有的预训练参数来进行训练。这两类方法在预训练时使用同样的目标函数：利用单向语言模型来学习通用语言表征。</p>
+<p>我们认为现有的技术限制了预训练表征的能力，特别是对于微调的方法。主要表现在单向的标准语言模型限制了预训练时模型的架构选择。<strong>这样的限制对于句级(sentence-level)的任务通常是次优的，对于词级(token-level)的任务通常十分有害。</strong></p>
+<p>无监督的微调方法中，用于生成下文token表征的文档或句子编码器从无标签的文本中预训练，并针对有监督的下游任务进行微调。这样做的优势在于只有很少的参数需要从零开始学习。在这种模型的预训练过程中，通常使用自左向右的语言建模和自动编码器目标函数。</p>
+<h1 id="bert"><a class="markdownIt-Anchor" href="#bert"></a> BERT</h1>
+<p>BERT提出的框架分为两步：预训练和微调。在预训练中，模型通过不同的预训练任务在无标签的数据集上进行训练。在微调时，模型首先使用预训练得到的参数进行初始化，然后所有的参数都使用有标签的下游任务数据进行微调。每一种下游任务都使用相同的预训练模型进行初始化，然后分别微调。</p>
+<img data-src="/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/1.png" class="">
+<h2 id="模型架构"><a class="markdownIt-Anchor" href="#模型架构"></a> 模型架构</h2>
+<p>BERT的模型架构是一个多层双向Transformer编码器。</p>
+<p>假设层数(即Transformer blocks)为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">L</span></span></span></span> ，隐藏层尺寸为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span></span></span></span>，self-attention heads数量为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">A</span></span></span></span>。初步设计了两种尺寸的模型： <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>BERT</mtext><mtext>BASE</mtext></msub><mo stretchy="false">(</mo><mtext>L=12, H=768, A=12, Total Parameters=110M</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\text{BERT}_\text{BASE}(\text{L=12, H=768, A=12, Total Parameters=110M})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord text"><span class="mord">BERT</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">BASE</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord text"><span class="mord">L=12, H=768, A=12, Total Parameters=110M</span></span><span class="mclose">)</span></span></span></span>和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>BERT</mtext><mtext>LARGE</mtext></msub><mo stretchy="false">(</mo><mtext>L=24, H=1024, A=16, Total Parameters=340M</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\text{BERT}_\text{LARGE}(\text{L=24, H=1024, A=16, Total Parameters=340M})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord text"><span class="mord">BERT</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">LARGE</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord text"><span class="mord">L=24, H=1024, A=16, Total Parameters=340M</span></span><span class="mclose">)</span></span></span></span></p>
+<h2 id="输入输出表征"><a class="markdownIt-Anchor" href="#输入输出表征"></a> 输入输出表征</h2>
+<p>针对不同的下游任务需要，BERT可以清晰地将一个单独的句子或一个句子对表示为一个序列。其中，句子可以指一段文本中的任务跨度，而不仅仅是实际的语言句子。一个序列指输入到BERT的token序列，可以是一个单独的句子或两个句子打包在一起。</p>
+<p>每一个序列中的第一个token总是一个特殊的分类token：[CLS]，对应的最终隐藏状态用于分类任务中作为序列的总体类型表示。对于打包在一起的句子对，使用两种方法对其进行区分：1. 可以使用一个特殊的token [SEP]作为分段标志。2. 为每个token添加一个可学习的embedding来指示这个token属于句子A或句子B</p>
+<p>假设输入embedding是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span></span>，特殊token [CLS]的最终隐藏向量是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>∈</mo><msup><mi mathvariant="double-struck">R</mi><mi>H</mi></msup></mrow><annotation encoding="application/x-tex">C\in \mathbb{R}^H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72243em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8413309999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord mathbb">R</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.08125em;">H</span></span></span></span></span></span></span></span></span></span></span>，第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathnormal">i</span></span></span></span> 个输入token的最终隐藏向量为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>i</mi></msub><mo>∈</mo><msup><mi mathvariant="double-struck">R</mi><mi>H</mi></msup></mrow><annotation encoding="application/x-tex">T_i\in \mathbb{R}^H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8413309999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord mathbb">R</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.08125em;">H</span></span></span></span></span></span></span></span></span></span></span></p>
+<p>对于一个输入token，它的表征由对应的token embedding, 分段embedding和位置embedding的加和构成。</p>
+<img data-src="/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/2.png" class="">
+<h2 id="预训练"><a class="markdownIt-Anchor" href="#预训练"></a> 预训练</h2>
+<p>BERT的预训练使用两种无监督任务：</p>
+<p><strong>Masked LM</strong> : 直觉上来说，深度双向模型比单向模型或者两个单向模型连接的效果更好。但是，标准的条件语言模型只能是单向的。这是因为标准语言模型是以预测当前词为目标，而双向模型将允许每个词“看到自己”，这样模型就可以在多层上下文中直接给出目标词。</p>
+<p>为了训练双向表征，BERT使用MLM：</p>
+<p>掩码token最终的隐藏向量被馈送到词典上的输出softmax中。</p>
+<p><strong>这种训练目标带来一个问题：在预训练和微调之间形成了割裂——在微调中不存在所谓的掩码</strong>。针对这个问题，我们并不是总是将掩码位置的token替换为[MASK]，而是以下述规则进行掩码操作：</p>
+<p>然后， <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">T_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 被用于使用交叉熵预测原始的token</p>
+<p><strong>Next Sentence Prediction, NSP</strong> (后续的工作认为该任务无效)：</p>
+<p>具体地说，选择两个句子A，B作为一个预训练样本。50%的时间B是A的下一句(标记为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>IsNext</mtext></mrow><annotation encoding="application/x-tex">\text{IsNext}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">IsNext</span></span></span></span></span>)，另外50%的时间不是(标记为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>NotNext</mtext></mrow><annotation encoding="application/x-tex">\text{NotNext}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">NotNext</span></span></span></span></span>)。上文所述的对应于特殊token [CLS]的最终隐藏向量用于NSP任务，其值经过softmax得到NSP的预测概率。</p>
+<h2 id="微调"><a class="markdownIt-Anchor" href="#微调"></a> 微调</h2>
+<p>微调的过程即在预训练后的BERT模型上添加一个简单的分类层，然后在下游任务数据上调整所有的参数。</p>
+<p>对于每个下游任务， 只需要简单地插入特定于任务的输入输出数据并端到端微调所有的参数。</p>
+<h1 id="evaluation"><a class="markdownIt-Anchor" href="#evaluation"></a> Evaluation</h1>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="zhuwenq 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="zhuwenq 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/PLM/" rel="tag"># PLM</a>
+              <a href="/tags/NLP/" rel="tag"># NLP</a>
+              <a href="/tags/BERT/" rel="tag"># BERT</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Attention-is-all-you-need/" rel="prev" title="Attention is all you need">
+                  <i class="fa fa-chevron-left"></i> Attention is all you need
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/Data-Set-and-Benchmark/" rel="next" title="Dataset and Benchmark">
+                  Dataset and Benchmark <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhuwenq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">232k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:31</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.8/pdfobject.min.js","integrity":"sha256-tu9j5pBilBQrWSDePOOajCUdz6hWsid/lBNzK4KgEPM="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.4/katex.min.css" integrity="sha256-gMRN4/6qeELzO1wbFa8qQLU8kfuF2dnAPiUoI0ATjx8=" crossorigin="anonymous">
+
+
+<script class="next-config" data-name="exif" type="application/json">"{FocalLength}mm f/{FNumber} {ExposureTime}s. zhuwenq © 2022"</script>
+<script src="https://fastly.jsdelivr.net/npm/exif-js@2/exif.min.js"></script>
+<script src="/lib/exif.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Leonezz","repo":"blog_comment","client_id":"20caff3989e3cfce14f8","client_secret":"aeed118e17198debb7a0ee755352f15c5b08ab93","admin_user":"Leonezz","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"647ee182d40bb78b11a4c7bf5c2456e6"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

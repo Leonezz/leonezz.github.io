@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favatar.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.png">
+  <link rel="mask-icon" href="/images/avatar.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhuwenq.cc","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="自 C++ 11， 模板可以接受可变数量的参数，这一特性允许向模板传入任意数目的任意类型参数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ 模板022-可变模板">
+<meta property="og:url" content="https://blog.zhuwenq.cc/C-%E6%A8%A1%E6%9D%BF022-%E5%8F%AF%E5%8F%98%E6%A8%A1%E6%9D%BF/index.html">
+<meta property="og:site_name" content="zhuwenq">
+<meta property="og:description" content="自 C++ 11， 模板可以接受可变数量的参数，这一特性允许向模板传入任意数目的任意类型参数">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-02-15T08:49:38.000Z">
+<meta property="article:modified_time" content="2023-04-02T09:37:16.841Z">
+<meta property="article:author" content="zhuwenq">
+<meta property="article:tag" content="C++ Template">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.zhuwenq.cc/C-%E6%A8%A1%E6%9D%BF022-%E5%8F%AF%E5%8F%98%E6%A8%A1%E6%9D%BF/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.zhuwenq.cc/C-%E6%A8%A1%E6%9D%BF022-%E5%8F%AF%E5%8F%98%E6%A8%A1%E6%9D%BF/","path":"C-模板022-可变模板/","title":"C++ 模板022-可变模板"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C++ 模板022-可变模板 | zhuwenq</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">zhuwenq</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">62</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">7</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">64</span></a></li><li class="menu-item menu-item-books"><a href="https://quill-vulcanodon-c7b.notion.site/77103fc77dad482c9d2eb42205a393ae?v=021dfdbe911c4929b6f0e4034996b6f4" rel="section" target="_blank"><i class="fas fa-book fa-fw"></i>读书</a></li><li class="menu-item menu-item-movies"><a href="https://quill-vulcanodon-c7b.notion.site/Movie-List-f2d5b594d437400091712ac108963427" rel="section" target="_blank"><i class="fas fa-film fa-fw"></i>电影</a></li><li class="menu-item menu-item-photograph"><a href="/categories/Photograph/" rel="section"><i class="fa fa-camera-retro fa-fw"></i>photograph</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF"><span class="nav-number">1.</span> <span class="nav-text"> 可变函数模板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E8%BD%BD%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E6%A8%A1%E6%9D%BF"><span class="nav-number">1.1.</span> <span class="nav-text"> 重载可变参数模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E6%A8%A1%E6%9D%BF%E7%9A%84-sizeof-%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.2.</span> <span class="nav-text"> 可变参数模板的 sizeof 运算符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fold-expressions"><span class="nav-number">2.</span> <span class="nav-text"> fold expressions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E7%B1%BB%E6%A8%A1%E6%9D%BF%E5%92%8C%E5%85%B6%E4%BB%96%E5%8F%AF%E5%8F%98%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text"> 可变类模板和其他可变表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">3.1.</span> <span class="nav-text"> 可变表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E7%B4%A2%E5%BC%95"><span class="nav-number">3.2.</span> <span class="nav-text"> 可变索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E7%B1%BB%E6%A8%A1%E6%9D%BF"><span class="nav-number">3.3.</span> <span class="nav-text"> 可变类模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#variadic-deduction-guides"><span class="nav-number">3.4.</span> <span class="nav-text"> variadic deduction guides</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E5%9F%BA%E7%B1%BB%E5%92%8C-using-%E5%A3%B0%E6%98%8E"><span class="nav-number">3.5.</span> <span class="nav-text"> 可变基类和 using 声明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E6%A8%A1%E6%9D%BF%E4%B8%80%E4%BA%9B%E5%9C%BA%E6%99%AF"><span class="nav-number">4.</span> <span class="nav-text"> 可变参数模板一些场景</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhuwenq"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">zhuwenq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leonezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leonezz" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://resume.zhuwenq.cc/" title="Resume → https:&#x2F;&#x2F;resume.zhuwenq.cc" rel="noopener me" target="_blank"><i class="fa-solid fa-folder-user fa-fw"></i>Resume</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.zhuwenq.cc/C-%E6%A8%A1%E6%9D%BF022-%E5%8F%AF%E5%8F%98%E6%A8%A1%E6%9D%BF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="zhuwenq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhuwenq">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="C++ 模板022-可变模板 | zhuwenq">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++ 模板022-可变模板
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-02-15 16:49:38" itemprop="dateCreated datePublished" datetime="2023-02-15T16:49:38+08:00">2023-02-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-02 17:37:16" itemprop="dateModified" datetime="2023-04-02T17:37:16+08:00">2023-04-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">知识类</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>自 C++ 11， 模板可以接受可变数量的参数，这一特性允许向模板传入任意数目的任意类型参数</p>
+<span id="more"></span>
+<h2 id="可变函数模板"><a class="markdownIt-Anchor" href="#可变函数模板"></a> 可变函数模板</h2>
+<p>例如，可以定义如下函数以实现任意类型任意参数的输出:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, Typename... Args&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">print</span><span class="params">(T t, Args... args)</span></span>&#123;</span><br><span class="line">    std::cout &lt;&lt; t &lt;&lt; std::endl;</span><br><span class="line">    <span class="built_in">print</span>(args...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当传入一个或多个参数时，参数列表中的第一个参数将匹配到 <code>T t</code>, 其余参数则被聚合在 <code>Args... args</code> 中，称为模板参数包.</p>
+<p>在 <code>print</code> 模板内, 函数会递归地解包模板参数包并执行实例化的函数</p>
+<p>当所有参数都解包完成时, 空的参数列表会匹配到 <code>print</code> 的非模板实现, 以终止递归</p>
+<h3 id="重载可变参数模板"><a class="markdownIt-Anchor" href="#重载可变参数模板"></a> 重载可变参数模板</h3>
+<p>要实现可变参数模板的递归终止, 也可以为其重载一个非可变参数模板:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">print</span><span class="params">(T t)</span></span>&#123;</span><br><span class="line">    std::cout &lt;&lt; t &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span>... Args&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">print</span><span class="params">(T t, Args... args)</span></span>&#123;</span><br><span class="line">    <span class="built_in">print</span>(t);</span><br><span class="line">    <span class="built_in">print</span>(args...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是因为, 当两个函数模板仅区别于可变参数包时, 非可变参数模板将优先被决议. 因此当参数解包到只剩下一个参数时, 非可变参数模板将优先被匹配</p>
+<h3 id="可变参数模板的-sizeof-运算符"><a class="markdownIt-Anchor" href="#可变参数模板的-sizeof-运算符"></a> 可变参数模板的 <code>sizeof</code> 运算符</h3>
+<p>C++ 11 为模板参数包引入了新的 <code>sizeof</code> 运算符:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span>... Ts&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">size</span><span class="params">(T t, Ts... ts)</span></span>&#123;</span><br><span class="line">    <span class="keyword">sizeof</span>...(Ts); <span class="comment">// number of types in Ts</span></span><br><span class="line">    <span class="keyword">sizeof</span>...(ts); <span class="comment">// number of values in ts</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="fold-expressions"><a class="markdownIt-Anchor" href="#fold-expressions"></a> fold expressions</h2>
+<p>fold expressions 是 C++ 17 引入的一项新特性，它允许使用二元运算符在模板参数包中的所有参数上计算结果</p>
+<p>例如如下的函数模板：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Ts&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">foldSum</span><span class="params">(Ts... ts)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (... + ts);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其效果是从 <code>ts</code> 中的第一个参数加到其最后一个参数，即:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(((ts1 + ts2) + ... )+ tsn)</span><br></pre></td></tr></table></figure>
+<p>注意如果传入的参数包为空，那么 fold expression 通常不会通过编译(ill-formed)。但对于以下操作符，其可以返回确定的结果:</p>
+<table>
+<thead>
+<tr>
+<th>operator</th>
+<th>result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&amp;&amp;</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td>`</td>
+<td></td>
+</tr>
+<tr>
+<td><code>,</code></td>
+<td><code>void()</code></td>
+</tr>
+</tbody>
+</table>
+<p>fold expression 的所有形式:</p>
+<table>
+<thead>
+<tr>
+<th>fold expression</th>
+<th>evaluation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>(... op pack)</code></td>
+<td><code>(((pack1 op pack2) op pack3) ... op packN)</code></td>
+</tr>
+<tr>
+<td><code>(pack op ...)</code></td>
+<td><code>(pack1 op (... op (packN-1 op packN)))</code></td>
+</tr>
+<tr>
+<td><code>(init op ... op pack)</code></td>
+<td><code>(((init op pack1) op pack2) ... op packN)</code></td>
+</tr>
+<tr>
+<td><code>(pack op ... op init)</code></td>
+<td><code>(pack1 op (... op (packN op init)))</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="可变类模板和其他可变表达式"><a class="markdownIt-Anchor" href="#可变类模板和其他可变表达式"></a> 可变类模板和其他可变表达式</h2>
+<p>可变参数包可以出现在:</p>
+<ul>
+<li>表达式</li>
+<li>类模板</li>
+<li>using 声明</li>
+<li>deduction guides</li>
+</ul>
+<h3 id="可变表达式"><a class="markdownIt-Anchor" href="#可变表达式"></a> 可变表达式</h3>
+<p>一些例子:</p>
+<ol>
+<li>打印翻倍后的参数：</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printDouble</span><span class="params">(T... args)</span></span>&#123;</span><br><span class="line">    <span class="built_in">print</span>(args + args...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果相当于:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(</span><br><span class="line">    arg1 + arg1,</span><br><span class="line">    arg2 + arg2,</span><br><span class="line">    ...</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>注意到此时 <code>print</code> 也应该是一个可变参数模板</p>
+<ol start="2">
+<li>打印加 1 后的参数：</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printPlusOne</span><span class="params">(T... args)</span></span>&#123;</span><br><span class="line">    <span class="built_in">print</span>(args + <span class="number">1</span> ...);</span><br><span class="line">    <span class="comment">// or: print((args + 1)...);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>相当于:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(</span><br><span class="line">    arg1 + <span class="number">1</span>,</span><br><span class="line">    arg2 + <span class="number">1</span>,</span><br><span class="line">    ...</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>注意到此时 <code>...</code> 符号不能直接跟在数字 1 后面，需要空开一个空格</p>
+<ol start="3">
+<li>编译时表达式:</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span>... TN&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">bool</span> <span class="title">isHoMogeneous</span><span class="params">(T1, TN...)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (std::is_same_v&lt;T1, TN&gt; &amp;&amp; ...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="可变索引"><a class="markdownIt-Anchor" href="#可变索引"></a> 可变索引</h3>
+<p>利用可变表达式，可以实现对任意数量的数组索引访问的函数:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container, <span class="keyword">typename</span>... Idx&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printElems</span><span class="params">(Container <span class="type">const</span>&amp; c, Idx... idx)</span></span>&#123;</span><br><span class="line">    <span class="built_in">print</span>(c[idx]...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意到此时作为数组索引的参数 idx 可以是任意数量和任意类型，也可以将其声明为非类型模板参数以限制其类型:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;std::<span class="type">size_t</span>... idx, <span class="keyword">typename</span> Container&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printElems</span><span class="params">(Container <span class="type">const</span>&amp; c)</span></span>&#123;</span><br><span class="line">    <span class="built_in">print</span>(c[idx]...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以以下面的形式调用该函数:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printElems</span>&lt;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>&gt;(c); <span class="comment">// print(c[1], c[2], c[3], c[5]); </span></span><br></pre></td></tr></table></figure>
+<h3 id="可变类模板"><a class="markdownIt-Anchor" href="#可变类模板"></a> 可变类模板</h3>
+<ol>
+<li>元组类</li>
+</ol>
+<p>元组类需要能够持有任意数量任意类型的值:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Elems&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Turple</span>;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><code>Variant</code></li>
+</ol>
+<p><code>Variant</code> 对象可以持有预先声明的任意类型的值:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Elems&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Variant</span>;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>表示任意下标列表的类型</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;std::<span class="type">size_t</span>... idx&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Index</span> &#123;&#125;;</span><br></pre></td></tr></table></figure>
+<p>此类型可以将传入的下标表示为列表, 但是其并未实际(内存上)持有这些下标值, 毕竟该类型定义为一个空的 <code>struct</code>。</p>
+<p>它的表示功能实际上发生在编译期, 当该类型的对象作为参数传入函数时, 实际上是某种类型萃取功能实现了 <code>Idx</code> 的传递:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container, std::<span class="type">size_t</span>... Idx&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printByIdx</span><span class="params">(Container <span class="type">const</span>&amp; c, Index&lt;Idx...&gt;)</span></span>&#123; <span class="comment">// trait Idx out</span></span><br><span class="line">    <span class="built_in">print</span>(c[Idx]...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="variadic-deduction-guides"><a class="markdownIt-Anchor" href="#variadic-deduction-guides"></a> variadic deduction guides</h3>
+<p>对于接受可变参数的函数模板，当其需要返回值deduction guide 时，deduction guide 也可以是可变表达式。</p>
+<p>例如 STL 中对 <code>std::array</code> 构造函数的声明:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> std &#123;</span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T,<span class="keyword">typename</span> ... U&gt;</span></span><br><span class="line"><span class="function"><span class="title">array</span><span class="params">(T, U...)</span> -&gt; array&lt;</span></span><br><span class="line"><span class="function">    <span class="type">enable_if_t</span>&lt;<span class="params">(is_same_v&lt;T, U&gt; &amp;&amp; ...)</span>, T&gt;,</span></span><br><span class="line"><span class="function">    <span class="params">(<span class="number">1</span> + <span class="keyword">sizeof</span>...(U))</span>&gt;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此声明中为 <code>std::array</code> 定义了返回值 deduction guide, 并在其中使用了 <code>enable_if</code>, 以实现当构造函数传入的初始值类型不同时禁用构造函数.</p>
+<p>在构造函数传入的可变参数包的类型判断上，该 deduction guide 使用了可变表达式。 同时在参数包数量的计算上，使用了用于可变参数包的 <code>sizeof</code> 操作符</p>
+<h3 id="可变基类和-using-声明"><a class="markdownIt-Anchor" href="#可变基类和-using-声明"></a> 可变基类和 <code>using</code> 声明</h3>
+<p>在继承体系中基类也可以是可变的，即，可以通过参数包实现对任意数量任意类型的继承。</p>
+<p>例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unordered_map&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Customer</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    std::string name;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Customer</span>(std::string <span class="type">const</span>&amp; n) : <span class="built_in">name</span>(n) &#123; &#125;</span><br><span class="line">    <span class="function">std::string <span class="title">getName</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> name; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">CustomerEq</span> &#123;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(Customer <span class="type">const</span>&amp; c1, Customer <span class="type">const</span>&amp; c2)</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> c1.<span class="built_in">getName</span>() == c2.<span class="built_in">getName</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">CustomerHash</span> &#123;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(Customer <span class="type">const</span>&amp; c)</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">hash</span>&lt;std::string&gt;(c.<span class="built_in">getName</span>());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Bases&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Overloader</span> : Bases... &#123;</span><br><span class="line">    <span class="function"><span class="keyword">using</span> <span class="title">Bases::operator</span><span class="params">()</span>...</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">using</span> CustomOps = Overloader&lt;CustomerEq, CustomerHash&gt;;</span><br><span class="line">    std::unordered_set&lt;Customer, CustomerHash, CustomerEq&gt; s1;</span><br><span class="line">    std::unordered_set&lt;Customer, CustomOps, CustomOps&gt; s2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该例中，<code>CustomOps</code> 通过可变基类同时继承了 <code>CustomerEq</code> 和 <code>CustomerHash</code> 这两个函数对象, 并且在定义中使用可变 <code>using</code> 声明同时启用了两个基类的 <code>()</code> 操作符</p>
+<p>此时的 <code>CustomOps</code> 同时具备了 <code>CustomerEq</code> 和 <code>CustomerHash</code> 这两个函数对象的功能. 即通过 <code>CustomOps</code> 调用 <code>()</code> 操作符时，其会根据参数自动匹配基类的定义。</p>
+<p>因此，在 <code>main</code> 函数中定义的两个自定义相等和哈希操作的 <code>unordered_set</code> 能够实现相同的功能。</p>
+<h2 id="可变参数模板一些场景"><a class="markdownIt-Anchor" href="#可变参数模板一些场景"></a> 可变参数模板一些场景</h2>
+<p>可变参数模板在标准模板库中应用广泛, 主要用途体现在参数转发上</p>
+<ul>
+<li>在一些资源管理类中其可用于转发任意数量任意类型的参数到被管理对象的构造函数。 如:</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> share_ptr = std::make_shared&lt;std::complex&lt;<span class="type">float</span>&gt;&gt;(<span class="number">1.1</span>, <span class="number">2.2</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>将可调用对象的参数传递进 <code>thread</code> 对象:</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::thread <span class="title">t</span><span class="params">(f, <span class="number">1</span>, <span class="string">&quot;hello&quot;</span>)</span></span>; <span class="comment">// call f(1, &quot;hello&quot;) in thread t</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>在容器中接收构造对象所需的参数并直接构造对象(<code>emplace</code>):</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;std::pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;&gt; vec;</span><br><span class="line">vec.<span class="built_in">emplace_back</span>(<span class="number">1</span>, <span class="number">2</span>); <span class="comment">// construct std::pair&lt;int, int&gt; &#123;1, 2&#125; in vec</span></span><br></pre></td></tr></table></figure>
+<p>对于传递参数的函数, 其参数通常被声明为万能引用的形式.</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="zhuwenq 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="zhuwenq 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/C-Template/" rel="tag"># C++ Template</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/C-%E6%A8%A1%E6%9D%BF021-%E9%9D%9E%E7%B1%BB%E5%9E%8B%E6%A8%A1%E6%9D%BF%E5%8F%82%E6%95%B0/" rel="prev" title="C++模板021-非类型模板参数">
+                  <i class="fa fa-chevron-left"></i> C++模板021-非类型模板参数
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/xv6-Operating-system-01-interface/" rel="next" title="Xv6 Operating system 01-interface">
+                  Xv6 Operating system 01-interface <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhuwenq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">232k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:31</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.8/pdfobject.min.js","integrity":"sha256-tu9j5pBilBQrWSDePOOajCUdz6hWsid/lBNzK4KgEPM="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.4/katex.min.css" integrity="sha256-gMRN4/6qeELzO1wbFa8qQLU8kfuF2dnAPiUoI0ATjx8=" crossorigin="anonymous">
+
+
+<script class="next-config" data-name="exif" type="application/json">"{FocalLength}mm f/{FNumber} {ExposureTime}s. zhuwenq © 2022"</script>
+<script src="https://fastly.jsdelivr.net/npm/exif-js@2/exif.min.js"></script>
+<script src="/lib/exif.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Leonezz","repo":"blog_comment","client_id":"20caff3989e3cfce14f8","client_secret":"aeed118e17198debb7a0ee755352f15c5b08ab93","admin_user":"Leonezz","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"907064c78040765795d18820e50cdf04"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

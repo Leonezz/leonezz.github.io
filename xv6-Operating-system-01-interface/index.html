@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favatar.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.png">
+  <link rel="mask-icon" href="/images/avatar.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhuwenq.cc","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="操作系统的职责是在多个程序(进程)之间共享计算机提供的物理资源，并提供一系列比直接操作硬件更有用的服务。具体地说，操作系统为计算机硬件提供一层抽象，使软件程序不需要关心硬件的具体实现。操作系统还必须通过某种时分复用的机制使得多个程序可以共享底层硬件。最后，操作系统也必须为不同程序进程提供某种通信机制。 操作系统中，运行的程序被抽象成进程，一个进程的内容即它所占用的内存及其他资源。其中，在内存中存有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Xv6 Operating system 01-interface">
+<meta property="og:url" content="https://blog.zhuwenq.cc/xv6-Operating-system-01-interface/index.html">
+<meta property="og:site_name" content="zhuwenq">
+<meta property="og:description" content="操作系统的职责是在多个程序(进程)之间共享计算机提供的物理资源，并提供一系列比直接操作硬件更有用的服务。具体地说，操作系统为计算机硬件提供一层抽象，使软件程序不需要关心硬件的具体实现。操作系统还必须通过某种时分复用的机制使得多个程序可以共享底层硬件。最后，操作系统也必须为不同程序进程提供某种通信机制。 操作系统中，运行的程序被抽象成进程，一个进程的内容即它所占用的内存及其他资源。其中，在内存中存有">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-03-02T14:36:49.000Z">
+<meta property="article:modified_time" content="2023-04-02T09:37:16.997Z">
+<meta property="article:author" content="zhuwenq">
+<meta property="article:tag" content="Operating System">
+<meta property="article:tag" content="xv6">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.zhuwenq.cc/xv6-Operating-system-01-interface/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.zhuwenq.cc/xv6-Operating-system-01-interface/","path":"xv6-Operating-system-01-interface/","title":"Xv6 Operating system 01-interface"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Xv6 Operating system 01-interface | zhuwenq</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">zhuwenq</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">62</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">7</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">64</span></a></li><li class="menu-item menu-item-books"><a href="https://quill-vulcanodon-c7b.notion.site/77103fc77dad482c9d2eb42205a393ae?v=021dfdbe911c4929b6f0e4034996b6f4" rel="section" target="_blank"><i class="fas fa-book fa-fw"></i>读书</a></li><li class="menu-item menu-item-movies"><a href="https://quill-vulcanodon-c7b.notion.site/Movie-List-f2d5b594d437400091712ac108963427" rel="section" target="_blank"><i class="fas fa-film fa-fw"></i>电影</a></li><li class="menu-item menu-item-photograph"><a href="/categories/Photograph/" rel="section"><i class="fa fa-camera-retro fa-fw"></i>photograph</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E5%92%8C%E5%86%85%E5%AD%98"><span class="nav-number">1.</span> <span class="nav-text"> 进程和内存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fork-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text"> fork 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exit-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text"> exit 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wait-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text"> wait 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exec-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">1.4.</span> <span class="nav-text"> exec 系统调用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#io-%E5%92%8C%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6file-descriptors"><span class="nav-number">2.</span> <span class="nav-text"> IO 和文件描述符(file descriptors)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#read-%E5%92%8C-write-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">2.1.</span> <span class="nav-text"> read 和 write 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#open-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">2.2.</span> <span class="nav-text"> open 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#close-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">2.3.</span> <span class="nav-text"> close 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dup-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">2.4.</span> <span class="nav-text"> dup 系统调用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E9%81%93-pipe"><span class="nav-number">3.</span> <span class="nav-text"> 管道 (pipe)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9Ffile-system"><span class="nav-number">4.</span> <span class="nav-text"> 文件系统(File system)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fstat-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">4.1.</span> <span class="nav-text"> fstat 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chdir-open-mkdir-mknod-link-unlink-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">4.2.</span> <span class="nav-text"> chdir, open, mkdir, mknod, link, unlink 系统调用</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhuwenq"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">zhuwenq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leonezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leonezz" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://resume.zhuwenq.cc/" title="Resume → https:&#x2F;&#x2F;resume.zhuwenq.cc" rel="noopener me" target="_blank"><i class="fa-solid fa-folder-user fa-fw"></i>Resume</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.zhuwenq.cc/xv6-Operating-system-01-interface/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="zhuwenq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhuwenq">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Xv6 Operating system 01-interface | zhuwenq">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Xv6 Operating system 01-interface
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-03-02 22:36:49" itemprop="dateCreated datePublished" datetime="2023-03-02T22:36:49+08:00">2023-03-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-02 17:37:16" itemprop="dateModified" datetime="2023-04-02T17:37:16+08:00">2023-04-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">知识类</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>操作系统的职责是在多个程序(进程)之间共享计算机提供的物理资源，并提供一系列比直接操作硬件更有用的服务。具体地说，操作系统为计算机硬件提供一层抽象，使软件程序不需要关心硬件的具体实现。操作系统还必须通过某种时分复用的机制使得多个程序可以共享底层硬件。最后，操作系统也必须为不同程序进程提供某种通信机制。</p>
+<p>操作系统中，运行的程序被抽象成进程，一个进程的内容即它所占用的内存及其他资源。其中，在内存中存有进程的指令，数据，堆栈等运行时上下文。操作系统接口即操作系统内核为其他进程提供的一系列服务的接口，称为系统调用 (system call) 。当进程需要调用系统服务时，其只能通过调用操作系统接口实现.</p>
+<span id="more"></span>
+<p>xv6 提供的系统调用有:</p>
+<table>
+<thead>
+<tr>
+<th>系统调用</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>int fork()</code></td>
+<td>创建一个进程，返回子进程的PID</td>
+</tr>
+<tr>
+<td><code>int exit(int status)</code></td>
+<td>终止当前进程，并将状态报告给wait()函数。无返回</td>
+</tr>
+<tr>
+<td><code>int wait(int *status)</code></td>
+<td>等待一个子进程退出; 将退出状态存入*status; 返回子进程PID。</td>
+</tr>
+<tr>
+<td><code>int kill(int pid)</code></td>
+<td>终止对应PID的进程，返回0，或返回-1表示错误</td>
+</tr>
+<tr>
+<td><code>int getpid()</code></td>
+<td>返回当前进程的PID</td>
+</tr>
+<tr>
+<td><code>int sleep(int n)</code></td>
+<td>暂停n个时钟节拍</td>
+</tr>
+<tr>
+<td><code>int exec(char *file, char *argv[])</code></td>
+<td>加载一个文件并使用参数执行它; 只有在出错时才返回</td>
+</tr>
+<tr>
+<td><code>char *sbrk(int n)</code></td>
+<td>按n 字节增长进程的内存。返回新内存的开始</td>
+</tr>
+<tr>
+<td><code>int open(char *file, int flags)</code></td>
+<td>打开一个文件；flags表示read/write；返回一个fd（文件描述符）</td>
+</tr>
+<tr>
+<td><code>int write(int fd, char *buf, int n)</code></td>
+<td>从buf 写n 个字节到文件描述符fd; 返回n</td>
+</tr>
+<tr>
+<td><code>int read(int fd, char *buf, int n)</code></td>
+<td>将n 个字节读入buf；返回读取的字节数；如果文件结束，返回0</td>
+</tr>
+<tr>
+<td><code>int close(int fd)</code></td>
+<td>释放打开的文件fd</td>
+</tr>
+<tr>
+<td><code>int dup(int fd)</code></td>
+<td>返回一个新的文件描述符，指向与fd 相同的文件</td>
+</tr>
+<tr>
+<td><code>int pipe(int p[])</code></td>
+<td>创建一个管道，把read/write文件描述符放在p[0]和p[1]中</td>
+</tr>
+<tr>
+<td><code>int chdir(char *dir)</code></td>
+<td>改变当前的工作目录</td>
+</tr>
+<tr>
+<td><code>int mkdir(char *dir)</code></td>
+<td>创建一个新目录</td>
+</tr>
+<tr>
+<td><code>int mknod(char *file, int, int)</code></td>
+<td>创建一个设备文件</td>
+</tr>
+<tr>
+<td><code>int fstat(int fd, struct stat *st)</code></td>
+<td>将打开文件fd的信息放入*st</td>
+</tr>
+<tr>
+<td><code>int stat(char *file, struct stat *st)</code></td>
+<td>将指定名称的文件信息放入*st</td>
+</tr>
+<tr>
+<td><code>int link(char *file1, char *file2)</code></td>
+<td>为文件file1创建另一个名称(file2)</td>
+</tr>
+<tr>
+<td><code>int unlink(char *file)</code></td>
+<td>删除一个文件</td>
+</tr>
+</tbody>
+</table>
+<h2 id="进程和内存"><a class="markdownIt-Anchor" href="#进程和内存"></a> 进程和内存</h2>
+<p>xv6 的进程拥有用户态内存(指令，数据，堆栈)和由内核管理的进程状态。xv6 在进程之间时分复用处理器，即它透明地切换待执行的进程进入处理器执行。当进程被切换出处理器不再执行时，xv6 会为其保存 CPU 寄存器(保存上下文)，并在该进程下次执行时将保存的 CPU 寄存器重新加载 (恢复上下文)。操作系统内核为每个进程分配一个标识符，即 PID, 作为该进程的索引。</p>
+<h3 id="fork-系统调用"><a class="markdownIt-Anchor" href="#fork-系统调用"></a> <code>fork</code> 系统调用</h3>
+<ol>
+<li>一个进程可以使用 <code>fork</code> 系统调用创建一个新进程</li>
+<li>新创建的进程具有和 caller process 相同的内存内容，称为子进程</li>
+<li><code>fork</code> 函数创建子进程成功后立刻返回到 caller process ，返回值是子进程的 PID。在子进程中，<code>fork</code> 返回值是 0， 可以利用这一点为父进程和子进程设计不同的执行分支</li>
+</ol>
+<h3 id="exit-系统调用"><a class="markdownIt-Anchor" href="#exit-系统调用"></a> <code>exit</code> 系统调用</h3>
+<ol>
+<li>一个进程可以使用 <code>exit</code> 系统调用终止自己的执行，并释放自己占用的所有资源</li>
+<li><code>exit</code> 接受一个参数用于指示 caller process 的退出状态，按照惯例，状态 0 表示正常退出，状态 1 表示进程因错误退出。</li>
+</ol>
+<h3 id="wait-系统调用"><a class="markdownIt-Anchor" href="#wait-系统调用"></a> <code>wait</code> 系统调用</h3>
+<ol>
+<li>一个进程可以使用 <code>wait</code> 系统调用等待其子进程执行完成，同时阻塞自己的执行</li>
+<li>如果 caller process 的子进程之一退出，<code>wait</code> 返回退出子进程的 PID，如果 caller process 没有子进程， <code>wait</code> 立即返回 -1</li>
+<li><code>wait</code> 接受一个指针作为参数，子进程的退出状态将被拷贝到该指针位置. 如果 caller process 不关心子进程的退出状态，可以传递空指针 (0)</li>
+</ol>
+<h3 id="exec-系统调用"><a class="markdownIt-Anchor" href="#exec-系统调用"></a> <code>exec</code> 系统调用</h3>
+<ol>
+<li>一个进程可以使用 <code>exec</code> 系统调用将自己的进程内存替换为从文件系统中新加载的内存镜像，并保留原进程的文件描述符表。</li>
+<li><code>exec</code> 函数执行成功后并不返回 caller process ，它会直接执行其内存中的指令(即从文件系统加载的指令). <code>exec</code> 只有在错误时 (加载文件或替换进程内存时的错误，而非新的程序执行时的错误) 才返回, 因此 caller process 中 <code>exec</code> 函数之后的程序应该只有错误处理过程。</li>
+</ol>
+<h2 id="io-和文件描述符file-descriptors"><a class="markdownIt-Anchor" href="#io-和文件描述符file-descriptors"></a> IO 和文件描述符(file descriptors)</h2>
+<p>文件描述符是一个整数值，其代表一个指向内核管理的对象的指针。进程可以通过 <code>open</code> 文件、文件夹、或设备，创建  <code>pipe</code>, 或 <code>dup</code> 一个已有的文件描述符来获取文件描述符。</p>
+<p>文件描述符旨在提供一种抽象的接口，它使得操作系统管理的 IO 设备在接口上没有差异，都是字节流的形式。</p>
+<p>值得注意的是文件描述符的管理是逐 process 的，操作系统会为每个 process 维护一张文件描述符表。其中三个特殊的文件描述符是:</p>
+<ul>
+<li><code>0</code> 代表标准输入 (standard input)</li>
+<li><code>1</code> 代表标准输出 (standard output)</li>
+<li><code>2</code> 代表标准错误 (standard error)</li>
+</ul>
+<p>文件描述符的数值会递增地分配，即: 新获取的文件描述符将总是所有未占用文件描述符中数值最小的。</p>
+<h3 id="read-和-write-系统调用"><a class="markdownIt-Anchor" href="#read-和-write-系统调用"></a> <code>read</code> 和 <code>write</code> 系统调用</h3>
+<p><code>read</code> 和 <code>write</code> 从文件描述符指向的已打开的文件中读取或向其写入字节。</p>
+<p>对于指向文件的文件描述符，其总是具备一个偏移量 <code>offset</code>，该 <code>offset</code> 指示该从该文件读取或向该文件写入的字节起点。</p>
+<ul>
+<li>对于 <code>read</code>， <code>read(fd, buf, n)</code> 表示从文件描述符 <code>fd</code> 指向的文件中读取最多 <code>n</code> 个字节，并将读取的数据复制到指针 <code>buf</code> 所指向的内存中，同时返回本次读取到的字节长度。值得注意的是 <code>read</code> 会从文件描述符 <code>fd</code> 所具备的 <code>offset</code> 位置开始读取，并在读取后将 <code>offset</code> 的值递增到本次读取的终点，即：下次对 <code>fd</code> 的读取将从本次读取的终点之后开始。当 <code>offset</code> 到达文件的终点时，新的 <code>read</code> 调用将返回 0， 代表文件已读取完毕。</li>
+<li>对于 <code>write</code>, <code>write(fd, buf, n)</code> 表示向文件描述符 <code>fd</code> 指向的文件中写入 <code>n</code> 个来自指针 <code>buf</code> 指向的内存位置的字节。同样地，<code>write</code> 会返回本次写入的字节长度，当返回值小于 <code>n</code> 时，代表本次写入有错误发生。对于 <code>offset</code> 的处理也与 <code>read</code> 类似：写入总是从 <code>offset</code> 的位置开始，并在结束后将 <code>offset</code> 递增到本次写入的终点。</li>
+</ul>
+<div class="note info"><p>关于文件描述符的 <code>offset</code>:</p>
+<p>如果一个文件描述符是从另一个已经存在的文件描述符得到的，即通过 <code>fork</code> 复制文件描述符表或 <code>dup</code> 复制文件描述符的方法，那么该文件描述符与原文件描述共享同一个 <code>offset</code>。否则，新的文件描述符(如通过 <code>open</code> 同一个文件)即使指向相同的 IO 设备，也不会共享 <code>offset</code></p>
+</div>
+<h3 id="open-系统调用"><a class="markdownIt-Anchor" href="#open-系统调用"></a> <code>open</code> 系统调用</h3>
+<p><code>open</code> 系统调用打开一个文件并为其分配文件描述符，<code>open(filename, flag)</code> 表示以 <code>flag</code> 模式打开文件 <code>filename</code>. 可选的 <code>flag</code> 有：</p>
+<ol>
+<li><code>O_RDONLY</code>: 只读模式</li>
+<li><code>O_WRONLY</code>: 只写模式</li>
+<li><code>O_RDWR</code>: 读写模式</li>
+<li><code>O_CREATE</code>: 文件不存在则创建</li>
+<li><code>O_TRUNC</code>: 截断模式，打开时将文件内容清空</li>
+</ol>
+<h3 id="close-系统调用"><a class="markdownIt-Anchor" href="#close-系统调用"></a> <code>close</code> 系统调用</h3>
+<p><code>close</code> 系统调用释放一个文件描述符，使其在后续的分配中可用。</p>
+<p>操作系统会保证新分配的文件描述符总是所有可用文件描述符中数值最小的(否则随着系统的运行，文件描述符的数值终将导致溢出)</p>
+<h3 id="dup-系统调用"><a class="markdownIt-Anchor" href="#dup-系统调用"></a> <code>dup</code> 系统调用</h3>
+<p><code>dup</code> 系统调用复制一个已有的文件描述符并返回，两个文件描述符将指向同一个 IO 设备，并共享一个 <code>offset</code></p>
+<h2 id="管道-pipe"><a class="markdownIt-Anchor" href="#管道-pipe"></a> 管道 (<code>pipe</code>)</h2>
+<p><code>pipe</code> 是一个小型内核缓冲区，其以<mark>一对</mark>文件描述符的形式暴露给用户进程：一个用于读取，另一个用于写入。读取端文件描述符可以读取向写入端文件描述符写入的数据，内核以这种形式向用户态提供了一种<strong>跨进程通信</strong>的方式。</p>
+<p><code>pipe</code> 以如下方式调用:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> pipefds[<span class="number">2</span>];</span><br><span class="line">pipe(pipefds);</span><br><span class="line"><span class="comment">// pipefds[0] is for reading</span></span><br><span class="line"><span class="comment">// pipefds[1] is for writing</span></span><br></pre></td></tr></table></figure>
+<p>值得注意的是 <code>pipe</code> 以<mark>阻塞式语义</mark>进行读写，即: 对读取端文件描述符的读取操作 (<code>read</code>) 会等待写入端的写入。</p>
+<p>这一特性还可以重述为：对读取端文件操作符的读取会一直阻塞到写入端文件描述符有数据写入。另一种结束读取端阻塞的情况是: 所有指向 <code>pipe</code> 写入端的文件描述符都被关闭，此时对 <code>pipe</code> 读取端的 <code>read</code> 操作会返回 0，与对非 <code>pipe</code> IO 设备 <code>read</code> 时遇到 <code>EOF</code> 相似。</p>
+<p>跨进程通信也可以通过向临时文件读写数据实现，但 <code>pipe</code> 相比这种方式至少有以下四点优势:</p>
+<ol>
+<li><code>pipe</code> 会自动清理其缓冲区，临时文件则需要在通信结束后手动处理</li>
+<li><code>pipe</code> 可以传递任意长度的数据，临时文件则受到文件系统的限制</li>
+<li><code>pipe</code> 允许读写阶段的并行执行，临时文件方案则需要两个阶段逐个执行</li>
+<li>当使用 <code>pipe</code> 实现进程间通信时，其阻塞式读写语义将比文件的非阻塞式语义更高效</li>
+</ol>
+<div class="note info"><p>对于 3, 4，一个理解是:</p>
+<ol>
+<li><code>pipe</code> 的阻塞式读写使得读取端对写入端有感知，因此可以在写入端写入一段数据后立刻读取，而不用等待其全部写入后再读取，因此是并行的。而文件方案的读取端对文件的写入没有感知，因此必须等待写入端写完数据并显式通知读取端才可以读取，否则很可能读到缺少的或重复的数据。</li>
+<li>还是因为 <code>pipe</code> 的阻塞读写语义，在构建跨进程通信程序时不需要在如何同步读写操作上花费功夫，因此更加高效</li>
+</ol>
+</div>
+<h2 id="文件系统file-system"><a class="markdownIt-Anchor" href="#文件系统file-system"></a> 文件系统(File system)</h2>
+<p>文件系统中，文件名 (file name / file path) 只是对文件系统中文件本体的一个具名引用。文件系统中的文件本体叫做 <code>inode</code>.</p>
+<p>一个 <code>inode</code> 可以有多个文件名，称为 <code>links</code>. 一个 <code>link</code> 即目录中的一个条目，包含一个文件名和一个指向 <code>inode</code> 的引用。</p>
+<p><code>inode</code> 描述了文件的元数据 <code>metadata</code>, 包括文件的类型 (文件/目录/设备)，长度，文件在磁盘上的地址，该文件的 <code>link</code> 数目。</p>
+<h3 id="fstat-系统调用"><a class="markdownIt-Anchor" href="#fstat-系统调用"></a> <code>fstat</code> 系统调用</h3>
+<p><code>fstat</code> 系统调用通过一个文件描述符查询该文件描述符所指向的 <code>inode</code> 的信息，其结果以结构体 <code>stat</code> 的形式返回：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> T_DIR    1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> T_FILE   2</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> T_DEVICE 3</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> dev; <span class="comment">// disk device of the file system</span></span><br><span class="line">    uint ino; <span class="comment">// inode number</span></span><br><span class="line">    <span class="type">short</span> type; <span class="comment">// type of file</span></span><br><span class="line">    <span class="type">short</span> nlink; <span class="comment">// number of links</span></span><br><span class="line">    uint64 size; <span class="comment">// size of the file in bytes</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="chdir-open-mkdir-mknod-link-unlink-系统调用"><a class="markdownIt-Anchor" href="#chdir-open-mkdir-mknod-link-unlink-系统调用"></a> <code>chdir</code>, <code>open</code>, <code>mkdir</code>, <code>mknod</code>, <code>link</code>, <code>unlink</code> 系统调用</h3>
+<ul>
+<li>
+<p><code>chdir</code> 系统调用可以改变当前进程所在的当前文件夹。当计算相对路径时，进程的当前文件夹被用作参照</p>
+</li>
+<li>
+<p><code>open</code> 系统调用当使用 <code>O_CREATE</code> flag 时可以创建新的文件</p>
+</li>
+<li>
+<p><code>mkdir</code> 系统调用用于创建新的文件夹</p>
+</li>
+<li>
+<p><code>mknod</code> 系统调用于创建新的其他设备文件。具体地说，<code>mknod</code> 为一个已有的设备创建一个文件，这个文件的路径指向该设备。</p>
+<p>该设备的主设备号和次设备号需要作为参数传入 <code>mknod</code>, 并于新创建的设备文件关联。这样一来，当用于进程访问该设备文件时，内核会将对该设备文件的 <code>read</code> 和 <code>write</code> 系统调用转发给内核中的设备实现，而不是调用文件系统中的实现。</p>
+</li>
+<li>
+<p><code>link</code> 系统调用为一个已有文件创建一个新的 <code>link</code></p>
+</li>
+<li>
+<p><code>unlink</code> 系统调用</p>
+<p><code>unlink</code> 系统调用从文件系统删除一个 <code>link</code></p>
+  <div class="note primary"><p>在典型 unix 系统中，一个文件的 <code>inode</code> 以及文件在磁盘中的本体只有在文件系统中没有 <code>link</code> 指向该 <code>inode</code>, 并且所有进程中都不存在指向该文件的文件描述符时才会被释放和删除。</p>
+</div>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="zhuwenq 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="zhuwenq 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Operating-System/" rel="tag"># Operating System</a>
+              <a href="/tags/xv6/" rel="tag"># xv6</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/C-%E6%A8%A1%E6%9D%BF022-%E5%8F%AF%E5%8F%98%E6%A8%A1%E6%9D%BF/" rel="prev" title="C++ 模板022-可变模板">
+                  <i class="fa fa-chevron-left"></i> C++ 模板022-可变模板
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/xv6-Operating-system-02-organization/" rel="next" title="Xv6 Operating system 02-organization">
+                  Xv6 Operating system 02-organization <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhuwenq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">232k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:31</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.8/pdfobject.min.js","integrity":"sha256-tu9j5pBilBQrWSDePOOajCUdz6hWsid/lBNzK4KgEPM="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.4/katex.min.css" integrity="sha256-gMRN4/6qeELzO1wbFa8qQLU8kfuF2dnAPiUoI0ATjx8=" crossorigin="anonymous">
+
+
+<script class="next-config" data-name="exif" type="application/json">"{FocalLength}mm f/{FNumber} {ExposureTime}s. zhuwenq © 2022"</script>
+<script src="https://fastly.jsdelivr.net/npm/exif-js@2/exif.min.js"></script>
+<script src="/lib/exif.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Leonezz","repo":"blog_comment","client_id":"20caff3989e3cfce14f8","client_secret":"aeed118e17198debb7a0ee755352f15c5b08ab93","admin_user":"Leonezz","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"2cfbe4cb56ed88cbd4c6711e3ee802e4"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

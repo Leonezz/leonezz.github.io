@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favatar.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.png">
+  <link rel="mask-icon" href="/images/avatar.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhuwenq.cc","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文写于 2020 年 3 月 27 日，2022 年 3 月 20 日重新整理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构-平衡二叉树">
+<meta property="og:url" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/index.html">
+<meta property="og:site_name" content="zhuwenq">
+<meta property="og:description" content="本文写于 2020 年 3 月 27 日，2022 年 3 月 20 日重新整理">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/1.png">
+<meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/2.png">
+<meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/3.png">
+<meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/4.png">
+<meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/5.png">
+<meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/6.png">
+<meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/7.png">
+<meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/10.png">
+<meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/11.png">
+<meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/12.png">
+<meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/13.png">
+<meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/14.png">
+<meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/15.png">
+<meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/16.png">
+<meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/17.png">
+<meta property="article:published_time" content="2022-03-20T06:40:58.000Z">
+<meta property="article:modified_time" content="2023-04-02T09:37:16.997Z">
+<meta property="article:author" content="zhuwenq">
+<meta property="article:tag" content="二叉树">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="平衡二叉树">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/1.png">
+
+
+<link rel="canonical" href="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/","path":"数据结构-平衡二叉树/","title":"数据结构-平衡二叉树"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>数据结构-平衡二叉树 | zhuwenq</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">zhuwenq</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">62</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">7</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">64</span></a></li><li class="menu-item menu-item-books"><a href="https://quill-vulcanodon-c7b.notion.site/77103fc77dad482c9d2eb42205a393ae?v=021dfdbe911c4929b6f0e4034996b6f4" rel="section" target="_blank"><i class="fas fa-book fa-fw"></i>读书</a></li><li class="menu-item menu-item-movies"><a href="https://quill-vulcanodon-c7b.notion.site/Movie-List-f2d5b594d437400091712ac108963427" rel="section" target="_blank"><i class="fas fa-film fa-fw"></i>电影</a></li><li class="menu-item menu-item-photograph"><a href="/categories/Photograph/" rel="section"><i class="fa fa-camera-retro fa-fw"></i>photograph</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-number">1.</span> <span class="nav-text"> 写在前面</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E8%A1%A1%E5%9B%A0%E5%AD%90"><span class="nav-number">1.1.</span> <span class="nav-text"> 平衡因子</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-number">2.</span> <span class="nav-text"> 平衡二叉树</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%AB%98%E5%BA%A6"><span class="nav-number">2.1.</span> <span class="nav-text"> 平衡二叉树的高度</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E8%87%AA%E5%B9%B3%E8%A1%A1"><span class="nav-number">3.</span> <span class="nav-text"> 平衡二叉树的自平衡</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#rr%E6%97%8B%E8%BD%AC"><span class="nav-number">3.1.</span> <span class="nav-text"> RR旋转</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ll%E6%97%8B%E8%BD%AC"><span class="nav-number">3.2.</span> <span class="nav-text"> LL旋转</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rl%E6%97%8B%E8%BD%AC"><span class="nav-number">3.3.</span> <span class="nav-text"> RL旋转</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lr%E6%97%8B%E8%BD%AC"><span class="nav-number">3.4.</span> <span class="nav-text"> LR旋转</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E6%93%8D%E4%BD%9C"><span class="nav-number">3.5.</span> <span class="nav-text"> 插入操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%93%8D%E4%BD%9C"><span class="nav-number">3.6.</span> <span class="nav-text"> 删除操作</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhuwenq"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">zhuwenq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leonezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leonezz" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://resume.zhuwenq.cc/" title="Resume → https:&#x2F;&#x2F;resume.zhuwenq.cc" rel="noopener me" target="_blank"><i class="fa-solid fa-folder-user fa-fw"></i>Resume</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="zhuwenq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhuwenq">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="数据结构-平衡二叉树 | zhuwenq">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据结构-平衡二叉树
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-20 14:40:58" itemprop="dateCreated datePublished" datetime="2022-03-20T14:40:58+08:00">2022-03-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-02 17:37:16" itemprop="dateModified" datetime="2023-04-02T17:37:16+08:00">2023-04-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">知识类</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>本文写于 2020 年 3 月 27 日，2022 年 3 月 20 日重新整理</p>
+</blockquote>
+<span id="more"></span>
+<h1 id="写在前面"><a class="markdownIt-Anchor" href="#写在前面"></a> 写在前面</h1>
+<p>假如搜索一颗二叉搜索树 <code>(Binary Search Tree)</code> 中的某个节点，那么搜索的最坏次数将是该二叉搜索树的高度。再假如被搜索的二叉树是一颗斜二叉树，那么搜索的最坏情况将需要树的节点个数 <code>n</code> 次。如果二叉搜索树的高度尽可能小，将大大降低搜索的时间复杂度，相比斜二叉树的最坏时间复杂度为 <code>O(n)</code> ，较为平衡的二叉树将把时间复杂度降低为 <code>O(log n)</code> 。<br />
+按照高度尽可能低或者左右尽可能平衡来排列节点的二叉搜索树就是<strong>平衡二叉树 (Balance Binary Tree)</strong> or (AVL Tree)( AVL 是以发明这一数据结构的科学家命名的)。</p>
+<h2 id="平衡因子"><a class="markdownIt-Anchor" href="#平衡因子"></a> 平衡因子</h2>
+<p>平衡因子 <code>(Balance Factor)</code> 表示一个树节点的平衡程度，它的值 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>F</mi><mo stretchy="false">(</mo><mi>T</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">BF(T)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mclose">)</span></span></span></span> 由节点 <code>T</code> 的左右子树高度差决定： <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>F</mi><mo stretchy="false">(</mo><mi>T</mi><mo stretchy="false">)</mo><mo>=</mo><mi>H</mi><mi>l</mi><mo stretchy="false">(</mo><mi>T</mi><mo stretchy="false">)</mo><mo>−</mo><mi>H</mi><mi>r</mi><mo stretchy="false">(</mo><mi>T</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">BF(T) = Hl(T) - Hr(T)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mclose">)</span></span></span></span></p>
+<h1 id="平衡二叉树"><a class="markdownIt-Anchor" href="#平衡二叉树"></a> 平衡二叉树</h1>
+<p>平衡二叉树的任一节点它的左右子树高度差即平衡因子的绝对值不超过 1，即 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><mi>B</mi><mi>F</mi><mo stretchy="false">(</mo><mi>T</mi><mo stretchy="false">)</mo><mi mathvariant="normal">∣</mi><mo>&lt;</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">|BF(T)|&lt;=1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mclose">)</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span></p>
+<h2 id="平衡二叉树的高度"><a class="markdownIt-Anchor" href="#平衡二叉树的高度"></a> 平衡二叉树的高度</h2>
+<p>设一颗高度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">h</span></span></span></span> 的平衡二叉树能拥有的最小的节点数为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mi>h</mi></msub></mrow><annotation encoding="application/x-tex">n_h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">h</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, 则对于该二叉树的任一节点，其左右子树的高度分别为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">h - 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">h</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo>−</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">h - 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">h</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span>, 其节点数分别为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mrow><mi>h</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">n_{h-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.638891em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">h</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mrow><mi>h</mi><mo>−</mo><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">n_{h-2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.638891em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">h</span><span class="mbin mtight">−</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span></span></span></span>, 则该二叉树的总节点数为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mi>h</mi></msub><mo>=</mo><msub><mi>n</mi><mrow><mi>h</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>n</mi><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></msub><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n_h = n_{h-1} + n_{n-2} + 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">h</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.791661em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">h</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.791661em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.301108em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>. 该递推公式推广到该二叉树的任一子树都成立，因此，高度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">h</span></span></span></span> 的平衡二叉树节点数满足<strong>类斐波那契数列递推公式</strong></p>
+<p>设斐波那契数列的第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">h</span></span></span></span> 项值为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mi>h</mi></msub><mo>=</mo><msub><mi>F</mi><mrow><mi>h</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>F</mi><mrow><mi>h</mi><mo>−</mo><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">F_h = F_{h-1} + F_{h-2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">h</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.891661em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">h</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.891661em;vertical-align:-0.208331em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">h</span><span class="mbin mtight">−</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span></span></span></span>, 则 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mi>h</mi></msub><mo>=</mo><msub><mi>F</mi><mi>h</mi></msub><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n_h = F_h - 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">h</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">h</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>. 又因为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mi>h</mi></msub><mo>≈</mo><mfrac><mn>1</mn><msqrt><mn>5</mn></msqrt></mfrac><mo stretchy="false">(</mo><mfrac><mrow><mn>1</mn><mo>+</mo><msqrt><mn>5</mn></msqrt></mrow><mn>2</mn></mfrac><msup><mo stretchy="false">)</mo><mi>h</mi></msup></mrow><annotation encoding="application/x-tex">F_h \approx \frac{1}{\sqrt{5}}(\frac{1 + \sqrt{5}}{2})^h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">h</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.5759999999999996em;vertical-align:-0.5379999999999999em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.5510085em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord sqrt mtight"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.912845em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mtight" style="padding-left:0.833em;"><span class="mord mtight">5</span></span></span><span style="top:-2.872845em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail mtight" style="min-width:0.853em;height:1.08em;"><svg width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.12715500000000002em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.5379999999999999em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mopen">(</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0379999999999998em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.3990085em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mbin mtight">+</span><span class="mord sqrt mtight"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.912845em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mtight" style="padding-left:0.833em;"><span class="mord mtight">5</span></span></span><span style="top:-2.872845em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail mtight" style="min-width:0.853em;height:1.08em;"><svg width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.12715500000000002em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">h</span></span></span></span></span></span></span></span></span></span></span>, 故 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mi>h</mi></msub><mo>≈</mo><mfrac><mn>1</mn><msqrt><mn>5</mn></msqrt></mfrac><mo stretchy="false">(</mo><mfrac><mrow><mn>1</mn><mo>+</mo><msqrt><mn>5</mn></msqrt></mrow><mn>2</mn></mfrac><msup><mo stretchy="false">)</mo><mi>h</mi></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n_h \approx \frac{1}{\sqrt{5}}(\frac{1 + \sqrt{5}}{2})^h - 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.63312em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">h</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.5759999999999996em;vertical-align:-0.5379999999999999em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.5510085em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord sqrt mtight"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.912845em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mtight" style="padding-left:0.833em;"><span class="mord mtight">5</span></span></span><span style="top:-2.872845em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail mtight" style="min-width:0.853em;height:1.08em;"><svg width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.12715500000000002em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.5379999999999999em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mopen">(</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0379999999999998em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.3990085em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mbin mtight">+</span><span class="mord sqrt mtight"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.912845em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mtight" style="padding-left:0.833em;"><span class="mord mtight">5</span></span></span><span style="top:-2.872845em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail mtight" style="min-width:0.853em;height:1.08em;"><svg width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.12715500000000002em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">h</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>，所以，对于节点数为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">n</span></span></span></span> 的平衡二叉树，他的高度是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo><mi>log</mi><mo>⁡</mo></mo><mn>2</mn></msub><mi>n</mi></mrow><annotation encoding="application/x-tex">\log_2n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.93858em;vertical-align:-0.24414em;"></span><span class="mop"><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.20696799999999996em;"><span style="top:-2.4558600000000004em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.24414em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">n</span></span></span></span> 数量级的，搜索的最坏时间复杂度是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></p>
+<h1 id="平衡二叉树的自平衡"><a class="markdownIt-Anchor" href="#平衡二叉树的自平衡"></a> 平衡二叉树的自平衡</h1>
+<p>由于平衡二叉树也是一颗二叉搜索树，它在节点插入时仍需满足二叉搜索树左小右大的规则。这种情况下难免会破坏原有的平衡（平衡因子会改变）。如：</p>
+<img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/1.png" class="" title="初始平衡二叉树">
+<p>对这颗树而言，它是平衡的，除最倒数第二层节点外其他节点的平衡因数都是 <code>0</code> 。此时如果要插入元素 <code>8</code> ，根据二叉搜索树的插入规则，节点将被插入到节点7的右子节点位置，不会破坏树的平衡。<br />
+如果被插入的元素是 <code>79</code> ，则会被插入到节点 <code>78</code> 的右子节点位置，此时节点 <code>71</code> 的平衡因数将变为 <code>-2</code> ，节点 <code>50</code> 的平衡因数也会变为 <code>-2</code> ，平衡性被破坏。<br />
+我们称平衡性被破坏的节点为发现者，破坏平衡性的节点为破坏者。根据破坏者与发现者的相对位置，把破坏平衡的插入分为 <code>4</code> 种情况：</p>
+<ul>
+<li><code>RR插入</code> —破坏者位于发现者的右子树的右边</li>
+<li><code>LL插入</code> —破坏者位于发现者的左子树的左边</li>
+<li><code>RL插入</code> —破坏者位于发现者的右子树的左边</li>
+<li><code>LR插入</code> —破坏者位于发现者的左子树的右边<br />
+对这四种情况分别进行处理，把被破坏的平衡树重新构造成平衡二叉树，就是平衡二叉树的自平衡。<br />
+四种处理方式分别为：<code>RR旋转</code>，<code>LL旋转</code>，<code>RL旋转</code>，<code>LR旋转</code>，旋转的结果需要满足二叉查找树的规则。</li>
+</ul>
+<h2 id="rr旋转"><a class="markdownIt-Anchor" href="#rr旋转"></a> <code>RR旋转</code></h2>
+<img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/2.png" class="" title="初始平衡二叉树">
+<p>如图所示的平衡二叉树，假设插入元素 <code>80</code></p>
+<img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/3.png" class="" title="按照二叉搜索树规则插入 80">
+<p>此时发现者是 <code>50</code> ，破坏者是 <code>80</code> 。<br />
+根据二叉搜索树的性质不难知道，发现者 <code>50</code> 的右子树所有节点均大于 <code>50</code> 。因此，可以用 <code>50</code> 的右子节点替换 <code>50</code> 的位置，同时把 <code>50</code> 右子节点 <code>78</code> 的左子树（一定小于 <code>78</code> ）挂在 <code>50</code> 的右子节点处（一定大于 <code>50</code> ），最后把 <code>50</code> 这一节点连同它的子树挂在节点 <code>78</code> 的左子节点位置。</p>
+<img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/4.png" class="" title="执行 RR 旋转后">
+<p>过程可以简述为：</p>
+<ol>
+<li>使用发现者 <code>F</code> 的右子节点 <code>r</code> 代替发现者</li>
+<li>把发现者 <code>F</code> 挂到 <code>r</code> 的左子节点处</li>
+<li>把 <code>r</code> 的左子节点（可以为空）重新挂在 <code>F</code> 的右子节点处</li>
+<li>返回占据原 <code>F</code> 节点位置的节点（应该为 <code>r</code> ）。</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//注意：此函数不应单独使用，它应该配合插入操作使用</span></span><br><span class="line"><span class="comment">//      因为单单将finder的子树旋转是不够的，还需要把返回的节点挂载到原树上</span></span><br><span class="line">AVLTree *<span class="title function_">singleRightRotation</span><span class="params">(AVLTree *tree)</span></span><br><span class="line">&#123;                                    <span class="comment">//tree is the finder</span></span><br><span class="line">    AVLTree *replacer = tree-&gt;right; <span class="comment">//right child of finder</span></span><br><span class="line">    tree-&gt;right = replacer-&gt;left;    <span class="comment">//right child&#x27;s left child to finder&#x27;s right child</span></span><br><span class="line">    replacer-&gt;left = tree;           <span class="comment">//finder to right child&#x27;s left child</span></span><br><span class="line">    <span class="comment">//update heights of changed nodes</span></span><br><span class="line">    replacer-&gt;height = maxOfTwo(replacer-&gt;left-&gt;height, replacer-&gt;right-&gt;height) + <span class="number">1</span>;</span><br><span class="line">    tree-&gt;height = maxOfTwo(tree-&gt;left-&gt;height, tree-&gt;right-&gt;height) + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> replacer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="ll旋转"><a class="markdownIt-Anchor" href="#ll旋转"></a> <code>LL旋转</code></h2>
+<img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/5.png" class="" title="原平衡二叉树">
+<p>类似的，假设上图所示的平衡二叉树要插入元素 <code>2</code></p>
+<img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/6.png" class="" title="按二叉搜索树规则插入 2">
+<p>则新插入的元素位于最左侧节点 <code>1</code> 的右子节点位置。此时发现者是 <code>6</code> ，破坏者是 <code>1</code> ，破坏者位于发现者的左子树的左子树的右子节点处（注意：虽然位于右子节点，但仍然是发现者的左子树的左子树上）,因此是 <code>LL插入</code>。</p>
+<p>与 <code>RR插入</code> 类似，发现者的左子树所有节点都小于发现者，因此可以:</p>
+<ul>
+<li>用发现者的左子节点代替发现者的位置</li>
+<li>把发现者挂在其左子节点的右子节点处（发现者一定大于它的左子节点）</li>
+<li>把发现者的左子节点的右子树挂在发现者的左子节点位置</li>
+</ul>
+<img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/7.png" class="" title="LL旋转后">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">AVLTree *<span class="title function_">singleLeftRotation</span><span class="params">(AVLTree *tree)</span></span><br><span class="line">&#123;</span><br><span class="line">    AVLTree *replacer = tree-&gt;left;</span><br><span class="line">    tree-&gt;left = replacer-&gt;right;</span><br><span class="line">    replacer-&gt;right = tree;</span><br><span class="line">    <span class="comment">//update heights of changed nodes</span></span><br><span class="line">    replacer-&gt;height = maxOfTwo(replacer-&gt;left-&gt;height, replacer-&gt;right-&gt;height) + <span class="number">1</span>;</span><br><span class="line">    tree-&gt;height = maxOfTwo(tree-&gt;left-&gt;height, tree-&gt;right-&gt;height) + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> replacer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="rl旋转"><a class="markdownIt-Anchor" href="#rl旋转"></a> <code>RL旋转</code></h2>
+<img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/10.png" class="" title="原平衡二叉树">
+<p>如上平衡二叉树，插入元素 <code>49</code></p>
+<img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/11.png" class="" title="按二叉搜索树规则插入 49">
+<p><code>49</code> 插入到节点 <code>47</code> 的右子节点处，此时发现者是 <code>46</code> ，破坏者是 <code>49</code> 。破坏者位于发现者的右子树的左子树上，因此是 <code>RL插入</code>。</p>
+<p>此时，发现者 <code>F</code> 必有一个右子节点 <code>R</code> ，节点 <code>R</code> 必有一个左子节点 <code>L</code>。<br />
+所谓 <code>RL旋转</code> 就是先对节点 <code>R</code> 做右旋:</p>
+<img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/12.png" class="" title="对节点 R 做右旋">
+<p>然后对节点 <code>F</code> 做左旋：</p>
+<img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/13.png" class="" title="对节点 F 做左旋">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">AVLTree *<span class="title function_">rightLeftRotation</span><span class="params">(AVLTree *tree)</span></span><br><span class="line">&#123;</span><br><span class="line">    tree-&gt;right = singleRightRotation(tree-&gt;right);</span><br><span class="line">    <span class="keyword">return</span> singleLeftRotation(tree);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="lr旋转"><a class="markdownIt-Anchor" href="#lr旋转"></a> <code>LR旋转</code></h2>
+<img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/14.png" class="" title="原平衡二叉树">
+<p>上图所示树插入元素 <code>25</code></p>
+<img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/15.png" class="" title="按二叉搜索树规则插入 25">
+<p>发现者是 <code>30</code> ，破坏者是 <code>25</code> 。先对节点 <code>20</code> 做左旋:</p>
+<img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/16.png" class="" title="对节点 20 左旋">
+<p>在对节点 30 右旋：</p>
+<img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/17.png" class="" title="对节点 30 右旋">
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">AVLTree *<span class="title function_">leftRightRotation</span><span class="params">(AVLTree *tree)</span></span><br><span class="line">&#123;</span><br><span class="line">    tree-&gt;left = singleLeftRotation(tree-&gt;left);</span><br><span class="line">    <span class="keyword">return</span> singleRightRotation(tree);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="插入操作"><a class="markdownIt-Anchor" href="#插入操作"></a> 插入操作</h2>
+<p>在上述四种旋转的基础上，可以实现新的具有自平衡特点的插入操作。插入之后判断其父节点的平衡因子，如果平衡被破坏，使用对应的旋转操作恢复平衡。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">AVLTree *<span class="title function_">insert</span><span class="params">(AVLTree *tree, KeyType key)</span></span><br><span class="line">&#123; <span class="comment">//插入完成后该程序的递归过程会从下而上检查父节点的平衡性</span></span><br><span class="line">    <span class="keyword">if</span> (tree == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        tree = (AVLTree *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(AVLTree));</span><br><span class="line">        tree-&gt;key = key;</span><br><span class="line">        tree-&gt;left = tree-&gt;right = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (key &lt; tree-&gt;key)</span><br><span class="line">    &#123; <span class="comment">//insert left sub tree</span></span><br><span class="line">        tree-&gt;left = insert(tree-&gt;left, key);</span><br><span class="line">        <span class="keyword">if</span> (getHeight(tree-&gt;left) - getHeight(tree-&gt;right) == <span class="number">2</span>)</span><br><span class="line">        &#123; <span class="comment">//balance broken</span></span><br><span class="line">            <span class="keyword">if</span> (key &lt; tree-&gt;key)</span><br><span class="line">            &#123; <span class="comment">//single left rotation</span></span><br><span class="line">                tree = singleLeftRotation(tree);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123; <span class="comment">//signle left right rotation</span></span><br><span class="line">                tree = leftRightRotation(tree);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (key &gt; tree-&gt;key)</span><br><span class="line">    &#123;</span><br><span class="line">        tree-&gt;right = insert(tree-&gt;right, key);</span><br><span class="line">        <span class="keyword">if</span> (getHeight(tree-&gt;right) - getHeight(tree-&gt;left) == <span class="number">2</span>)</span><br><span class="line">        &#123; <span class="comment">//balance broken</span></span><br><span class="line">            <span class="keyword">if</span> (key &gt; tree-&gt;key)</span><br><span class="line">            &#123; <span class="comment">//single right rotation</span></span><br><span class="line">                tree = singleRightRotation(tree);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123; <span class="comment">//right left rotation</span></span><br><span class="line">                tree = rightLeftRotation(tree);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//update height</span></span><br><span class="line">    tree-&gt;height = maxOfTwo(getHeight(tree-&gt;left), getHeight(tree-&gt;right)) + <span class="number">1</span>; </span><br><span class="line">    <span class="keyword">return</span> tree;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="删除操作"><a class="markdownIt-Anchor" href="#删除操作"></a> 删除操作</h2>
+<p>TODO</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="zhuwenq 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="zhuwenq 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag"># 二叉树</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"># 数据结构</a>
+              <a href="/tags/%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag"># 平衡二叉树</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/" rel="prev" title="数据结构-二叉搜索树">
+                  <i class="fa fa-chevron-left"></i> 数据结构-二叉搜索树
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%A0%86/" rel="next" title="数据结构-堆">
+                  数据结构-堆 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhuwenq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">232k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:31</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.8/pdfobject.min.js","integrity":"sha256-tu9j5pBilBQrWSDePOOajCUdz6hWsid/lBNzK4KgEPM="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.4/katex.min.css" integrity="sha256-gMRN4/6qeELzO1wbFa8qQLU8kfuF2dnAPiUoI0ATjx8=" crossorigin="anonymous">
+
+
+<script class="next-config" data-name="exif" type="application/json">"{FocalLength}mm f/{FNumber} {ExposureTime}s. zhuwenq © 2022"</script>
+<script src="https://fastly.jsdelivr.net/npm/exif-js@2/exif.min.js"></script>
+<script src="/lib/exif.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Leonezz","repo":"blog_comment","client_id":"20caff3989e3cfce14f8","client_secret":"aeed118e17198debb7a0ee755352f15c5b08ab93","admin_user":"Leonezz","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"ce24a1aaaed0bd58141bbe612a86d986"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

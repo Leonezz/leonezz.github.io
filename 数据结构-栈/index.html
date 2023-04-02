@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favatar.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.png">
+  <link rel="mask-icon" href="/images/avatar.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhuwenq.cc","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文写于 2020 年 3 月 19 日，2022 年 3 月 5 日重新整理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构--栈">
+<meta property="og:url" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%88/index.html">
+<meta property="og:site_name" content="zhuwenq">
+<meta property="og:description" content="本文写于 2020 年 3 月 19 日，2022 年 3 月 5 日重新整理">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%88/1.png">
+<meta property="article:published_time" content="2022-03-05T08:53:20.000Z">
+<meta property="article:modified_time" content="2023-04-02T09:37:17.001Z">
+<meta property="article:author" content="zhuwenq">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="栈">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%88/1.png">
+
+
+<link rel="canonical" href="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%88/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%88/","path":"数据结构-栈/","title":"数据结构--栈"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>数据结构--栈 | zhuwenq</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">zhuwenq</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">62</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">7</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">64</span></a></li><li class="menu-item menu-item-books"><a href="https://quill-vulcanodon-c7b.notion.site/77103fc77dad482c9d2eb42205a393ae?v=021dfdbe911c4929b6f0e4034996b6f4" rel="section" target="_blank"><i class="fas fa-book fa-fw"></i>读书</a></li><li class="menu-item menu-item-movies"><a href="https://quill-vulcanodon-c7b.notion.site/Movie-List-f2d5b594d437400091712ac108963427" rel="section" target="_blank"><i class="fas fa-film fa-fw"></i>电影</a></li><li class="menu-item menu-item-photograph"><a href="/categories/Photograph/" rel="section"><i class="fa fa-camera-retro fa-fw"></i>photograph</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8E%E7%BC%80%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text"> 后缀表达式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%88"><span class="nav-number">2.</span> <span class="nav-text"> 栈</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E9%9B%86"><span class="nav-number">2.1.</span> <span class="nav-text"> 操作集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.2.</span> <span class="nav-text"> 实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE%E5%BC%8F%E7%BB%93%E6%9E%84"><span class="nav-number">2.2.1.</span> <span class="nav-text"> 链式结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%BA%E5%BA%8F%E7%BB%93%E6%9E%84%E6%95%B0%E7%BB%84"><span class="nav-number">2.2.2.</span> <span class="nav-text"> 顺序结构（数组）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%90%8E"><span class="nav-number">2.3.</span> <span class="nav-text"> 最后</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AC%E6%8D%A2%E4%B8%AD%E7%BC%80%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%BA%E5%90%8E%E7%BC%80%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">2.3.1.</span> <span class="nav-text"> 转换中缀表达式为后缀表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E5%90%8E%E7%BC%80%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">2.3.2.</span> <span class="nav-text"> 计算后缀表达式</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhuwenq"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">zhuwenq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leonezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leonezz" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://resume.zhuwenq.cc/" title="Resume → https:&#x2F;&#x2F;resume.zhuwenq.cc" rel="noopener me" target="_blank"><i class="fa-solid fa-folder-user fa-fw"></i>Resume</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="zhuwenq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhuwenq">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="数据结构--栈 | zhuwenq">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据结构--栈
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-05 16:53:20" itemprop="dateCreated datePublished" datetime="2022-03-05T16:53:20+08:00">2022-03-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-02 17:37:17" itemprop="dateModified" datetime="2023-04-02T17:37:17+08:00">2023-04-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">知识类</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>本文写于 2020 年 3 月 19 日，2022 年 3 月 5 日重新整理</p>
+</blockquote>
+<span id="more"></span>
+<h1 id="后缀表达式"><a class="markdownIt-Anchor" href="#后缀表达式"></a> 后缀表达式</h1>
+<p>数学中常见的运算表达式如 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mo>×</mo><mi>c</mi><mo>+</mo><mi>d</mi><mi mathvariant="normal">/</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">a + b \times c + d / e</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">d</span><span class="mord">/</span><span class="mord mathnormal">e</span></span></span></span> 称为中缀表达式，它的一个特点就是运算符号如 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>+</mo></mrow><annotation encoding="application/x-tex">+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord">+</span></span></span></span>，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo></mrow><annotation encoding="application/x-tex">-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord">−</span></span></span></span>，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord">×</span></span></span></span>，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">/</mi></mrow><annotation encoding="application/x-tex">/</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">/</span></span></span></span> 都是位于运算符的数据中间的。把运算符拿到数据的后面，如 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mi>b</mi><mi>c</mi><mo>×</mo><mo>+</mo><mi>d</mi><mi>e</mi><mi mathvariant="normal">/</mi><mo>+</mo></mrow><annotation encoding="application/x-tex">abc\times + de / +</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">a</span><span class="mord mathnormal">b</span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">+</span><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mord">/</span><span class="mord">+</span></span></span></span> 就称位后缀表达式。在使用计算机计算普通的中缀表达式求值时，一般就需要先把中缀表达式转换为后缀表达式，这是因为后缀表达式包含了表达式中各运算符的优先级信息，计算机解析执行起来逻辑清晰，容易实现。</p>
+<p>而在中缀表达式转换为后缀表达式以及计算机解析执行后缀表达式时，就需要栈 <code>(Stack)</code> 这一数据结构。</p>
+<h1 id="栈"><a class="markdownIt-Anchor" href="#栈"></a> 栈</h1>
+<p>堆栈是一种只能在一端（栈顶）进行插入<code>(push)</code>，和删除<code>pop</code>操作的线性表，因此他也是一中后入先出<code>(Last In First Out)</code>的数据结构。</p>
+<h2 id="操作集"><a class="markdownIt-Anchor" href="#操作集"></a> 操作集</h2>
+<p>堆栈应具有以下基本操作：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Stack *<span class="title function_">createEmpty</span><span class="params">()</span>; <span class="comment">// 生成空栈</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">isFull</span><span class="params">(Stack *<span class="built_in">stack</span>)</span>; <span class="comment">// 查询是否满栈</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">isEmpty</span><span class="params">(Stack *<span class="built_in">stack</span>)</span>; <span class="comment">// 查询是否空栈</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">push</span><span class="params">(Stack *<span class="built_in">stack</span>, ElementType item)</span>; <span class="comment">// 在栈顶插入元素</span></span><br><span class="line">ElementType <span class="title function_">pop</span><span class="params">(Stack *<span class="built_in">stack</span>)</span>; <span class="comment">// 删除并返回栈顶元素</span></span><br></pre></td></tr></table></figure>
+<h2 id="实现"><a class="markdownIt-Anchor" href="#实现"></a> 实现</h2>
+<h3 id="链式结构"><a class="markdownIt-Anchor" href="#链式结构"></a> 链式结构</h3>
+<ol>
+<li>
+<p>首先实现数据结构原型：<br />
+使用链表储存数据时，链表的头节点指向栈顶，为了便于操作，头节点的<code>next</code>节点指向的是堆栈的第一个元素，即头节点只作为指示作用。</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> ElementType int</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">stack</span> &#123;</span></span><br><span class="line">    ElementType data;</span><br><span class="line">    Stack* next;</span><br><span class="line">&#125;Stack;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>生成空表<br />
+创建一个空的链表节点并返回：</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Stack* <span class="title function_">createEmpty</span><span class="params">()</span> &#123;</span><br><span class="line">    Stack* top = (Stack*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(Stack));</span><br><span class="line">    top-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> top;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>查询是否满栈<br />
+链式结构不存在满栈</p>
+</li>
+<li>
+<p>查询是否为空栈<br />
+由于链式结构的堆栈始终指向头节点，因此只要头节点的<code>next</code>节点不为<code>NULL</code>，栈就不是空的：</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">isEmpty</span><span class="params">(Stack* <span class="built_in">stack</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">stack</span>-&gt;next == <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>在栈顶插入元素<br />
+创建一个空节点<code>temp</code>，并把空节点的<code>next</code>指针指向头节点<code>top</code>的下一节点，然后把头节点的<code>next</code>指针指向<code>temp</code>。（<code>temp</code>的值初始化为要插入的值<code>item</code>）</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">push</span><span class="params">(Stack *<span class="built_in">stack</span>, ElementType item)</span> &#123;</span><br><span class="line">    Stack *temp = (Stack *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(Stack));</span><br><span class="line">    temp-&gt;data = item;</span><br><span class="line">    temp-&gt;next = <span class="built_in">stack</span>-&gt;next;</span><br><span class="line">    <span class="built_in">stack</span>-&gt;next = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>删除并返回栈顶元素<br />
+如果栈非空，首先把栈顶元素(<code>top</code>节点的<code>next</code>指针指向的节点的值<code>targetValue</code>)储存下来，然后删除栈顶节点，返回<code>targetValue</code>。</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ElementType <span class="title function_">pop</span><span class="params">(Stack *<span class="built_in">stack</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (isEmpty(<span class="built_in">stack</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span>; <span class="comment">//error!Empty stack</span></span><br><span class="line">    &#125;</span><br><span class="line">    ElementType targetValue = <span class="built_in">stack</span>-&gt;next-&gt;data;</span><br><span class="line">    Stack *target = <span class="built_in">stack</span>-&gt;next;</span><br><span class="line">    <span class="built_in">stack</span>-&gt;next = target-&gt;next;</span><br><span class="line">    <span class="built_in">free</span>(target);</span><br><span class="line">    <span class="keyword">return</span> targetValue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="顺序结构数组"><a class="markdownIt-Anchor" href="#顺序结构数组"></a> 顺序结构（数组）</h3>
+<ol>
+<li>
+<p>首先实现数据结构原型<br />
+在顺序结构中，由于数据在数组中储存，需要使用数组下标访问元素。因此需要一个下标始终指向栈顶。同时堆栈在创建时也需要指定最大的空间大小<code>MaxSize</code>.</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">stack</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ElementType *data;</span><br><span class="line">    <span class="type">int</span> top;</span><br><span class="line">&#125;Stack;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>生成空表<br />
+由于需要指定堆栈最大长度，因此需要有一个参数传入。同时，堆栈的内存空间将在堆栈创建时分配完成。</p>
+<p>堆栈中指示栈顶位置的变量将被初始化为<code>-1</code>，它代表这是一个空栈。</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Stack *<span class="title function_">createEmpty</span><span class="params">(<span class="type">const</span> <span class="type">int</span> maxSize)</span></span><br><span class="line">&#123;</span><br><span class="line">    ElementType *data = (ElementType *)<span class="built_in">malloc</span>(maxSize * <span class="keyword">sizeof</span>(ElementType));</span><br><span class="line">    Stack *<span class="built_in">stack</span> = (Stack *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(Stack));</span><br><span class="line">    <span class="built_in">stack</span>-&gt;data = data;</span><br><span class="line">    <span class="built_in">stack</span>-&gt;top = <span class="number">-1</span>;<span class="comment">//means an Empty Stack</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>查询是否满栈<br />
+由于数组实现的堆栈中不含堆栈长度的信息，因此被查询堆栈的大小需要显式传参。通过比交传入的大小数据和栈顶位置<code>top</code>，可以轻易得到堆栈是否满栈。</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">isFull</span><span class="params">(Stack *<span class="built_in">stack</span>, <span class="type">int</span> maxSize)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">stack</span>-&gt;top &gt;= maxSize;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>查询是否为空栈<br />
+当为空栈时，<code>top</code>值为<code>-1</code><br />
+int isEmpty(Stack *stack)<br />
+{<br />
+return stack-&gt;top == -1;<br />
+}</p>
+</li>
+<li>
+<p>在栈顶插入元素<br />
+在栈未满的情况下，<code>push</code>操作可以简单地把<code>top</code>指示器<code>+1</code>并把栈顶赋值为要插入的元素完成：</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">push</span><span class="params">(Stack *<span class="built_in">stack</span>, ElementType item, <span class="type">const</span> <span class="type">int</span> maxSize)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (isFull(<span class="built_in">stack</span>, maxSize))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span>; <span class="comment">//Error!stack overflow</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">stack</span>-&gt;data[<span class="built_in">stack</span>-&gt;top++] = item;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>删除并返回栈顶元素<br />
+栈不为空时，删除操作可以简单地把<code>top</code>指示器<code>-1</code>完成，此时虽然原栈顶元素仍在<code>data</code>数组中，但是由于栈顶指示器已经下移，原栈顶地址处于可擦写的状态，相当于删除。并且由于栈的内存空间在栈被构建时已经申请完毕，在栈上进行的操作将不会影响栈所占用的内存大小。</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ElementType <span class="title function_">pop</span><span class="params">(Stack *<span class="built_in">stack</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (isEmpty(<span class="built_in">stack</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>; <span class="comment">//Error!stack is Empty</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">stack</span>-&gt;data[<span class="built_in">stack</span>-&gt;top--];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="最后"><a class="markdownIt-Anchor" href="#最后"></a> 最后</h2>
+<p>栈的两种C语言（伪）实现大致如上，下面看看后缀表达式如何工作的。</p>
+<h3 id="转换中缀表达式为后缀表达式"><a class="markdownIt-Anchor" href="#转换中缀表达式为后缀表达式"></a> 转换中缀表达式为后缀表达式</h3>
+<p>首先建里堆栈用于储存运算符，然后顺序读取表达式每个对象（数值，符号等），对于每个对象，按如下法则处理：</p>
+<ol>
+<li>若对象是运算数值，直接输出</li>
+<li>若对象是左括号<code>'('</code>，压入<code>(push)</code>堆栈</li>
+<li>若对象是右括号<code>')'</code>，将栈内的运算符挨个弹出，直到遇到左括号<code>'('</code></li>
+<li>若对象是运算符，将其与栈顶运算符比较：
+<ol>
+<li>若优先级大于栈顶运算符，则把该运算符压栈</li>
+<li>若优先级小于栈顶运算符，则把栈顶运算符弹出，继续与新的栈顶运算符比较，直到其优先级大于栈顶运算符为止。<br />
+若表达式中的对象读取完毕，挨个弹出栈内所有运算符。<br />
+这样就把一个中缀表达式转换为了后缀表达式，看这个例子：</li>
+</ol>
+</li>
+</ol>
+<img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%88/1.png" class="">
+<h3 id="计算后缀表达式"><a class="markdownIt-Anchor" href="#计算后缀表达式"></a> 计算后缀表达式</h3>
+<p>首先建立堆栈用于储存计算结果，然后顺序读取后缀表达式每个对象，并按如下法则处理：</p>
+<ol>
+<li>如果对象是运算数，压栈</li>
+<li>如果对象是操作符，弹出栈内的两个元素按该操作符计算，并把结果压栈</li>
+<li>处理完所有对象后，栈顶的对象就是运算结果</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="zhuwenq 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="zhuwenq 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"># 数据结构</a>
+              <a href="/tags/%E6%A0%88/" rel="tag"># 栈</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/" rel="prev" title="数据结构--线性表">
+                  <i class="fa fa-chevron-left"></i> 数据结构--线性表
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/A-Simple-but-Effective-Pluggable-Entity-Lookup-Table-for-Pre-trained-Language-Models/" rel="next" title="A Simple but Effective Pluggable Entity Lookup Table for Pre-trained Language Models">
+                  A Simple but Effective Pluggable Entity Lookup Table for Pre-trained Language Models <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhuwenq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">232k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:31</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.8/pdfobject.min.js","integrity":"sha256-tu9j5pBilBQrWSDePOOajCUdz6hWsid/lBNzK4KgEPM="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.4/katex.min.css" integrity="sha256-gMRN4/6qeELzO1wbFa8qQLU8kfuF2dnAPiUoI0ATjx8=" crossorigin="anonymous">
+
+
+<script class="next-config" data-name="exif" type="application/json">"{FocalLength}mm f/{FNumber} {ExposureTime}s. zhuwenq © 2022"</script>
+<script src="https://fastly.jsdelivr.net/npm/exif-js@2/exif.min.js"></script>
+<script src="/lib/exif.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Leonezz","repo":"blog_comment","client_id":"20caff3989e3cfce14f8","client_secret":"aeed118e17198debb7a0ee755352f15c5b08ab93","admin_user":"Leonezz","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"8c7b4ec900479972496a802356c69a9f"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
