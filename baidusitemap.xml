@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E5%92%8C%E6%A0%91%E7%9A%84%E8%A1%A8%E7%A4%BA/</loc>
-    <lastmod>2023-04-02</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/</loc>
-    <lastmod>2023-04-02</lastmod>
-  </url>
-  <url>
     <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%98%9F%E5%88%97/</loc>
     <lastmod>2023-04-02</lastmod>
   </url>
@@ -21,18 +13,6 @@
     <lastmod>2023-04-02</lastmod>
   </url>
   <url>
-    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E9%97%AE%E9%A2%98/</loc>
-    <lastmod>2023-04-02</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/</loc>
-    <lastmod>2023-04-02</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%A0%86/</loc>
-    <lastmod>2023-04-02</lastmod>
-  </url>
-  <url>
     <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/</loc>
     <lastmod>2023-04-02</lastmod>
   </url>
@@ -41,31 +21,15 @@
     <lastmod>2023-04-02</lastmod>
   </url>
   <url>
-    <loc>https://blog.zhuwenq.cc/Xv6-Operating-system-03-page-table/</loc>
+    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E5%92%8C%E6%A0%91%E7%9A%84%E8%A1%A8%E7%A4%BA/</loc>
     <lastmod>2023-04-02</lastmod>
   </url>
   <url>
-    <loc>https://blog.zhuwenq.cc/hello-world/</loc>
+    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/</loc>
     <lastmod>2023-04-02</lastmod>
   </url>
   <url>
-    <loc>https://blog.zhuwenq.cc/hello-world_old/</loc>
-    <lastmod>2023-04-02</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/leftmost-one/</loc>
-    <lastmod>2023-04-02</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/xv6-Operating-system-01-interface/</loc>
-    <lastmod>2023-04-02</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/xv6-Operating-system-02-organization/</loc>
-    <lastmod>2023-04-02</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/%E5%88%A4%E6%96%AD%E6%95%B4%E6%95%B0%E4%BD%8D%E6%A8%A1%E5%BC%8F%E4%B8%AD%E6%98%AF%E5%90%A6%E6%9C%89%E5%81%B6%E6%95%B0%E4%B8%AA1/</loc>
+    <loc>https://blog.zhuwenq.cc/%E5%8F%AF%E9%87%8D%E5%AE%9A%E4%BD%8D%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/</loc>
     <lastmod>2023-04-02</lastmod>
   </url>
   <url>
@@ -97,7 +61,43 @@
     <lastmod>2023-04-02</lastmod>
   </url>
   <url>
-    <loc>https://blog.zhuwenq.cc/Transformer-Feed-Forward-Layers-are-Key-Value-Memories/</loc>
+    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E9%97%AE%E9%A2%98/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%A0%86/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/hello-world_old/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/leftmost-one/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/xv6-Operating-system-01-interface/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/xv6-Operating-system-02-organization/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/%E5%85%B1%E4%BA%AB%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6-%E5%85%B1%E4%BA%AB%E5%BA%93/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/%E5%88%A4%E6%96%AD%E6%95%B4%E6%95%B0%E4%BD%8D%E6%A8%A1%E5%BC%8F%E4%B8%AD%E6%98%AF%E5%90%A6%E6%9C%89%E5%81%B6%E6%95%B0%E4%B8%AA1/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/</loc>
     <lastmod>2023-04-02</lastmod>
   </url>
   <url>
@@ -113,15 +113,27 @@
     <lastmod>2023-04-02</lastmod>
   </url>
   <url>
+    <loc>https://blog.zhuwenq.cc/Xv6-Operating-system-03-page-table/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/hello-world/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/Transformer-Feed-Forward-Layers-are-Key-Value-Memories/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/Towards-a-Unified-View-of-Parameter-Efficient-Transfer-Learning/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
     <loc>https://blog.zhuwenq.cc/TransferNet-An-Effective-and-Transparent-Framework-for-Multi-hop-Question-Answering-over-Relation-Graph/</loc>
     <lastmod>2023-04-02</lastmod>
   </url>
   <url>
     <loc>https://blog.zhuwenq.cc/Tail-to-Tail-Non-Autoregressive-Sequence-Prediction-for-Chinese-Grammatical-Error-Correction/</loc>
-    <lastmod>2023-04-02</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/Towards-a-Unified-View-of-Parameter-Efficient-Transfer-Learning/</loc>
     <lastmod>2023-04-02</lastmod>
   </url>
   <url>
@@ -145,7 +157,15 @@
     <lastmod>2023-04-02</lastmod>
   </url>
   <url>
+    <loc>https://blog.zhuwenq.cc/Linkage/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
     <loc>https://blog.zhuwenq.cc/Pre-train-Prompt-and-Predict/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/Latex-Citation-Style/</loc>
     <lastmod>2023-04-02</lastmod>
   </url>
   <url>
@@ -161,18 +181,6 @@
     <lastmod>2023-04-02</lastmod>
   </url>
   <url>
-    <loc>https://blog.zhuwenq.cc/Latex-Citation-Style/</loc>
-    <lastmod>2023-04-02</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/K-Adapter-Infusing-Knowledge-into-Pre-Trained-Models-with-Adapters/</loc>
-    <lastmod>2023-04-02</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/ERNIE-Enhanced-Representation-through-Knowledge-Integration/</loc>
-    <lastmod>2023-04-02</lastmod>
-  </url>
-  <url>
     <loc>https://blog.zhuwenq.cc/IEEE754%E6%B5%AE%E7%82%B9%E6%95%B0/</loc>
     <lastmod>2023-04-02</lastmod>
   </url>
@@ -185,11 +193,35 @@
     <lastmod>2023-04-02</lastmod>
   </url>
   <url>
+    <loc>https://blog.zhuwenq.cc/K-Adapter-Infusing-Knowledge-into-Pre-Trained-Models-with-Adapters/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
     <loc>https://blog.zhuwenq.cc/ERICA-Improving-Entity-and-Relation-Understanding-for-Pre-trained-Language-Models-via-Contrastive-Learning/</loc>
     <lastmod>2023-04-02</lastmod>
   </url>
   <url>
     <loc>https://blog.zhuwenq.cc/ERNIE-Enhanced-Language-Representation-with-Informative-Entities/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/ERNIE-Enhanced-Representation-through-Knowledge-Integration/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/Cache/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/Case-Based-Reasoning-for-Natural-Language-Queries-over-Knowledge-Bases/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/Differentiable-Reasoning-over-a-Virtual-Knowledge-Base/</loc>
+    <lastmod>2023-04-02</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/</loc>
     <lastmod>2023-04-02</lastmod>
   </url>
   <url>
@@ -217,31 +249,11 @@
     <lastmod>2023-04-02</lastmod>
   </url>
   <url>
-    <loc>https://blog.zhuwenq.cc/Cache/</loc>
-    <lastmod>2023-04-02</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/Case-Based-Reasoning-for-Natural-Language-Queries-over-Knowledge-Bases/</loc>
-    <lastmod>2023-04-02</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/Data-Set-and-Benchmark/</loc>
-    <lastmod>2023-04-02</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/Differentiable-Reasoning-over-a-Virtual-Knowledge-Base/</loc>
+    <loc>https://blog.zhuwenq.cc/Attention-is-all-you-need/</loc>
     <lastmod>2023-04-02</lastmod>
   </url>
   <url>
     <loc>https://blog.zhuwenq.cc/BART-Denoising-Sequence-to-Sequence-Pre-training-for-Natural-Language-Generation-Translation-and-Comprehension/</loc>
-    <lastmod>2023-04-02</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/</loc>
-    <lastmod>2023-04-02</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/Attention-is-all-you-need/</loc>
     <lastmod>2023-04-02</lastmod>
   </url>
   <url>

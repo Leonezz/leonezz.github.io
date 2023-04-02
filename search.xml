@@ -1719,30 +1719,6 @@ C++ 14 中引入的泛型 <code>lambda</code> 表达式例如: <figure class="hi
       </tags>
   </entry>
   <entry>
-    <title>Dataset and Benchmark</title>
-    <url>/Data-Set-and-Benchmark/</url>
-    <content><![CDATA[<ul>
-<li>SQuAD V1.1: 维基百科上的抽取式问答任务。答案是从给定的文本中抽取的，模型预测出给定的文本中每个token的标记，标记着要抽取的文本段的起始和结尾。</li>
-<li>SQuAD V2.0: 答案未必能够从给定文本中抽取到的问答任务。</li>
-<li>MNLI: 文本二分类任务。预测一个句子是否包含另一个。</li>
-<li>ELI5: 长形式的抽象问答任务。答案由模型基于问题文本和支持材料文本的条件生成，而不是从支持材料中抽取。</li>
-<li>XSum: 高度抽象的新闻总结数据集</li>
-<li>ConvAI2: 对话回应生成任务。基于上下文和角色信息生成回应</li>
-<li>CNN/DM: 新闻总结数据集。总结文本和原始文本密切相关</li>
-<li>RACE: The ReAding Comprehension from Examinations, 大规模阅读理解数据集，来自中国的中学英语考试试题。</li>
-<li>GLUE: The General Language Understanding Evaluation. 是结合9个数据集的benchmark，旨在评估自然语言理解系统。包括单句分类任务和句子对分类任务。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Quick Note</category>
-      </categories>
-      <tags>
-        <tag>NLP</tag>
-        <tag>Dataset</tag>
-        <tag>Benchmark</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Differentiable Reasoning over a Virtual Knowledge Base</title>
     <url>/Differentiable-Reasoning-over-a-Virtual-Knowledge-Base/</url>
     <content><![CDATA[<p>文章主要思想是利用包含事实的语料库作为虚拟知识库进行自然语言问答。2021 年 EMNLP 的文章 <a href="https://aclanthology.org/2021.emnlp-main.341">TransferNet: An Effective and Transparent Framework for Multi-hop Question Answering over Relation Graph</a> 中提到的在 text form 关系的知识图谱上进行问答的思想与此类似。</p>
@@ -2856,6 +2832,78 @@ c-4-3.333-8.333-7.667-13 -13l-13-13l77-155 77-156c66 199.333 139 419.667
       </categories>
       <tags>
         <tag>ML</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linkage</title>
+    <url>/Linkage/</url>
+    <content><![CDATA[<p>程序从源代码到可执行文件需要经过 4 个步骤, 链接就是其中重要的一步.</p>
+<p>链接器的主要工作是将具备引用关系的不同编译单元的编译结果 (i.e. 可重定位目标文件) 相互连接, 组成一个可执行文件.</p>
+<p>静态链接器以一组可重定位目标文件和命令行参数作为输入, 生成一个完全链接的, 可以加载运行的可执行目标文件.</p>
+<span id="more"></span>
+<p>链接器必须实现两个主要功能以实现链接:</p>
+<ol>
+<li>符号解析 (symbol resolution): 目标文件中会定义和引用符号, 每个符号对应于一个函数, 全局变量或静态变量. 符号解析的目的是将符号引用和符号定义关联起来.</li>
+<li>重定位 (relocation): 编译器和汇编器生成从 0 开始的代码和数据节. 链接器需要通过将每个符号定义与一个内存地址关联起来实现 <mark>重定位</mark> . 随后链接器需要修改所有对该符号定义的引用, 使其指向该地址. 链接器使用汇编器所产生的 <strong>重定位条目(relocation entry)</strong> 进行这样的重定位.</li>
+</ol>
+<h2 id="目标文件"><a class="markdownIt-Anchor" href="#目标文件"></a> 目标文件</h2>
+<p>目标文件有三种形式:</p>
+<ol>
+<li><a href="../%E5%8F%AF%E9%87%8D%E5%AE%9A%E4%BD%8D%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/">可重定位目标文件</a></li>
+<li><a href="../%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/">可执行目标文件</a></li>
+<li><a href="../%E5%85%B1%E4%BA%AB%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/">共享目标文件</a></li>
+</ol>
+<p>编译器和汇编器可以生成可重定位目标文件和共享目标文件, 链接器根据这些文件生成可执行目标文件</p>
+<h2 id="符号解析"><a class="markdownIt-Anchor" href="#符号解析"></a> 符号解析</h2>
+<p>链接器进行符号解析的方法是将每个引用和它输入的可重定位目标文件符号表中定义的一个确定符号定义关联起来.</p>
+<h3 id="全局符号解析"><a class="markdownIt-Anchor" href="#全局符号解析"></a> 全局符号解析</h3>
+<p>全局符号分为 <em>强</em> 和 <em>弱</em> 两种:</p>
+<ul>
+<li><em>强</em> 符号: 函数和已初始化的全局变量</li>
+<li><em>弱</em> 符号: 未初始化的全局变量</li>
+</ul>
+<p>Linux 链接器对于多重定义的全局符号处理规则:</p>
+<ol>
+<li>不允许有多个同名强符号</li>
+<li>如果有一个强符号和多个弱符号同名, 选择强符号</li>
+<li>如果多个弱符号同名, 从中任选一个</li>
+</ol>
+<h3 id="对静态库的解析"><a class="markdownIt-Anchor" href="#对静态库的解析"></a> 对[[静态库]]的解析</h3>
+<p>链接器按照文件在命令行参数中出现的顺序依次解析符号, 当涉及静态库时, 具体地说, 链接器维护三个集合:</p>
+<ul>
+<li>可重定位目标文件集合 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span></span>: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span></span> 中的文件会被组合成可执行目标文件</li>
+<li>未解析的符号集合 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span>: 即引用但尚未发现定义的符号集合</li>
+<li>已发现定义的符号集合 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span></span></span></span>: 即在之前的输入文件中已经找到定义的符号集合</li>
+</ul>
+<p>初始时, 三个集合均为空:</p>
+<ul>
+<li>对于命令行参数中每个文件 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span>, 链接器首先判断 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 是 <em>目标文件</em> 还是 <em>存档文件</em>
+<ul>
+<li>如果是 <em>目标文件</em>: 链接器将 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 添加到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span></span>, 同时修改 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span> 反映 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 中符号的定义和引用</li>
+<li>如果是 <em>存档文件</em>: 链接器尝试匹配 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span> 中未解析的符号和存档文件 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 中定义的符号.
+<ul>
+<li>对于 <mark>匹配到的模块 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">m</span></span></span></span> (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">m</span></span></span></span> 在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 中被定义且其引用存在于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span> 中)</mark> , 链接器将 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">m</span></span></span></span> 添加到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span></span>, 并修改 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span></span></span></span> 以反映 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">m</span></span></span></span>.</li>
+<li>对于 <mark>所有未匹配到的模块</mark> , 链接器简单地丢弃这些模块</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>链接器处理完参数中所有的文件后, 如果 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span> 是非空的, 那么说明存在被引用但未定义的符号, 链接器会输出错误并终止. 否则链接器会合并和重定位 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span></span> 中的目标文件, 构建可执行目标文件</li>
+</ul>
+<h2 id="重定位"><a class="markdownIt-Anchor" href="#重定位"></a> 重定位</h2>
+<p>符号解析之后, 代码中每个符号的引用和一个符号定义关联起来. 链接器此时就知道了他的输入目标模块中代码节 (<code>.text</code>) 以及数据节 (<code>.data .rodata</code>) 的确切大小, 即具备了为每个符号分配运行时地址的信息.</p>
+<p>重定位由两个步骤组成:</p>
+<ol>
+<li>重定位节和符号定义: 链接器将所有相同类型的节合并为同一个聚合的节. 即, 把来自所有输入模块的 <code>.text</code>, <code>.data</code> 等分别聚合为一个. 随后, 链接器为所有的节以及所有的符号赋予运行时内存地址, 这一步完成时, 程序中所有的指令和全局变量都被分配了唯一的运行时地址.</li>
+<li>重定位节中的符号引用: 链接器修改代码节和数据节中对每个符号的引用, 使得它们指向正确的运行时地址. 这一步的进行依赖于可重定位目标模块中的 <a href="../%E5%8F%AF%E9%87%8D%E5%AE%9A%E4%BD%8D%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6#%E9%87%8D%E5%AE%9A%E4%BD%8D%E6%9D%A1%E7%9B%AE-relocation-entry">重定位条目 (relocation entry)</a> 数据结构</li>
+</ol>
+]]></content>
+      <categories>
+        <category>知识类</category>
+      </categories>
+      <tags>
+        <tag>CS:APP</tag>
+        <tag>Compute System</tag>
       </tags>
   </entry>
   <entry>
@@ -4606,6 +4654,83 @@ int leftmost_one(unsigned x);<br />
       </tags>
   </entry>
   <entry>
+    <title>共享目标文件/共享库</title>
+    <url>/%E5%85%B1%E4%BA%AB%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6-%E5%85%B1%E4%BA%AB%E5%BA%93/</url>
+    <content><![CDATA[<p>对于被广泛使用的标准库或其他库, 如果一个系统中多个程序都在引用相同的符号, 此时使用静态库将需要为每个程序都加载一份符号定义的代码和数据, 这对内存是极大的浪费.</p>
+<p>共享库 (shared library) 是解决静态库这一问题的产物. 共享库是一个目标模块, 在运行或加载时可以被加载到任意内存地址, 并和一个在内存中的程序链接起来. 这一过程称为动态链接, 是由一个叫做 <em>动态链接器 (dynamic linker)</em> 的程序执行的.</p>
+<span id="more"></span>
+<h2 id="动态链接"><a class="markdownIt-Anchor" href="#动态链接"></a> 动态链接</h2>
+<ul>
+<li>在链接时, 文件系统中对于一个共享库只有一份 <code>.so</code> 文件, 所有引用该库的可执行目标文件共享这个 <code>.so</code> 文件中的代码和数据, 而不是像引用静态库一样将静态库的内容嵌入进可执行目标文件.</li>
+<li>在执行时, 一个共享库的 <code>.text</code> 节在内存中的副本可以被不同的进程共享</li>
+</ul>
+<p>下图是动态库的链接过程:</p>
+<img data-src="/%E5%85%B1%E4%BA%AB%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6-%E5%85%B1%E4%BA%AB%E5%BA%93/1.png" class="">
+<p>链接器在构造可执行目标文件时, 没有将任何动态库的代码和数据被复制进可执行目标. 但链接器需要复制关于重定位和符号表的信息进入可执行目标, 这些信息指引加载器解析程序对动态库的引用.</p>
+<p>在加载和运行时:</p>
+<ol>
+<li>加载器加载部分链接的可执行目标文件</li>
+<li>加载器会注意到部分链接的可执行目标文件中存在一个 <code>.interp</code> 节, 这一节中包含动态链接器的路径名</li>
+<li>动态链接器也是一个共享库 (在 Linux 系统上是 <code>ld-linux.so</code>). 加载器加载并运行动态链接器</li>
+<li>动态链接器执行以下重定位以完成链接:
+<ol>
+<li>分别重定位 被引用的共享库 的文本和数据</li>
+<li>重定位可执行目标中对共享库中符号的引用</li>
+</ol>
+</li>
+<li>动态链接器将控制权传递给可执行目标程序</li>
+</ol>
+<h2 id="动态加载"><a class="markdownIt-Anchor" href="#动态加载"></a> 动态加载</h2>
+<p>除了在链接时由链接器提供重定位信息, 并在运行前由加载器加载, 动态库还可以在运行时动态地加载, 不需要链接器的重定位信息</p>
+<p>具体地说, 动态加载是在程序运行时动态地调用动态链接器提供的接口实现的, 通过这些接口可以动态地调用动态链接器在运行时解析共享库.</p>
+<p>下面是 Linux 系统提供的简单接口:</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;dlfcn.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* @filename: 动态链接库路径</span></span><br><span class="line"><span class="comment">* @flag: 打开的模式</span></span><br><span class="line"><span class="comment">* 打开和链接一个本地动态链接库, 返回指向该库的句柄. 打开失败则返回 NULL</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="type">void</span>* <span class="title function_">dlopen</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* filename, <span class="type">int</span> flag)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* @handle: 动态链接库句柄</span></span><br><span class="line"><span class="comment">* @symbol: 符号名称</span></span><br><span class="line"><span class="comment">* 在给定动态链接库句柄中查找给定名称的符号的句柄. 查找失败返回 NULL</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="type">void</span>* <span class="title function_">dlsym</span><span class="params">(<span class="type">void</span>* handle, <span class="type">char</span>* symbol)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* @handle: 要关闭的动态链接库句柄</span></span><br><span class="line"><span class="comment">* 卸载一个共享库</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">dlclose</span><span class="params">(<span class="type">void</span>* handle)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* 返回最近一次调用 dlopen, dlsym 或 dlclose 的错误</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="type">const</span> <span class="type">char</span>* <span class="title function_">dlerror</span><span class="params">(<span class="type">void</span>)</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="位置无关代码-position-independent-code-pic"><a class="markdownIt-Anchor" href="#位置无关代码-position-independent-code-pic"></a> 位置无关代码 (Position-Independent Code, PIC)</h2>
+<p>实现共享库的一项关键技术是位置无关代码, 这类代码可以被加载到内存中的任意位置而无需链接器修改.</p>
+<p>GCC 编译器可以使用 <code>-fpic</code> 选项生成 PIC 代码. 对于共享库中模块内部定义的符号, 编译器可以使用 PC 相对偏移地址生成 PIC 代码. 但是对于全局符号的处理则需要特殊技巧.</p>
+<h3 id="pic-数据引用"><a class="markdownIt-Anchor" href="#pic-数据引用"></a> PIC 数据引用</h3>
+<p>编译器利用一个有趣的事实生成对全局变量的 PIC 引用: 即无论我们在内存中的何处加载一个目标模块 (包括共享目标模块), 数据段和代码段之间的距离总是保持不变. 因此, 代码段中的任何指令和数据段中的任何变量之间的距离都是一个运行时常量.</p>
+<p>编译器利用了上述事实, 它在数据段开始的地方创建一个 <em>全局偏移量表  (Global Offset Table, GOT)</em>. 在 GOT 中, 每个被这个目标模块引用的全局符号都有一个 8 字节条目. 编译器还为每个条目生成一个重定位记录. 在加载时, 动态链接器会重定位 GOT 中的每个条目, 使它包含正确的绝对地址.</p>
+<p>如下图, 代码段中对 <code>addcnt</code> 的地址的访问被设置为了 <code>0x2008b9(%rip)</code>, 即 PC 指针偏移  <code>0x2008b9</code> 的位置, 即 <code>GOT[3]</code>. GOT 在编译时不会填充有效的值, 但在加载时, 动态链接器会将其填充为加载到内存中的动态连接库中定义的符号的地址.</p>
+<img data-src="/%E5%85%B1%E4%BA%AB%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6-%E5%85%B1%E4%BA%AB%E5%BA%93/2.png" class="">
+<h3 id="pic-函数调用"><a class="markdownIt-Anchor" href="#pic-函数调用"></a> PIC 函数调用</h3>
+<p>对于对共享库中定义的函数的调用, PIC 代码编译系统使用 <em>延迟绑定 (lazy binding)</em> 技术解析其地址. 具体地说, 就是将对函数地址的解析延迟到第一次调用该函数时. 其动机是对于定义了很多个函数的标准共享库, 典型的程序只会使用其中的一小部分, 延迟绑定可以避免对没有调用过的函数地址的解析.</p>
+<p>延迟绑定是通过 GOT 和 <em>过程连接表 (Procedure Linkage Table, PLT)</em> 之间的交互实现的.</p>
+<ul>
+<li>PLT 是一个数组, 其中每个条目是一个 16 字节的代码:
+<ul>
+<li>每个对共享库函数的调用都有一个条目, 每个条目负责解析一个函数调用.</li>
+<li><code>PLT[0]</code> 是一个特殊的条目, 它跳转到动态链接器.</li>
+<li><code>PLT[1]</code> 调用系统启动函数 <code>__libc_start_main</code>, 它初始化执行环境, 调用 <code>main</code> 函数并处理其返回值.</li>
+<li><code>PLT[2]</code> 及以后的条目调用用户代码中调用的函数</li>
+</ul>
+</li>
+<li>和 PLT 联合使用时:
+<ul>
+<li><code>GOT[0]</code> 和 <code>GOT[1]</code> 包含动态链接器在解析函数地址时会用到的信息</li>
+<li><code>GOT[2]</code> 是动态链接器在 <code>ld-linux.so</code> 模块中的入口点.</li>
+<li>其余的每个条目对应一个被调用的函数, 其地址在运行时被解析. 每个条目都有一个相匹配的 PLT 条目. 初始时, 每个 <code>GOT</code> 条目都指向对应于 <code>PLT</code> 条目的第二条指令</li>
+</ul>
+</li>
+</ul>
+<p>当第一次调用一个共享库中定义的函数时, 延迟绑定的流程如下图:</p>
+<img data-src="/%E5%85%B1%E4%BA%AB%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6-%E5%85%B1%E4%BA%AB%E5%BA%93/3.png" class="">
+<ol>
+<li>Instead of directly calling <code>addvec</code>, the program calls into <code>PLT[2]</code>, which is the PLT entry for <code>addvec</code>.</li>
+<li>The first PLT instruction does an indirect jump through <code>GOT[4]</code>. Since each GOT entry initially points to the second instruction in its corresponding PLT entry, the indirect jump simply transfers control back to the next instruction in <code>PLT[2]</code></li>
+<li>After pushing an ID for <code>addvec</code> (<code>0x1</code>) onto the stack, <code>PLT[2]</code> jumps to <code>PLT[0]</code>.</li>
+<li><code>PLT[0]</code> pushes an argument for the dynamic linker indirectly through <code>GOT[1]</code> and then jumps into the dynamic linker indirectly through <code>GOT[2]</code>. The dynamic linker uses the two stack entries to determine the runtime location of <code>addvec</code>, overwrites <code>GOT[4]</code> with this address, and passes control to <code>addvec</code>.</li>
+</ol>
+]]></content>
+      <categories>
+        <category>知识类</category>
+      </categories>
+      <tags>
+        <tag>CS:APP</tag>
+        <tag>Computer System</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>判断整数位模式中是否有偶数个1</title>
     <url>/%E5%88%A4%E6%96%AD%E6%95%B4%E6%95%B0%E4%BD%8D%E6%A8%A1%E5%BC%8F%E4%B8%AD%E6%98%AF%E5%90%A6%E6%9C%89%E5%81%B6%E6%95%B0%E4%B8%AA1/</url>
     <content><![CDATA[<p>CS:APP 家庭作业 2.65 题：</p>
@@ -4663,6 +4788,109 @@ int odd_ones(unsigned x);<br />
       <tags>
         <tag>CS:APP</tag>
         <tag>位运算</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>可执行目标文件</title>
+    <url>/%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>链接器 <a href="../Linkage">链接</a> 的结果是生成一个可执行目标文件, 这个目标文件中包含将程序加载到内存并运行的所有信息. 下图是一个 ELF 可执行目标文件所包含的信息:</p>
+<img data-src="/%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/1.png" class="">
+<span id="more"></span>
+<ul>
+<li>ELF header 描述文件的总体格式, 以及程序的入口点 (entry point), 即程序运行时执行的第一条指令的地址</li>
+<li><code>.init</code> 节定义了一个 <code>_init</code> 函数, 程序的初始化代码会调用该函数</li>
+<li>program header table 描述了文件中连续的片 (chunk) 与连续的内存段之间的映射关系</li>
+</ul>
+<h2 id="加载"><a class="markdownIt-Anchor" href="#加载"></a> 加载</h2>
+<p>可执行目标文件的运行由加载器 (loader) 完成. 加载器将可执行文件中的代码和数据从磁盘复制到内存, 然后通过跳转到程序的第一条指令或入口点运行该程序.</p>
+<p>每个 Linux 程序都有一个如下图所示的运行时内存映像:</p>
+<img data-src="/%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/2.png" class="">
+<ul>
+<li>在 Linux x86-64 中, 代码段总是从 <code>0x400000</code> 处开始,</li>
+<li>后面是数据段 (已初始化数据 <code>.data</code> 和未初始化数据 <code>.bss</code>).</li>
+<li>运行时堆在数据段之后, 通过 <code>malloc</code> 函数调用向上增长.</li>
+<li>堆之后有一块为 <a href="../%E5%85%B1%E4%BA%AB%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6-%E5%85%B1%E4%BA%AB%E5%BA%93">动态库</a> 保留的内存, 共享库将被加载到该区域.</li>
+<li>其后是用户栈区, 其总是从最大的合法用户地址 (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>48</mn></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2^{48} - 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span><span class="mord mtight">8</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>) 开始, 随程序的栈帧分配和释放向下增长或向上回收.</li>
+<li>地址 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>48</mn></msup></mrow><annotation encoding="application/x-tex">2^{48}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span><span class="mord mtight">8</span></span></span></span></span></span></span></span></span></span></span></span> 开始是为系统内核的代码和数据保留的区域</li>
+</ul>
+<div class="note info"><p>上面对程序内存映像的描述和图示在逻辑上是正确的, 但实际上由于内存对其, 内存保护等的要求在实现上略有不同.</p>
+</div>
+<p><strong>当运行一个程序时, 具体发生了什么</strong>:</p>
+<p>加载器为程序创建上图所示的内存映像,<br />
+并在程序头部表 (<code>program header table</code>) 的引导下完成片 (chunk) 的复制.<br />
+随后, 加载器跳转到程序的入口点, 即 <code>_start</code> 函数的地址, 这个函数在系统目标文件 <code>ctrl.o</code> 中定义,<br />
+<code>_start</code> 函数会调用系统启动函数 <code>__libc_start_main</code>, 该函数定义在 <code>libc.so</code> 中,<br />
+它会初始化执行环境, 调用用户层的 <code>main</code> 函数, 处理 <code>main</code> 函数的返回值, 并在需要的时候将控制还给内核.</p>
+]]></content>
+      <categories>
+        <category>知识类</category>
+      </categories>
+      <tags>
+        <tag>CS:APP</tag>
+        <tag>Computer System</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>可重定位目标文件</title>
+    <url>/%E5%8F%AF%E9%87%8D%E5%AE%9A%E4%BD%8D%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>现代 x86-64 系统使用可执行可链接格式文件 (Executable and Linkable Format, ELF)</p>
+<p>ELF 文件的结构:</p>
+<img data-src="/%E5%8F%AF%E9%87%8D%E5%AE%9A%E4%BD%8D%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/1.png" class="">
+<span id="more"></span>
+<ul>
+<li>ELF header:
+<ul>
+<li>一个 16 字节的序列描述生成该文件的系统的 <mark>字长</mark> 和 <mark>字节顺序 (大小端)</mark></li>
+<li>剩下的部分包含帮助链接器语法分析和解释目标文件的信息, 如 ELF 头的大小, 目标文件的类型 (e.g. 可重定位目标文件/可执行目标文件/共享目标文件), 机器类型 (e.g. x86-64), 节头部表 (section header table) 的偏移地址, 以及节头部表的条目大小和数量</li>
+</ul>
+</li>
+<li>section:
+<ul>
+<li><code>.text</code>: 已编译程序的机器代码 (指令)</li>
+<li><code>.rodata</code>: 只读数据</li>
+<li><code>.data</code>: <mark>已初始化的全局和静态变量</mark></li>
+<li><code>.bss</code>: 未初始化的全局和静态变量, 以及所有被初始化为 0 的全局或静态变量</li>
+<li><code>.symtab</code>: 符号表, 存放程序中定义和引用的函数和全局变量的信息</li>
+<li><code>.rel.text</code>:  <code>.text</code> 节中位置的列表, 链接器需要修改这些位置</li>
+<li><code>.rel.data</code>: 被模块引用或定义的所有全局变量的重定位信息</li>
+<li><code>.debug</code>: 调试符号表, 其条目是程序中定义的局部变量和类型定义, 程序中定义和引用的全局变量, 以及原始的 C 文件. 只有以 <code>-g</code> 选项调用编译器才会得到这张表</li>
+<li><code>.line</code>: 原始 C 文件中的行号和 <code>.text</code> 节中机器指令之间的映射, 只有以 <code>-g</code> 选项调用编译器才会得到这张表</li>
+<li><code>.strtab</code>: 一个字符串表, 其内容包括 <code>.symtab</code> 和 <code>.debug</code> 节中的符号表, 以及节头部中的节名字.</li>
+</ul>
+</li>
+<li>节头部表 (section header table)</li>
+</ul>
+<h3 id="符号和符号表"><a class="markdownIt-Anchor" href="#符号和符号表"></a> 符号和符号表</h3>
+<p>每个 ELF 文件都有一个符号表, 包含该模块 (文件) 定义和引用的符号的信息. 链接器考虑三种类型的符号:</p>
+<ul>
+<li>由当前模块定义的并能被其他模块引用的 <em>全局符号</em>, 对应于非静态的函数和全局变量</li>
+<li>由其他模块定义并被当前模块引用的 <em>全局符号</em>, 称为 <em>外部符号</em>. 对应于其他模块中定义的非静态函数和全局变量</li>
+<li>只被当前模块引用和定义的 <em>局部符号</em>, 对应于带 <code>static</code> 属性的函数和全局变量</li>
+</ul>
+<h3 id="重定位条目-relocation-entry"><a class="markdownIt-Anchor" href="#重定位条目-relocation-entry"></a> 重定位条目 (relocation entry)</h3>
+<p>汇编器生成可重定位目标模块时, 它并不知道该模块的数据和代码在最终程序中的内存位置, 也不知道这个模块所引用的外部符号 (函数, 全局变量) 的位置.</p>
+<p>因此, 当编译器遇到一个对未知位置的目标引用时, 它就会生成一个 <em>重定位条目</em>, 告诉链接器在链接时如何修改这个引用.</p>
+<p>代码的重定位条目存在于 <code>.rel.text</code> 节, 数据重定位条目存放在 <code>.rel.data</code> 节.</p>
+<p>下面是重定位条目的结构:</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="type">long</span> offset;     <span class="comment">// Offset of the reference to relocate</span></span><br><span class="line">    <span class="type">long</span> type: <span class="number">32</span>,   <span class="comment">// Relocation type</span></span><br><span class="line">         symbol: <span class="number">32</span>; <span class="comment">// Symbol table index</span></span><br><span class="line">    <span class="type">long</span> addend;     <span class="comment">// Constant part of relocation expression</span></span><br><span class="line">&#125; Elf64_Rela;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>offset</code>: 需要被修改的引用的节偏移</li>
+<li><code>symbol</code>: 需要被修改的引用应该指向的符号</li>
+<li><code>type</code>: 告知链接器应该怎么修改新的引用. 两种基本的类型:
+<ul>
+<li><code>R_X86_64_PC32</code>: 相对地址, 使用一个 32 位的相对 PC 的偏移量重定位目标引用, 如 <code>call</code> 指令</li>
+<li><code>R_X86_64_32</code>: 绝对地址, 使用一个 32 位的绝对地址重定位目标引用</li>
+</ul>
+</li>
+<li><code>addend</code>: 一些类型的重定位需要该字段对被修改引用的值做偏移调整</li>
+</ul>
+]]></content>
+      <categories>
+        <category>知识类</category>
+      </categories>
+      <tags>
+        <tag>CS:APP</tag>
+        <tag>Compute System</tag>
       </tags>
   </entry>
   <entry>
