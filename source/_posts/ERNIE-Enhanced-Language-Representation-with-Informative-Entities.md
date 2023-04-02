@@ -6,6 +6,7 @@ tags:
     - Knowledge Embedding
     - Knowledge Graph
 categories: Paper Note
+date: 2021-10-10
 ---
 
 # Motivition

@@ -6,6 +6,7 @@ tags:
     - Transformer
     - Autoregressive
 categories: Paper Note
+date: 2021-09-07
 ---
 
 # Introduction

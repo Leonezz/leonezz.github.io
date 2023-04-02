@@ -13,6 +13,7 @@ tags:
     - Knowledge Graph
     - QA
 categories: Paper Note
+date: 2022-01-15
 ---
 
 KBQA(Question Answering over Knowlegde Bases) 旨在根据结构化的知识图谱回答自然语言问题，该任务在现代的问答系统和信息检索系统中广泛应用。

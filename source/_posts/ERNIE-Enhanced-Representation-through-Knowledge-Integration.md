@@ -5,9 +5,10 @@ tags:
     - PLM
     - Knowledge Embedding
 categories: Paper Note
+date: 2021-10-10
 ---
 
-百度 ERNIE, 与清华 ERNIE [[ERNIE-Enhanced-Language-Representation-with-Informative-Entities]] 同名
+百度 ERNIE, 与清华 ERNIE ([ERNIE-Enhanced-Language-Representation-with-Informative-Entities](./ERNIE-Enhanced-Language-Representation-with-Informative-Entities)) 同名
 
 <!--more-->
 

@@ -9,6 +9,7 @@ author:
 tags:
     - Knowledge Represention
 categories: Paper Note
+date: 2022-02-26
 ---
 
 作者提出一种**实体表征**方法，通过在预训练 Transformer Encoder 模型时将实体看作独立的 token 来为实体生成表征。作者提出类似于 MLM 的预训练目标，首先将语料中的实体文本提取并放在语句末端，然后以一定的比例将实体替换为 $\text{[MASK]}$ ，并训练模型预测被遮罩的实体。为了提升效果，作者为放在语句末端的实体设计了特殊的实体 positional embedding，同时在 Encoder 模型的基础上添加 entity-aware self-attention mechanism 来增强模型对 token type(entity or word) 的感知。作者在多个数据集多个实体相关的任务上进行了实验。

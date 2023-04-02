@@ -6,6 +6,7 @@ tags:
     - Transformer
     - XLNet
 categories: Paper Note
+date: 2021-09-26
 ---
 提出了双流注意力模型
 

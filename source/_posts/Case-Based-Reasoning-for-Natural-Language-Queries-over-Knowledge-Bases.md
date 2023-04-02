@@ -14,6 +14,7 @@ tags:
     - Knowledge Graph
     - QA
 categories: Paper Note
+date: 2022-02-24
 ---
 
 作者提出一种 **基于案例的推理(Case-Based Reasoning, CBR)** 解决 KBQA 问题的模型 CBR-KBQA。文章关注于语义解析方式，根据自然语言问题文本生成可执行的逻辑表达式 (SparQL)，并在知识图谱上执行该逻辑表达式获得答案。

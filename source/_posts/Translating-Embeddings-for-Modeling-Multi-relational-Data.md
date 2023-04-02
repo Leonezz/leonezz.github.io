@@ -4,6 +4,7 @@ tags:
     - Knowledge Embedding
     - TransE
 categories: Paper Note
+date: 2021-10-14
 ---
 
 ## Motivation

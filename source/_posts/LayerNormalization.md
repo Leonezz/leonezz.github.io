@@ -7,6 +7,7 @@ author:
 tags:
     - ML
 categories: Paper Note
+date: 2021-12-03
 ---
 
 Layer Normalization 是针对 Batch Normalization 提出的，两者都是深度神经网络中为解决训练困难而提出的归一化手段。

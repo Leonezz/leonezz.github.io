@@ -6,6 +6,7 @@ tags:
     - Prompt
     - Survey
 categories: Paper Note
+date: 2021-08-30
 ---
 刘鹏飞博士著 Prompt 范式综述
 
