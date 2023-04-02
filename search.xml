@@ -2037,7 +2037,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
   <entry>
     <title>ERNIE: Enhanced Representation through Knowledge Integration</title>
     <url>/ERNIE-Enhanced-Representation-through-Knowledge-Integration/</url>
-    <content><![CDATA[<p>百度 ERNIE, 与清华 ERNIE [[ERNIE-Enhanced-Language-Representation-with-Informative-Entities]] 同名</p>
+    <content><![CDATA[<p>百度 ERNIE, 与清华 ERNIE (<a href="./ERNIE-Enhanced-Language-Representation-with-Informative-Entities">ERNIE-Enhanced-Language-Representation-with-Informative-Entities</a>) 同名</p>
 <span id="more"></span>
 <h1 id="motivation"><a class="markdownIt-Anchor" href="#motivation"></a> Motivation</h1>
 <p>现有的表征学习方法在学习 token embedding 时没有考虑语句中的先验知识，作者认为如果模型能够学习到先验知识，则可以获得更可靠的语言表征。</p>
