@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favatar.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.png">
+  <link rel="mask-icon" href="/images/avatar.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhuwenq.cc","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Memory Barrier 是 CPU 提供的一种机制, 它的作用是在程序中设置一个内存屏障, CPU 会保证所有在 Memory Barrier 之前的代码对内存的访问 (改动) 在 Memory Barrier 之后都是可见的. 这一保证据有两方面的效应:  所有 Memory Barrier 之后的代码都不能被重排 (Reordering) 到 Memory Barrier 之前执行 当执">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内存屏障和 C++ 内存模型">
+<meta property="og:url" content="https://blog.zhuwenq.cc/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="zhuwenq">
+<meta property="og:description" content="Memory Barrier 是 CPU 提供的一种机制, 它的作用是在程序中设置一个内存屏障, CPU 会保证所有在 Memory Barrier 之前的代码对内存的访问 (改动) 在 Memory Barrier 之后都是可见的. 这一保证据有两方面的效应:  所有 Memory Barrier 之后的代码都不能被重排 (Reordering) 到 Memory Barrier 之前执行 当执">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.zhuwenq.cc/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/1.png">
+<meta property="article:published_time" content="2023-04-08T14:47:44.000Z">
+<meta property="article:modified_time" content="2023-04-08T14:58:02.433Z">
+<meta property="article:author" content="zhuwenq">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Memory Order">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.zhuwenq.cc/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/1.png">
+
+
+<link rel="canonical" href="https://blog.zhuwenq.cc/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.zhuwenq.cc/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/","path":"内存屏障和-C-内存模型/","title":"内存屏障和 C++ 内存模型"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>内存屏障和 C++ 内存模型 | zhuwenq</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">zhuwenq</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">63</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">68</span></a></li><li class="menu-item menu-item-books"><a href="https://quill-vulcanodon-c7b.notion.site/77103fc77dad482c9d2eb42205a393ae?v=021dfdbe911c4929b6f0e4034996b6f4" rel="section" target="_blank"><i class="fas fa-book fa-fw"></i>读书</a></li><li class="menu-item menu-item-movies"><a href="https://quill-vulcanodon-c7b.notion.site/Movie-List-f2d5b594d437400091712ac108963427" rel="section" target="_blank"><i class="fas fa-film fa-fw"></i>电影</a></li><li class="menu-item menu-item-photograph"><a href="/categories/Photograph/" rel="section"><i class="fa fa-camera-retro fa-fw"></i>photograph</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96%E8%AF%B4%E8%B5%B7"><span class="nav-number">1.</span> <span class="nav-text"> 从编译器优化说起</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cpu-%E9%87%8D%E6%8E%92"><span class="nav-number">1.1.</span> <span class="nav-text"> CPU 重排</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="nav-number">1.2.</span> <span class="nav-text"> 内存可见性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory-barrier"><span class="nav-number">1.3.</span> <span class="nav-text"> Memory Barrier</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#memory-order"><span class="nav-number">2.</span> <span class="nav-text"> Memory Order</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sequential-consistent"><span class="nav-number">2.1.</span> <span class="nav-text"> Sequential Consistent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#happens-before"><span class="nav-number">2.2.</span> <span class="nav-text"> Happens Before</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#synchronizes-with"><span class="nav-number">2.3.</span> <span class="nav-text"> Synchronizes With</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stdatomic-%E5%92%8C-stdmemory_order"><span class="nav-number">3.</span> <span class="nav-text"> std::atomic 和 std::memory_order</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#memory_order_relaxedrelaxed-ordering"><span class="nav-number">3.1.</span> <span class="nav-text"> memory_order_relaxed(Relaxed Ordering)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory_order_acquire-%E5%92%8C-memory_order_release-acquire-release-ordering"><span class="nav-number">3.2.</span> <span class="nav-text"> memory_order_acquire 和 memory_order_release (Acquire-Release Ordering)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory_order_consume"><span class="nav-number">3.3.</span> <span class="nav-text"> memory_order_consume</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory_order_acq_rel"><span class="nav-number">3.4.</span> <span class="nav-text"> memory_order_acq_rel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory_order_seq_cstsequentially-consistent-ordering"><span class="nav-number">3.5.</span> <span class="nav-text"> memory_order_seq_cst(Sequentially Consistent Ordering)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#references"><span class="nav-number">4.</span> <span class="nav-text"> References</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhuwenq"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">zhuwenq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">63</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leonezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leonezz" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://resume.zhuwenq.cc/" title="Resume → https:&#x2F;&#x2F;resume.zhuwenq.cc" rel="noopener me" target="_blank"><i class="fa-solid fa-folder-user fa-fw"></i>Resume</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.zhuwenq.cc/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="zhuwenq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhuwenq">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="内存屏障和 C++ 内存模型 | zhuwenq">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          内存屏障和 C++ 内存模型
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-04-08 22:47:44 / 修改时间：22:58:02" itemprop="dateCreated datePublished" datetime="2023-04-08T22:47:44+08:00">2023-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">知识类</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Memory Barrier 是 CPU 提供的一种机制, 它的作用是在程序中设置一个内存屏障, CPU 会保证所有在 Memory Barrier 之前的代码对内存的访问 (改动) 在 Memory Barrier 之后都是可见的. 这一保证据有两方面的效应:</p>
+<ol>
+<li>所有 Memory Barrier 之后的代码都不能被重排 (Reordering) 到 Memory Barrier 之前执行</li>
+<li>当执行到 Memory Barrier 时, CPU 必须在所有 Core 之间同步 Cache, 保证此刻所有 Core 看到的内存是一致的.</li>
+</ol>
+<p>Memory Order 是 C++ 11 提供的一种并发编程机制, 它允许显式地限制编译器/CPU 对指令的重排 (Reordering), 以及显式地控制多核 CPU Cache 之间的同步. 其效果是使得不同线程/不同 CPU Core 所观察到的原子操作附近的内存操作具有可预测的顺序.</p>
+<span id="more"></span>
+<h2 id="从编译器优化说起"><a class="markdownIt-Anchor" href="#从编译器优化说起"></a> 从编译器优化说起</h2>
+<p>众所周知, 编译器不会忠实地将程序代码翻译为机器码, 而是在遵守 As-if 原则的前提下使用一定程度的指令重排以提高程序效率. As-if 原则是指优化前后的程序在单线程执行时应该具有相同的行为. 因此, 在多线程并发情况下, 无法完全假定程序中位于前面的代码会先于后面的代码执行. 例如如下的简单程序:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a&#123;&#125;;</span><br><span class="line"><span class="type">int</span> b&#123;&#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  ++a;++b;</span><br><span class="line">  a = a + b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 <code>g++ -S p1.cpp -o p1.s -O3</code> 命令下编译得到的汇编代码 (部分) 为:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">main:</span><br><span class="line">	movl	b(%rip), %eax       ; move b to %eax</span><br><span class="line">	movl	a(%rip), %edx       ; move a to %edx</span><br><span class="line">	addl	$1, %eax            ; ++b</span><br><span class="line">	movl	%eax, b(%rip)       ; move (b + 1) back to b</span><br><span class="line">	leal	1(%rax,%rdx), %eax  ; move (1 + b + a) to %eax</span><br><span class="line">	movl	%eax, a(%rip)       ; move (1 + b + a) to a</span><br><span class="line">	xorl	%eax, %eax</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<p>可以看出:</p>
+<ol>
+<li>汇编代码首先计算了排在 <code>++a</code> 后面的 <code>++b</code></li>
+<li>汇编代码没有计算 <code>++a</code>, 而是直接计算出了 <code>a</code> 的最终值 <code>a = 1 + b + 1 + a</code></li>
+</ol>
+<p>如果在多线程环境下, 一个线程读到 <code>b</code> 自增了 <code>1</code> 就错误地假设 <code>a</code> 已经完成了自增, 那么程序的行为就无法定义.</p>
+<h3 id="cpu-重排"><a class="markdownIt-Anchor" href="#cpu-重排"></a> CPU 重排</h3>
+<p>另一个会重排指令的地方是 CPU 指令执行模型. 在现代 CPU 设计中, 设计者利用很多机制如乱序发射, 分治预测等提高指令执行的并行性. 这种设计加速程序执行的同时也使得在并发情况下程序的指令执行顺序不可预测.</p>
+<h3 id="内存可见性"><a class="markdownIt-Anchor" href="#内存可见性"></a> 内存可见性</h3>
+<p>CPU Cache 的存在使得指令执行的结果 (内存的变动) 可能不会立即被其他 CPU Core 观察到. 对这个现象的理解需要了解 CPU Cache 的架构和缓存一致性协议.</p>
+<p>大致地说, CPU 直接能够访问的 Cache 是存在于每个 CPU Core 上的, 即, 每个内核独占地使用一份 Cache. 而 Cache 实际上是主存的缓存, 即一份副本, 那么为了保持每个 CPU Core 中的内存副本是一致的, 就需要一套 cache coherence protocol. Cache coherence Protocol 定义了 Cache line (Cache 操作的最小单位) 的几种状态, 以及 Core 之间沟通的几种消息:</p>
+<p>Cache line 状态:</p>
+<ol>
+<li>Modified(M): 即当前的 core 修改了该 cache line, 在当前的 core 将这个 cache line 同步到 memory 之前, 其他的 core 不能再修改这个 cache line 对应的内存位置</li>
+<li>Exclusive(E): 即当前 core 缓存的这个 cache line 是最新的, 当前的 core 可以直接 modify 这个 cache line 而不需要等待其他 core 的同步.</li>
+<li>Share(S): 当前 core 缓存的这个 cache line 在其他的 core 的 cache 中也存在副本, 如果当前 core 需要修改这个 cache line 则需要与其他 core 同步</li>
+<li>Invalid(I) 表示这个 cache line 是空的</li>
+</ol>
+<p>Protocol Message:</p>
+<ol>
+<li>Read: 当一个 core 需要读某个 cache line 时发起 read 消息</li>
+<li>Read Response: 对 Read 的回应, 可以来自其他 core 的 cache 也可以来自 memory. 如果其他 core 中的该 cache line 是 Modified(M) 状态, 则由该 core 发起 Read Response.</li>
+<li>Invalidate: 该消息包含一个 memory location, 收到此消息的 core cache 需要删除包含该 memory location 的 cache line, 并响应.</li>
+<li>Invalidate Acknowledge: 收到 Invalidate 的 Core 删除 cache line 中的数据, 然后向发起者响应 Invalidate Acknowledge 消息.</li>
+<li>Read Invalidate: 即 Read 和 Invalidate 的结合.</li>
+<li>Write back: 消息中包含数据和地址, 将数据写入内存中给定的地址位置.</li>
+</ol>
+<p>通过上述的一致性协议, 可以保证所有 CPU Core 对 cache line 的访问总是一致的:</p>
+<ul>
+<li>如果某个 Core A 需要写入一个 memory location, 而这个 memory location 存在于另一个 Core B 的一个 Modified cache line 中. 那么 Core A 就必须发起 Invalidate 消息, 然后等待来自 Core B 的 Invalidate Ack 后才能写入.</li>
+<li>Core B 收到 Invalidate 消息后需要先将 cache line invalidate 掉再响应 Invalidate Ack.</li>
+</ul>
+<p>但是 CPU 设计者不满足于这样的等待, 于是他们又引入了两层缓存, 即 Store Buffer 和 Invalidate Queue.</p>
+<ul>
+<li>
+<p>Store Buffer 位于 Core 和 Cache 之间. 这一层 buffer 提供了这样的功能: 当 Core A 执行写入操作时, 不需要等待来自 Core B 的 Invalidate Ack 消息, 而是直接写入在 Store Buffer 中, 然后执行后续的操作. 等收到 Invalidate Ack 消息后再将 Store Buffer 同步到 Cache 中.</p>
+<p>值得注意的是, 由于 Store Buffer 的存在, Core 需要 <code>load</code> 数据时需要先在 Store Buffer 中查找以保证 <code>load</code> 的数据是最新的. 这一过程叫做 Store Forwarding</p>
+</li>
+<li>
+<p>Invalidate Queue 位于 Core Cache 和 memory 之间. 当 Core A 向 Core B 发送 Invalidate 消息时, Core B 可以直接将该消息放入自己的 Invalidate Queue, 并立即返回 Invalidate Ack.</p>
+<p>需要注意的是, 如果 Core A 的 Invalidate Queue 中已经存在了该 cache line 的 Invalidate 消息, 那么它必须处理该 cache line 的 Invalidate 事件. 总的来说, 带有 Invalidate Queue 的 Core 提供这样一种保证: 在传输任何关于该 cache line 的 MESI 消息之前处理该条目.</p>
+</li>
+</ul>
+<img data-src="/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/1.png" class="" title="Paul E. McKenney. Is Parallel Programming Hard, And, If So,What Can You Do About It? v2022.09.25a-P438">
+<p>这样的策略进一步压栈了 CPU 性能, 但是其带来一些问题, 例如如下的程序:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;assert.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="type">int</span> a&#123;&#125;;</span><br><span class="line"><span class="type">int</span> b&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  a = <span class="number">1</span>;</span><br><span class="line">  b = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">bar</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">while</span> (b == <span class="number">0</span>) <span class="keyword">continue</span>;</span><br><span class="line">  <span class="built_in">assert</span>(a == <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>假设 Core A 上运行的线程 1 和 Core B 上的线程 2 分别运行 <code>foo()</code> 和 <code>bar()</code>. 那么理想情况下, 当线程 2 从 <code>while</code> 循环退出时, 全局变量 <code>a</code> 的值应该已经变为了 <code>1</code>, 即断言会成功. 但实际上, 由于内存可见性以及可见性顺序的不确定性, 断言可能会失败:</p>
+<ol>
+<li>假设此时 <code>a</code> 不存在于 Core A 的 Cache 中, <code>b</code> 存在于 Core A 的 Cache 中且状态为 M. 那么:
+<ol>
+<li>Core A 执行 <code>a = 1</code> 之后将 <code>a</code> 的值放进 Store Buffer, 然后继续执行 <code>b = 1</code>, 因为 <code>b</code> 在 Core A 上是 M 状态, 因此对 <code>b</code> 的修改不需要和其他 core 同步.</li>
+<li>此时 Core B 执行 <code>while(b == 0)</code> 时发现 <code>b == 1</code>, 那么就会退出循环执行 <code>assert</code>.</li>
+<li>但此时如果 Core A 的 Store Buffer 还没有将 <code>a</code> 的值同步到 Cache 的话, Core B 获取到的 <code>a</code> 值将为 0. 此时结果不符合预期.</li>
+</ol>
+</li>
+<li>假设 Core A 及时将 Store Buffer 中的值刷到 Cache 中.
+<ol>
+<li>那么 Cache 会向 Core B 发送 Invalidate 消息, 提醒其关于 <code>a</code> 的值已经失效. 这个消息会 push 到 Core B 的 Invalidate Queue 中</li>
+<li>当 Core B 发现 <code>b == 1</code> 退出循环时, 如果它还没有处理 Invalidate Queue 中的消息, 即 Core B 中 <code>a</code> 的 Cache Line 状态不为 <code>l</code>, 那么 Core B 此时获取到的 <code>a</code> 的取值仍然是 0. 结果不符合预期.</li>
+</ol>
+</li>
+</ol>
+<p>上面两种情况下不符合预期的行为是无法在 CPU 层面解决的: 读取变量的 CPU Core 并不知道读取的变量与其他 Core 有什么关系.</p>
+<h3 id="memory-barrier"><a class="markdownIt-Anchor" href="#memory-barrier"></a> Memory Barrier</h3>
+<p>为了保证程序的正确性, CPU 设计者提供了 Memory Barrier 机制. 它具体的形式是一种指令, 它的执行效果是将 Store Buffer 和 Invalidate Queue 与 Cache 同步, 即要求 CPU Core 立即处理这些缓存.</p>
+<p>更具体地说, CPU 设计者为读写操作分别引入了不同的 Memory Barrier 指令:</p>
+<ul>
+<li>对于读操作, Read Memory Barrier 会将 Invalidate Queue 与 Cache 同步</li>
+<li>对于写操作, Write Memory Barrier 会将 Store Buffer 与 Cache 同步</li>
+</ul>
+<h2 id="memory-order"><a class="markdownIt-Anchor" href="#memory-order"></a> Memory Order</h2>
+<p>由于以上的原因, 并发编程在没有设置 Memory Barrier 时难以获取跨线程一致的内存顺序. C++ 对这些现代多核 CPU 并行运行时的内存可见性提供的抽象是 Memory Order.</p>
+<p>具体地说, C++ 抽象了 3 种内存顺序模型:</p>
+<h3 id="sequential-consistent"><a class="markdownIt-Anchor" href="#sequential-consistent"></a> Sequential Consistent</h3>
+<p>即顺序一致性模型, 这种模型下编译器和 CPU 严格按照代码顺序生成和执行指令. 同时所有的内核观察到的内存顺序都一致, 即内存修改的顺序以及可见的顺序是全局一致的 (global memory order)</p>
+<h3 id="happens-before"><a class="markdownIt-Anchor" href="#happens-before"></a> Happens Before</h3>
+<p>即按照代码顺序, 如果语句 A 在语句 B 的前面, 那么 <strong>语句 A 的执行所产生的效果需能够被语句 B 的执行观察到</strong>, 则称语句 A <em>Happens Before</em> 语句 B. 值得注意的是 Happens Before 强调内存修改的可见性顺序, 并不强调 「实际的执行顺序」.</p>
+<h3 id="synchronizes-with"><a class="markdownIt-Anchor" href="#synchronizes-with"></a> Synchronizes With</h3>
+<p>如果线程 A 中的一个 atomic store 操作是 「Release 操作」, 线程 B 种对同一个变量的 atomic load 操作是 「Acquire 操作」, 并且线程 B 中的 load 操作读取到了线程 A 中的 store 操作所写入的值, 那么称线程 A 中的 Store 操作 <em>synchronizes with</em> 线程 B 中的 Load 操作.</p>
+<h2 id="stdatomic-和-stdmemory_order"><a class="markdownIt-Anchor" href="#stdatomic-和-stdmemory_order"></a> <code>std::atomic</code> 和 <code>std::memory_order</code></h2>
+<p>对于上面三种抽象内存顺序模型, C++ 标准提供了 6 个 flag 用于控制对 atomic 变量 load 和 store 操作, 以使得原子变量周围的内存可见性顺序能够满足以上顺序模型.</p>
+<h3 id="memory_order_relaxedrelaxed-ordering"><a class="markdownIt-Anchor" href="#memory_order_relaxedrelaxed-ordering"></a> <code>memory_order_relaxed</code>(Relaxed Ordering)</h3>
+<p>松散模型, 用该 flag 标记的原子变量操作只保证原子变量本身的内存一致性, 对其他内存的读写操作没有任何的同步和重排限制.</p>
+<h3 id="memory_order_acquire-和-memory_order_release-acquire-release-ordering"><a class="markdownIt-Anchor" href="#memory_order_acquire-和-memory_order_release-acquire-release-ordering"></a> <code>memory_order_acquire</code> 和 <code>memory_order_release</code> (Acquire-Release Ordering)</h3>
+<p>C++ 借鉴 lock 的 lock 和 unlock 操作, 引入了两个概念: Acquire 和 Release.</p>
+<p>Acquire 操作是一种 load 操作, 它保证该 load 操作之后的操作不会被重排到该 load 操作之前. 如果对同一个原子变量的一个 Release 操作 synchronizes with 该 Acquire 操作, 那么这个 Release 操作之前所有的写操作对内存的影响对于该 Acquire 操作以及之后的操作都可见.</p>
+<p>Release 操作是一种 store 操作, 它保证该 store 操作之前的操作不会重排到该 store 操作之后. Release 操作和 Acquire 操作一般配合使用.</p>
+<h3 id="memory_order_consume"><a class="markdownIt-Anchor" href="#memory_order_consume"></a> <code>memory_order_consume</code></h3>
+<p>Consume 操作类似于 Acquire 操作, 也是一种 load 操作, 但是其要求更加宽松. 一个某原子变量上的 Consume 操作仅能看到对于 <strong>该原子变量依赖于的内存</strong> 的修改, 而不是所有对于该原子变量的 Release 操作之前的内存修改.</p>
+<h3 id="memory_order_acq_rel"><a class="markdownIt-Anchor" href="#memory_order_acq_rel"></a> <code>memory_order_acq_rel</code></h3>
+<p>该操作用于 read-modify-write 操作, 即一个即读取, 又修改, 又写入的原子变量操作. 它保证该 rmw 操作前后的语句都不会跨越该操作而重排. 该操作兼容 Acquire 和 Store 操作, 且整体上是原子的.</p>
+<h3 id="memory_order_seq_cstsequentially-consistent-ordering"><a class="markdownIt-Anchor" href="#memory_order_seq_cstsequentially-consistent-ordering"></a> <code>memory_order_seq_cst</code>(Sequentially Consistent Ordering)</h3>
+<p>即 Sequential Consistent 操作, 可以用于 load/store/read-modify-write 操作. 且所有操作都保证有双向屏障 (读写 memory barrier), 操作的前后语句都保证不会重排, 所有变量的内存可见顺序对于所有的线程都是一致的.</p>
+<h2 id="references"><a class="markdownIt-Anchor" href="#references"></a> References</h2>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/atomic/memory_order#Relaxed_ordering">std::memory_order - cppreference.com</a></li>
+<li>Paul E McKenney. <strong>Is Parallel Programming Hard, And, If So, What Can You Do About It?</strong>.</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/382372072">现代C++的内存模型 - 知乎 (zhihu.com)</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/48157076">高并发编程–多处理器编程中的一致性问题(上) - 知乎 (zhihu.com)</a></li>
+<li><a target="_blank" rel="noopener" href="https://luyuhuang.tech/2022/06/25/cpp-memory-order.html">谈谈 C++ 中的内存顺序 (Memory Order) - Luyu Huang’s Blog</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="zhuwenq 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="zhuwenq 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C++</a>
+              <a href="/tags/Memory-Order/" rel="tag"># Memory Order</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E5%85%B1%E4%BA%AB%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6-%E5%85%B1%E4%BA%AB%E5%BA%93/" rel="prev" title="共享目标文件/共享库">
+                  <i class="fa fa-chevron-left"></i> 共享目标文件/共享库
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhuwenq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">244k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:42</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.8/pdfobject.min.js","integrity":"sha256-tu9j5pBilBQrWSDePOOajCUdz6hWsid/lBNzK4KgEPM="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.4/katex.min.css" integrity="sha256-gMRN4/6qeELzO1wbFa8qQLU8kfuF2dnAPiUoI0ATjx8=" crossorigin="anonymous">
+
+
+<script class="next-config" data-name="exif" type="application/json">"{FocalLength}mm f/{FNumber} {ExposureTime}s. zhuwenq © 2022"</script>
+<script src="https://fastly.jsdelivr.net/npm/exif-js@2/exif.min.js"></script>
+<script src="/lib/exif.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Leonezz","repo":"blog_comment","client_id":"20caff3989e3cfce14f8","client_secret":"aeed118e17198debb7a0ee755352f15c5b08ab93","admin_user":"Leonezz","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"dc6ac3117a9fd15d3503796e8804c46e"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
