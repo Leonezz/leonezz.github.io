@@ -175,6 +175,10 @@ Consume 操作类似于 Acquire 操作, 也是一种 load 操作, 但是其要�
 
 即 Sequential Consistent 操作, 可以用于 load/store/read-modify-write 操作. 且所有操作都保证有双向屏障 (读写 memory barrier), 操作的前后语句都保证不会重排, 所有变量的内存可见顺序对于所有的线程都是一致的.
 
+## Conclusion
+
+本文从编译器优化会重排程序代码的执行顺序说起, 对于会产生代码执行顺序变化的 *编译器优化* 和 *CPU reordering* 进行了讨论. 对于一个确定的指令执行顺序, **内存可见性顺序** 也会影响程序在 **并发** 时的行为. 针对这一现象, 本文从 CPU Cache 的结构和缓存一致性协议说起, 介绍了引起内存可见性顺序不定的原因: store buffer 和 invalidate queue. 针对这些原因, 本文介绍了 CPU 设计者提供的 Memory Barrier 指令. 基于上述基础, 本文介绍了 C++ 对内存可见性顺序的抽象: Memory Order, 并分别对 C++ 提供的 6 个 memory order flag 和它们能够组合成的 3 种 memory order model 进行了介绍.
+
 ## References
 
 1. [std::memory_order - cppreference.com](https://en.cppreference.com/w/cpp/atomic/memory_order#Relaxed_ordering)
