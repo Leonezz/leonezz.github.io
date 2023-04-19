@@ -6,18 +6,20 @@ comments: false
 
 # Intro
 
-I am currently a postgraduate major in computer science, my research interests include Natural Language Processing, Parameter Efficient Transfer Learning and Information Extraction. Before my postgraduate's study, I graduate from the optical major.
+I am currently a postgraduate major in computer science, my research interests include Natural Language Processing, Parameter Efficient Transfer Learning and Information Extraction.
 
-In addition to my academic study, I am a person of wide interests, my interests include modern C++, embedded systems, advanced deep learning technics, reading books, photography and making coffee.
-I will write here something about programming, reading and learning. Please leave a comment or contact me directly if you have more to communicate.
+I am a person of passion in both technique and life (at least as what I think : ) ), my passion involves modern C++, embedded systems, deep learning, [reading books](https://zhuwenq.notion.site/Book-List-69ab897ee3184ccea99eb33eac976f3e), [watching movies](https://zhuwenq.notion.site/Movie-List-f2d5b594d437400091712ac108963427), [photography](https://blog.zhuwenq.cc/categories/Photograph/) and making coffee.
 
-I hope I can write better.
+I will write here something about programming, reading and learning. Please leave a comment or contact me directly if you have something to share, I appreciate it a lot!
 
-All the best!
+I hope you can enjoy my articles here.
+
+Best regards!
 
 Contact me through:
 
-- Email: zhuwenqa@outlook.com
-- Github: [leonezz](https://github.com/leonezz)
+- Email: [zhuwenqa@outlook.com](mailto:zhuwenqa@outlook.com)
+
+I will graduate in March next year if it goes well, and I am currently in a job hunting, so please check out my [cv](https://resume.zhuwenq.cc) if it may.
 
 Check out my resume at [zhuwenq-resume.netlify.app](https://resume.zhuwenq.cc)!
