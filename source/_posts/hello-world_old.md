@@ -4,9 +4,7 @@ date: 2020-03-02 00:00:00
 update: 2020-04-11 00:00:00
 ---
 
-GitHub Pages 是一项静态站点托管服务，它直接从 GitHub 上的仓库获取
-HTML、CSS 和 JavaScript
-文件，（可选）通过构建过程运行文件，然后发布网站。对于没有服务器和域名的广大人民群众来说，它简直就是搭建个人博客的首选托管平台。
+GitHub Pages 是一项静态站点托管服务，它直接从 GitHub 上的仓库获取 HTML、CSS 和 JavaScript 文件，（可选）通过构建过程运行文件，然后发布网站。对于没有服务器和域名的广大人民群众来说，它简直就是搭建个人博客的首选托管平台。
 
 Hexo是一个博客类的快速建站，快速部署脚手架，通过它，即使不具有任何前端知识，也可以快速地建立精美的个人博客网页。
 
@@ -37,8 +35,10 @@ Hexo是一个博客类的快速建站，快速部署脚手架，通过它，即�
 
 2.  安装Node.js。可直接到[Node.js官网](https://nodejs.org/zh-cn/)下载安装。
 
-3.  安装hexo并初始化blog文件夹\
-    使用npm包管理工具安装hexo。\
+3.  安装hexo并初始化blog文件夹
+
+    使用npm包管理工具安装hexo.
+
     打开命令行，输入命令：
 
     `$ npm install -g hexo-cli`
@@ -48,18 +48,19 @@ Hexo是一个博客类的快速建站，快速部署脚手架，通过它，即�
     `$ hexo init`
 
     此时会发现文件夹中呈以下结构：
+    ```
+    └─<yourblogfolder>
+            ├─node_modules/
+            ├─scaffolds/
+            ├─source/
+            ├─themes/
+            ├─.gitignore
+            ├─_config.yml
+            ├─package.json
+            └─package_lock.json
+    ```
 
-         └─<yourblogfolder>
-             ├─node_modules/
-             ├─scaffolds/
-             ├─source/
-             ├─themes/
-             ├─.gitignore
-             ├─_config.yml
-             ├─package.json
-             └─package_lock.json
-
-4.  更换主题\
+5.  更换主题\
     在hexo的[主题页面](https://hexo.io/themes/)上有许多漂亮的博客主题，选择一个进入它的github页面，找到项目地址。\
     输入以下命令安装:(这里我用的ayer主题)\
     `$ git clone https://github.com/Shen-Yu/hexo-theme-ayer.git themes/ayer`
@@ -69,21 +70,20 @@ Hexo是一个博客类的快速建站，快速部署脚手架，通过它，即�
     回到blog文件夹下，打开_config.yml文件，找到
 
 
-```
-# Extensions
-## Plugins: https://hexo.io/plugins/
-## Themes: https://hexo.io/themes/
-theme: ''
-```
+    ```
+    # Extensions
+    ## Plugins: https://hexo.io/plugins/
+    ## Themes: https://hexo.io/themes/
+    theme: ''
+    ```
 
 代码块，将字段theme改成你下载的主题名。
 
 其他更多配置都在文件_config.yml中，访问[hexo文档](https://hexo.io/zh-cn/docs/)查看详情。
 
-## [](#3-网站部署 "3. 网站部署"){.headerlink}3. 网站部署 {#3-网站部署}
+## 3-网站部署
 
-1.  配置部署\
-    在_config.yml文件中，找到：
+在_config.yml文件中，找到：
 
 ```conf
 # Deployment
@@ -125,7 +125,7 @@ hexo d      #将网站部署到托管服务器
 > hexo n "博客名字" #新建博客
 ```
 
-## ref
+## References
 
 [hexo Doc](https://hexo.io/zh-cn/docs/)
 [GitHub+Hexo搭建个人网站详细教程](https://zhuanlan.zhihu.com/p/26625249)
