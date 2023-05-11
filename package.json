@@ -33,7 +33,7 @@
     "hexo-server": "^3.0.0",
     "hexo-symbols-count-time": "^0.6.2",
     "hexo-tag-spotify": "^1.1.2",
-    "hexo-theme-landscape": "^0.0.3",
+    "hexo-theme-landscape": "^1.0.0",
     "hexo-wordcount": "^6.0.1",
     "highlight.js": "^11.7.0",
     "mathjax": "^3.2.0"
