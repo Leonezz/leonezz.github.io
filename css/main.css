@@ -1648,12 +1648,6 @@ pre code {
   display: inline-block;
   margin: 0 5px;
 }
-.busuanzi-count #busuanzi_container_site_uv {
-  display: none;
-}
-.busuanzi-count #busuanzi_container_site_pv {
-  display: none;
-}
 @keyframes icon-animate {
   0%, 100% {
     transform: scale(1);
@@ -1711,6 +1705,11 @@ pre code {
   .post-body img,
   .post-body video {
     margin-bottom: 10px !important;
+  }
+  .post-body .image-caption,
+  .post-body img + figcaption,
+  .post-body .fancybox + figcaption {
+    margin: -5px auto 15px !important;
   }
   .post-body .note {
     margin-bottom: 10px !important;
@@ -2138,9 +2137,6 @@ pre code {
   flex-basis: 100%;
   height: 0;
 }
-#busuanzi_container_page_pv {
-  display: none;
-}
 .post-nav {
   border-top: 1px solid #eee;
   display: flex;
@@ -2203,7 +2199,12 @@ pre code {
   font-size: 0.875em;
   margin-top: 1em;
   padding-top: 1em;
-  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.social-like a {
+  border-bottom: none;
 }
 .reward-container {
   margin: 1em 0 0;
@@ -2483,18 +2484,8 @@ ul.breadcrumb li:last-child {
     color: #eee;
   }
 }
-.gt-header a,
-.gt-comments a,
-.gt-popup a {
-  border-bottom: 0;
-}
-.gt-container .gt-popup .gt-action.is--active::before {
-  top: 0.7em;
-}
-@media (prefers-color-scheme: dark) {
-  .gt-container .gt-header-textarea {
-    background-color: var(--card-bg-color) !important;
-  }
+.utterances {
+  max-width: unset;
 }
 .search-active {
   overflow: hidden;
@@ -2645,13 +2636,13 @@ hr {
 .column {
   background: var(--content-bg-color);
 }
-.header {
+header.header {
   align-items: center;
   display: flex;
   padding: 20px 0;
 }
 @media (max-width: 767px) {
-  .header {
+  header.header {
     display: block;
     padding: 10px 0;
   }
@@ -2783,22 +2774,22 @@ hr {
 .post-button .btn:hover {
   border-bottom-color: var(--btn-default-hover-border-color);
 }
-.header {
+header.header {
   margin: 0 auto;
   width: 900px;
 }
 @media (max-width: 767px) {
-  .header {
+  header.header {
     width: auto;
   }
 }
 @media (min-width: 1200px) {
-  .header {
+  header.header {
     width: 1000px;
   }
 }
 @media (min-width: 1600px) {
-  .header {
+  header.header {
     width: 1100px;
   }
 }
@@ -2881,7 +2872,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #6bff86;
+  background: #ba8a3c;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
