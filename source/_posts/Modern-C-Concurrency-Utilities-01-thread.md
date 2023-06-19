@@ -94,7 +94,7 @@ C++ 20 中为线程终止所提供的三个工具:
 
 这三个类的实现和关系比较简单. 首先 `stop_token` 和 `stop_source` 中都持有 `_Stop_state_ref` 类型的成员, 而这个 `_Stop_state_ref` 则是一个引用计数型的 pointer wrapper, 类似 `shared_ptr`. 其内部持有的 `_Stop_state_t` 类型的指针指向的是真正的 stop request state. 从这里可以看出是这个 `_Stop_state_t` 指针将 `stop_token` 和 `stop_source` 关联起来的, 即它们都间接通过 `_Stop_state_ref` 指向同一个堆上的 `_Stop_state_t`.
 
-`stop_callback` 则是一个 RAII 类, 在构造函数中它将可调用对象即 callback 注册到 `_Stop_state_t`, 并在析构函数中注销. 且注册和注销的实现则是在 `_Stop_state_t` 中持有一个双向链表的头节点, 双向链表的节点元素则是包装为 `_Stop_cb` 的 callback 本体, 这样就可以在 `stop request` 时执行所有的 callback. 同时标准保证所有的 callback 的执行是同步的.
+`stop_callback` 则是一个 RAII 类, 在构造函数中它将可调用对象即 callback 注册到 `_Stop_state_t`, 并在析构函数中注销. 且注册和注销的实现则是在 `_Stop_state_t` 中持有一个双向链表的头节点, 双向链表的节点元素则是包装为 `_Stop_cb` 的 callback 本体, 这样就可以在注册时插入节点, 注销时删除节点, `stop request` 时执行链表中所有的节点. 同时标准保证所有的 callback 的执行是同步的.
 
 ![](Modern-C-Concurrency-Utilities-01-thread/stop_token.png)
 
