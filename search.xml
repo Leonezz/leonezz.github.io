@@ -3266,7 +3266,7 @@ c-4-3.333-8.333-7.667-13 -13l-13-13l77-155 77-156c66 199.333 139 419.667
 <li><code>stop_callback</code>: 用于为线程终止注册 callback 的接口</li>
 </ol>
 <p>这三个类的实现和关系比较简单. 首先 <code>stop_token</code> 和 <code>stop_source</code> 中都持有 <code>_Stop_state_ref</code> 类型的成员, 而这个 <code>_Stop_state_ref</code> 则是一个引用计数型的 pointer wrapper, 类似 <code>shared_ptr</code>. 其内部持有的 <code>_Stop_state_t</code> 类型的指针指向的是真正的 stop request state. 从这里可以看出是这个 <code>_Stop_state_t</code> 指针将 <code>stop_token</code> 和 <code>stop_source</code> 关联起来的, 即它们都间接通过 <code>_Stop_state_ref</code> 指向同一个堆上的 <code>_Stop_state_t</code>.</p>
-<p><code>stop_callback</code> 则是一个 RAII 类, 在构造函数中它将可调用对象即 callback 注册到 <code>_Stop_state_t</code>, 并在析构函数中注销. 且注册和注销的实现则是在 <code>_Stop_state_t</code> 中持有一个双向链表的头节点, 双向链表的节点元素则是包装为 <code>_Stop_cb</code> 的 callback 本体, 这样就可以在 <code>stop request</code> 时执行所有的 callback. 同时标准保证所有的 callback 的执行是同步的.</p>
+<p><code>stop_callback</code> 则是一个 RAII 类, 在构造函数中它将可调用对象即 callback 注册到 <code>_Stop_state_t</code>, 并在析构函数中注销. 且注册和注销的实现则是在 <code>_Stop_state_t</code> 中持有一个双向链表的头节点, 双向链表的节点元素则是包装为 <code>_Stop_cb</code> 的 callback 本体, 这样就可以在注册时插入节点, 注销时删除节点, <code>stop request</code> 时执行链表中所有的节点. 同时标准保证所有的 callback 的执行是同步的.</p>
 <img data-src="/Modern-C-Concurrency-Utilities-01-thread/stop_token.png" class="">
 <h2 id="references"><a class="markdownIt-Anchor" href="#references"></a> References</h2>
 <ol>
