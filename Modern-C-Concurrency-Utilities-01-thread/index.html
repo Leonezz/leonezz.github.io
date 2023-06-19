@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favatar.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.png">
+  <link rel="mask-icon" href="/images/avatar.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,700,700italic%7CSource+Code+Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhuwenq.cc","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":false,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="C++ 11 及之后的版本中提供了一系列并发编程的工具和对并发控制原语的抽象封装, 如 thread, atomic, mutex, condition_varible 等. 本文介绍 thread 以及 jthread 的基本语义和功能, 它们在实际场景中的 best practice 和与之密切相关的编程模式不在本文讨论范围之内.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Modern C++ Concurrency Utilities 01: thread">
+<meta property="og:url" content="https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-01-thread/index.html">
+<meta property="og:site_name" content="zhuwenq">
+<meta property="og:description" content="C++ 11 及之后的版本中提供了一系列并发编程的工具和对并发控制原语的抽象封装, 如 thread, atomic, mutex, condition_varible 等. 本文介绍 thread 以及 jthread 的基本语义和功能, 它们在实际场景中的 best practice 和与之密切相关的编程模式不在本文讨论范围之内.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-01-thread/stop_token.png">
+<meta property="article:published_time" content="2023-06-19T14:35:31.000Z">
+<meta property="article:modified_time" content="2023-06-19T15:32:46.857Z">
+<meta property="article:author" content="zhuwenq">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Concurrency">
+<meta property="article:tag" content="thread">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-01-thread/stop_token.png">
+
+
+<link rel="canonical" href="https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-01-thread/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-01-thread/","path":"Modern-C-Concurrency-Utilities-01-thread/","title":"Modern C++ Concurrency Utilities 01: thread"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Modern C++ Concurrency Utilities 01: thread | zhuwenq</title>
+  
+
+
+
+  <script data-pjax defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;49fde7d33a584ce0b9092aaba41b5f02&quot;}'></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">zhuwenq</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">70</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">72</span></a></li><li class="menu-item menu-item-books"><a href="https://zhuwenq.notion.site/Book-List-69ab897ee3184ccea99eb33eac976f3e" rel="section" target="_blank"><i class="fas fa-book fa-fw"></i>books</a></li><li class="menu-item menu-item-movies"><a href="https://zhuwenq.notion.site/Movie-List-f2d5b594d437400091712ac108963427" rel="section" target="_blank"><i class="fas fa-film fa-fw"></i>movies</a></li><li class="menu-item menu-item-photograph"><a href="/categories/Photograph/" rel="section"><i class="fa fa-camera-retro fa-fw"></i>photograph</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#thread"><span class="nav-number">1.</span> <span class="nav-text"> Thread</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#thread-2"><span class="nav-number">1.1.</span> <span class="nav-text"> thread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jthread"><span class="nav-number">1.2.</span> <span class="nav-text"> jthread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%8A%9F%E8%83%BD"><span class="nav-number">1.3.</span> <span class="nav-text"> 其他功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#references"><span class="nav-number">2.</span> <span class="nav-text"> References</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhuwenq"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">zhuwenq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">70</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/leonezz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;leonezz" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://resume.zhuwenq.cc/" title="Resume → https:&#x2F;&#x2F;resume.zhuwenq.cc" rel="noopener me" target="_blank"><i class="fa-solid fa-folder-user fa-fw"></i>Resume</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+<script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=4c58e4&w=a&t=tt&d=J5AHZ4AQA0DvTp_ZcuwPtE7RUIceeM6CRY570vxXxOM&co=ffffff&cmo=3acc3a&cmn=ff5353&ct=808080'></script>
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-01-thread/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="zhuwenq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhuwenq">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Modern C++ Concurrency Utilities 01: thread | zhuwenq">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Modern C++ Concurrency Utilities 01: thread
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-06-19 22:35:31 / 修改时间：23:32:46" itemprop="dateCreated datePublished" datetime="2023-06-19T22:35:31+08:00">2023-06-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">知识类</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>C++ 11 及之后的版本中提供了一系列并发编程的工具和对并发控制原语的抽象封装, 如 <code>thread</code>, <code>atomic</code>, <code>mutex</code>, <code>condition_varible</code> 等. 本文介绍 <code>thread</code> 以及 <code>jthread</code> 的基本语义和功能, 它们在实际场景中的 best practice 和与之密切相关的编程模式不在本文讨论范围之内.</p>
+<span id="more"></span>
+<h2 id="thread"><a class="markdownIt-Anchor" href="#thread"></a> Thread</h2>
+<p>线程提供一种允许多个过程并发执行的方式, C++ 中的 <code>thread</code> 则是提供一组平台无关的接口, 为用户屏蔽了不同操作系统所提供的线程 API 的差异. 在 linux 操作系统上, 使用 <code>thread</code> 的程序编译时往往需要 <code>-lpthread</code> 选项以显式链接 pthread (POSIX thread) 库.</p>
+<h3 id="thread-2"><a class="markdownIt-Anchor" href="#thread-2"></a> <code>thread</code></h3>
+<p>C++ 11 中提供的 <code>thread</code> 类接受一个可调用对象和参数作为构造参数, 并且 <code>thread</code> 对象在构造完成后立刻开始执行 (将线程标记为 <code>ready</code> 状态等待操作系统调度).</p>
+<p>传入 <code>thread</code> 构造函数的可调用对象的返回值会被忽略, 并且如果该可调用对象异常终止, 该线程会调用 <code>std::terminate</code>, 导致进程终止. 因此不应该依赖返回值或异常实现多线程之间的同步和通信, 可以使用 <code>std::promise</code> 或 <em>同步</em> 的共享变量.</p>
+<p>C++ 11 中为 <code>thread</code> 对象提供的控制操作极少, 只有 <code>join</code> 和 <code>detach</code> 两种:</p>
+<ol>
+<li><code>join</code>: 阻塞 <em>当前</em> 线程, 等待调用 <code>join</code> 函数的那个 <code>thread</code> 对象结束执行</li>
+<li><code>detach</code>: 将调用 <code>detach</code> 函数的线程与 <em>当前</em> 线程剥离并独立执行, 当前线程不再拥有该 <code>detach</code> 对象.</li>
+</ol>
+<p>值得注意的是, <code>thread</code> 还提供了 <code>joinable</code> 操作, 用于检查一个 <code>thread</code> 对象是否可以调用 <code>join</code> 函数. 这个检查的意义在于, 对于 thread_id 与当前线程相同的 <code>thread</code> 对象, 一旦调用 <code>join</code>, 该线程就会一直阻塞: <code>join</code> 的语义是阻塞直到调用者执行结束, 而执行者又恰好正是这个被阻塞的线程, 那么它将永远无法醒来. 幸而在 C++ 中我们无法对 <code>joinable()</code> 返回 <code>false</code> 的 <code>thread</code> 对象调用 <code>join</code>, 否则将有多少死锁的线程出现.</p>
+<p><code>joinable</code> 函数的实现其实非常简单, 就是判断当前线程和调用该函数的那个对象的 id 是否相同: <code>this-&gt;get_id() != std::thread::id()</code>.</p>
+<h3 id="jthread"><a class="markdownIt-Anchor" href="#jthread"></a> <code>jthread</code></h3>
+<p><code>jthread</code> 是 C++ 20 引入的新线程类, 它的功能和 <code>thread</code> 一致, 并非更高级的线程, 只是对 <code>thread</code> API 不合理的设计提供一个 wrapper.</p>
+<p>与 <code>thread</code> 相同, <code>jthread</code> 也提供了相同语义的 <code>join</code> 和 <code>detach</code> 函数. 不同的是, 对于一个 <code>thread</code> 对象, 如果你在它析构之前没有调用 <code>join</code> 或 <code>detach</code> 函数, 那么它就会在析构函数调用 <code>terminate</code> 终止整个进程, 这带来很多不便:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">~<span class="built_in">thread</span>() &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">joinable</span>())</span><br><span class="line">    std::<span class="built_in">terminate</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而 <code>jthread</code> 则会在析构函数中请求终止该线程并自动 <code>join</code>:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">~<span class="built_in">jthread</span>() &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">joinable</span>()) &#123;</span><br><span class="line">      <span class="built_in">request_stop</span>();</span><br><span class="line">      <span class="built_in">join</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同时 <code>jthread</code> 还提供了一个显式终止线程执行的机制, 即 <code>std::stop_source</code> 和 <code>std::stop_token</code>. 每个 <code>jthread</code> 对象都持有一个 <code>std::stop_source</code>, 它代表一个共享的终止状态. 在线程开始执行时, <code>jthread</code> 会将该共享状态传入可调用对象作为第一个参数, 这就要求可调用对象的接口接受一个 <code>std::stop_token</code> 作为第一个参数. 当外部线程对 <code>jthread</code> 对象 <code>request_stop</code> 时, 实际上就是在尝试设置 <code>jthread</code> 内部的 <code>std::stop_source</code> 状态.</p>
+<p>需要注意的是, 设置了 <code>std::stop_token</code> 并不代表真的可以停止线程执行, 真正的线程停止逻辑还需要在用户代码显式地设计. 例如下面的例子:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(std::stop_token stop_token, <span class="type">int</span> value)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">while</span> (!stop_token.<span class="built_in">stop_requested</span>()) &#123;</span><br><span class="line">    std::cout &lt;&lt; value++ &lt;&lt; <span class="string">&#x27; &#x27;</span> &lt;&lt; std::flush;</span><br><span class="line">    std::this_thread::<span class="built_in">sleep_for</span>(<span class="number">200</span>ms);</span><br><span class="line">  &#125;</span><br><span class="line">  std::cout &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="function">std::jthread <span class="title">thread</span><span class="params">(f, <span class="number">5</span>)</span></span>;  <span class="comment">// prints 5 6 7 8... for approximately 3 seconds</span></span><br><span class="line">  std::this_thread::<span class="built_in">sleep_for</span>(<span class="number">3</span>s);</span><br><span class="line">  <span class="comment">// The destructor of jthread calls request_stop() and join().</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果没有 <code>std::this_thread::sleep_for(3s)</code>, 那么 <code>jtherad</code> 对象会在析构时自动 <code>request_stop</code>, 使得函数 <code>f</code> 及时停止, 最终可能一个数字也不会输出.</p>
+<h3 id="其他功能"><a class="markdownIt-Anchor" href="#其他功能"></a> 其他功能</h3>
+<ol>
+<li><code>yield</code>: 让出 CPU, 等待下次调度. 显然地, 在某些情况下 (如当前线程是唯一线程), 该函数没有效果.</li>
+<li><code>get_id</code>: 获取线程 id</li>
+<li><code>sleep_for</code>: 睡眠 (阻塞) 一段时间, 由于调度策略该时间可能比传入的时间稍长</li>
+<li><code>sleep_until</code>: 睡眠 (阻塞) 直到给定的时间点, 时间点并 <em>不</em> 会被精确遵守</li>
+</ol>
+<p>C++ 20 中为线程终止所提供的三个工具:</p>
+<ol>
+<li><code>stop_token</code>: 用于查询是否有 <code>stop_request</code> 被发起的接口</li>
+<li><code>stop_source</code>: 用于表示 <code>stop_request</code> 的请求情况</li>
+<li><code>stop_callback</code>: 用于为线程终止注册 callback 的接口</li>
+</ol>
+<p>这三个类的实现和关系比较简单. 首先 <code>stop_token</code> 和 <code>stop_source</code> 中都持有 <code>_Stop_state_ref</code> 类型的成员, 而这个 <code>_Stop_state_ref</code> 则是一个引用计数型的 pointer wrapper, 类似 <code>shared_ptr</code>. 其内部持有的 <code>_Stop_state_t</code> 类型的指针指向的是真正的 stop request state. 从这里可以看出是这个 <code>_Stop_state_t</code> 指针将 <code>stop_token</code> 和 <code>stop_source</code> 关联起来的, 即它们都间接通过 <code>_Stop_state_ref</code> 指向同一个堆上的 <code>_Stop_state_t</code>.</p>
+<p><code>stop_callback</code> 则是一个 RAII 类, 在构造函数中它将可调用对象即 callback 注册到 <code>_Stop_state_t</code>, 并在析构函数中注销. 且注册和注销的实现则是在 <code>_Stop_state_t</code> 中持有一个双向链表的头节点, 双向链表的节点元素则是包装为 <code>_Stop_cb</code> 的 callback 本体, 这样就可以在 <code>stop request</code> 时执行所有的 callback. 同时标准保证所有的 callback 的执行是同步的.</p>
+<img data-src="/Modern-C-Concurrency-Utilities-01-thread/stop_token.png" class="">
+<h2 id="references"><a class="markdownIt-Anchor" href="#references"></a> References</h2>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/thread">Concurrency support library (since C++11) - cppreference.com</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/42924503/when-should-you-use-stdthreadjoinable">c++ - When should you use std:🧵:joinable? - Stack Overflow</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/62325679/what-is-stdjthread-in-c20">c++ - What is std::jthread in c++20? - Stack Overflow</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="zhuwenq 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="zhuwenq 支付宝">
+        <span>支付宝</span>
+      </div>
+      <div>
+        <img src="/images/paypal.svg" alt="zhuwenq PayPal">
+        <span>PayPal</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>zhuwenq
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-01-thread/" title="Modern C++ Concurrency Utilities 01: thread">https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-01-thread/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C++</a>
+              <a href="/tags/Concurrency/" rel="tag"># Concurrency</a>
+              <a href="/tags/thread/" rel="tag"># thread</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/C-storage-duration-and-specifiers/" rel="prev" title="C++ storage duration and specifiers">
+                  <i class="fa fa-chevron-left"></i> C++ storage duration and specifiers
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhuwenq</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">270k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">4:05</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.11/pdfobject.min.js","integrity":"sha256-N6JtCNwaYm6kizuG92UtOOXamRHPwu+V1yF10g3bu/c="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.css" integrity="sha256-hLTCMFlKxdNgPXyWlSSxYN0ykJmxxq9Yt3MNfdRGWeA=" crossorigin="anonymous">
+  <script class="next-config" data-name="katex" type="application/json">{"copy_tex_js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/contrib/copy-tex.min.js","integrity":"sha256-Us54+rSGDSTvIhKKUs4kygE2ipA0RXpWWh0/zLqw3bs="}}</script>
+  <script src="/js/third-party/math/katex.js"></script>
+
+
+<script class="next-config" data-name="exif" type="application/json">"{FocalLength}mm f/{FNumber} {ExposureTime}s. zhuwenq © 2023"</script>
+<script src="https://fastly.jsdelivr.net/npm/exif-js@2/exif.min.js"></script>
+<script src="/lib/exif.js"></script><script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"Leonezz/blog_comment","issue_term":"pathname","theme":"github-light"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

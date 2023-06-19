@@ -3226,6 +3226,65 @@ c-4-3.333-8.333-7.667-13 -13l-13-13l77-155 77-156c66 199.333 139 419.667
       </tags>
   </entry>
   <entry>
+    <title>Modern C++ Concurrency Utilities 01: thread</title>
+    <url>/Modern-C-Concurrency-Utilities-01-thread/</url>
+    <content><![CDATA[<p>C++ 11 及之后的版本中提供了一系列并发编程的工具和对并发控制原语的抽象封装, 如 <code>thread</code>, <code>atomic</code>, <code>mutex</code>, <code>condition_varible</code> 等. 本文介绍 <code>thread</code> 以及 <code>jthread</code> 的基本语义和功能, 它们在实际场景中的 best practice 和与之密切相关的编程模式不在本文讨论范围之内.</p>
+<span id="more"></span>
+<h2 id="thread"><a class="markdownIt-Anchor" href="#thread"></a> Thread</h2>
+<p>线程提供一种允许多个过程并发执行的方式, C++ 中的 <code>thread</code> 则是提供一组平台无关的接口, 为用户屏蔽了不同操作系统所提供的线程 API 的差异. 在 linux 操作系统上, 使用 <code>thread</code> 的程序编译时往往需要 <code>-lpthread</code> 选项以显式链接 pthread (POSIX thread) 库.</p>
+<h3 id="thread-2"><a class="markdownIt-Anchor" href="#thread-2"></a> <code>thread</code></h3>
+<p>C++ 11 中提供的 <code>thread</code> 类接受一个可调用对象和参数作为构造参数, 并且 <code>thread</code> 对象在构造完成后立刻开始执行 (将线程标记为 <code>ready</code> 状态等待操作系统调度).</p>
+<p>传入 <code>thread</code> 构造函数的可调用对象的返回值会被忽略, 并且如果该可调用对象异常终止, 该线程会调用 <code>std::terminate</code>, 导致进程终止. 因此不应该依赖返回值或异常实现多线程之间的同步和通信, 可以使用 <code>std::promise</code> 或 <em>同步</em> 的共享变量.</p>
+<p>C++ 11 中为 <code>thread</code> 对象提供的控制操作极少, 只有 <code>join</code> 和 <code>detach</code> 两种:</p>
+<ol>
+<li><code>join</code>: 阻塞 <em>当前</em> 线程, 等待调用 <code>join</code> 函数的那个 <code>thread</code> 对象结束执行</li>
+<li><code>detach</code>: 将调用 <code>detach</code> 函数的线程与 <em>当前</em> 线程剥离并独立执行, 当前线程不再拥有该 <code>detach</code> 对象.</li>
+</ol>
+<p>值得注意的是, <code>thread</code> 还提供了 <code>joinable</code> 操作, 用于检查一个 <code>thread</code> 对象是否可以调用 <code>join</code> 函数. 这个检查的意义在于, 对于 thread_id 与当前线程相同的 <code>thread</code> 对象, 一旦调用 <code>join</code>, 该线程就会一直阻塞: <code>join</code> 的语义是阻塞直到调用者执行结束, 而执行者又恰好正是这个被阻塞的线程, 那么它将永远无法醒来. 幸而在 C++ 中我们无法对 <code>joinable()</code> 返回 <code>false</code> 的 <code>thread</code> 对象调用 <code>join</code>, 否则将有多少死锁的线程出现.</p>
+<p><code>joinable</code> 函数的实现其实非常简单, 就是判断当前线程和调用该函数的那个对象的 id 是否相同: <code>this-&gt;get_id() != std::thread::id()</code>.</p>
+<h3 id="jthread"><a class="markdownIt-Anchor" href="#jthread"></a> <code>jthread</code></h3>
+<p><code>jthread</code> 是 C++ 20 引入的新线程类, 它的功能和 <code>thread</code> 一致, 并非更高级的线程, 只是对 <code>thread</code> API 不合理的设计提供一个 wrapper.</p>
+<p>与 <code>thread</code> 相同, <code>jthread</code> 也提供了相同语义的 <code>join</code> 和 <code>detach</code> 函数. 不同的是, 对于一个 <code>thread</code> 对象, 如果你在它析构之前没有调用 <code>join</code> 或 <code>detach</code> 函数, 那么它就会在析构函数调用 <code>terminate</code> 终止整个进程, 这带来很多不便:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">~<span class="built_in">thread</span>() &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">joinable</span>())</span><br><span class="line">    std::<span class="built_in">terminate</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而 <code>jthread</code> 则会在析构函数中请求终止该线程并自动 <code>join</code>:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">~<span class="built_in">jthread</span>() &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">joinable</span>()) &#123;</span><br><span class="line">      <span class="built_in">request_stop</span>();</span><br><span class="line">      <span class="built_in">join</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同时 <code>jthread</code> 还提供了一个显式终止线程执行的机制, 即 <code>std::stop_source</code> 和 <code>std::stop_token</code>. 每个 <code>jthread</code> 对象都持有一个 <code>std::stop_source</code>, 它代表一个共享的终止状态. 在线程开始执行时, <code>jthread</code> 会将该共享状态传入可调用对象作为第一个参数, 这就要求可调用对象的接口接受一个 <code>std::stop_token</code> 作为第一个参数. 当外部线程对 <code>jthread</code> 对象 <code>request_stop</code> 时, 实际上就是在尝试设置 <code>jthread</code> 内部的 <code>std::stop_source</code> 状态.</p>
+<p>需要注意的是, 设置了 <code>std::stop_token</code> 并不代表真的可以停止线程执行, 真正的线程停止逻辑还需要在用户代码显式地设计. 例如下面的例子:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(std::stop_token stop_token, <span class="type">int</span> value)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">while</span> (!stop_token.<span class="built_in">stop_requested</span>()) &#123;</span><br><span class="line">    std::cout &lt;&lt; value++ &lt;&lt; <span class="string">&#x27; &#x27;</span> &lt;&lt; std::flush;</span><br><span class="line">    std::this_thread::<span class="built_in">sleep_for</span>(<span class="number">200</span>ms);</span><br><span class="line">  &#125;</span><br><span class="line">  std::cout &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="function">std::jthread <span class="title">thread</span><span class="params">(f, <span class="number">5</span>)</span></span>;  <span class="comment">// prints 5 6 7 8... for approximately 3 seconds</span></span><br><span class="line">  std::this_thread::<span class="built_in">sleep_for</span>(<span class="number">3</span>s);</span><br><span class="line">  <span class="comment">// The destructor of jthread calls request_stop() and join().</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果没有 <code>std::this_thread::sleep_for(3s)</code>, 那么 <code>jtherad</code> 对象会在析构时自动 <code>request_stop</code>, 使得函数 <code>f</code> 及时停止, 最终可能一个数字也不会输出.</p>
+<h3 id="其他功能"><a class="markdownIt-Anchor" href="#其他功能"></a> 其他功能</h3>
+<ol>
+<li><code>yield</code>: 让出 CPU, 等待下次调度. 显然地, 在某些情况下 (如当前线程是唯一线程), 该函数没有效果.</li>
+<li><code>get_id</code>: 获取线程 id</li>
+<li><code>sleep_for</code>: 睡眠 (阻塞) 一段时间, 由于调度策略该时间可能比传入的时间稍长</li>
+<li><code>sleep_until</code>: 睡眠 (阻塞) 直到给定的时间点, 时间点并 <em>不</em> 会被精确遵守</li>
+</ol>
+<p>C++ 20 中为线程终止所提供的三个工具:</p>
+<ol>
+<li><code>stop_token</code>: 用于查询是否有 <code>stop_request</code> 被发起的接口</li>
+<li><code>stop_source</code>: 用于表示 <code>stop_request</code> 的请求情况</li>
+<li><code>stop_callback</code>: 用于为线程终止注册 callback 的接口</li>
+</ol>
+<p>这三个类的实现和关系比较简单. 首先 <code>stop_token</code> 和 <code>stop_source</code> 中都持有 <code>_Stop_state_ref</code> 类型的成员, 而这个 <code>_Stop_state_ref</code> 则是一个引用计数型的 pointer wrapper, 类似 <code>shared_ptr</code>. 其内部持有的 <code>_Stop_state_t</code> 类型的指针指向的是真正的 stop request state. 从这里可以看出是这个 <code>_Stop_state_t</code> 指针将 <code>stop_token</code> 和 <code>stop_source</code> 关联起来的, 即它们都间接通过 <code>_Stop_state_ref</code> 指向同一个堆上的 <code>_Stop_state_t</code>.</p>
+<p><code>stop_callback</code> 则是一个 RAII 类, 在构造函数中它将可调用对象即 callback 注册到 <code>_Stop_state_t</code>, 并在析构函数中注销. 且注册和注销的实现则是在 <code>_Stop_state_t</code> 中持有一个双向链表的头节点, 双向链表的节点元素则是包装为 <code>_Stop_cb</code> 的 callback 本体, 这样就可以在 <code>stop request</code> 时执行所有的 callback. 同时标准保证所有的 callback 的执行是同步的.</p>
+<img data-src="/Modern-C-Concurrency-Utilities-01-thread/stop_token.png" class="">
+<h2 id="references"><a class="markdownIt-Anchor" href="#references"></a> References</h2>
+<ol>
+<li><a href="https://en.cppreference.com/w/cpp/thread">Concurrency support library (since C++11) - cppreference.com</a></li>
+<li><a href="https://stackoverflow.com/questions/42924503/when-should-you-use-stdthreadjoinable">c++ - When should you use std:🧵:joinable? - Stack Overflow</a></li>
+<li><a href="https://stackoverflow.com/questions/62325679/what-is-stdjthread-in-c20">c++ - What is std::jthread in c++20? - Stack Overflow</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>知识类</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>Concurrency</tag>
+        <tag>thread</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Pretrain, Prompt, and Predict: A Systematic Survey of Prompting Methods in Natural Language Processing</title>
     <url>/Pre-train-Prompt-and-Predict/</url>
     <content><![CDATA[<p>刘鹏飞博士著 Prompt 范式综述</p>
