@@ -28,7 +28,7 @@ C++ 11 中提供的 `thread` 类接受一个可调用对象和参数作为构造
 
 C++ 11 中为 `thread` 对象提供的控制操作极少, 只有 `join` 和 `detach` 两种:
 1. `join`: 阻塞 _当前_ 线程, 等待调用 `join` 函数的那个 `thread` 对象结束执行
-2. `detach`: 将调用 `detach` 函数的线程与 _当前_ 线程剥离并独立执行, 当前线程不再拥有该 `detach` 对象.
+2. `detach`: 将调用 `detach` 函数的线程与 _当前_ 线程剥离并独立执行, 当前线程不再拥有该 `thread` 对象.
 
 值得注意的是, `thread` 还提供了 `joinable` 操作, 用于检查一个 `thread` 对象是否可以调用 `join` 函数. 这个检查的意义在于, 对于 thread_id 与当前线程相同的 `thread` 对象, 一旦调用 `join`, 该线程就会一直阻塞: `join` 的语义是阻塞直到调用者执行结束, 而执行者又恰好正是这个被阻塞的线程, 那么它将永远无法醒来. 幸而在 C++ 中我们无法对 `joinable()` 返回 `false` 的 `thread` 对象调用 `join`, 否则将有多少死锁的线程出现.
 
@@ -78,7 +78,7 @@ int main() {
 }
 ```
 
-如果没有 `std::this_thread::sleep_for(3s)`, 那么 `jtherad` 对象会在析构时自动 `request_stop`, 使得函数 `f` 及时停止, 最终可能一个数字也不会输出.
+如果没有 `std::this_thread::sleep_for(3s)`, 那么 `jtherad` 对象会在析构时自动 `request_stop`, 使得函数 `f` 及时停止, 最终可能一个数字也不会输出. 而这一行为是由于 `f` 函数中显式地以 `stop_token` 参数的状态作为循环条件实现的.
 
 ### 其他功能
 
@@ -92,9 +92,9 @@ C++ 20 中为线程终止所提供的三个工具:
 2. `stop_source`: 用于表示 `stop_request` 的请求情况
 3. `stop_callback`: 用于为线程终止注册 callback 的接口
 
-这三个类的实现和关系比较简单. 首先 `stop_token` 和 `stop_source` 中都持有 `_Stop_state_ref` 类型的成员, 而这个 `_Stop_state_ref` 则是一个引用计数型的 pointer wrapper, 类似 `shared_ptr`. 其内部持有的 `_Stop_state_t` 类型的指针指向的是真正的 stop request state. 从这里可以看出是这个 `_Stop_state_t` 指针将 `stop_token` 和 `stop_source` 关联起来的, 即它们都间接通过 `_Stop_state_ref` 指向同一个堆上的 `_Stop_state_t`.
+这三个类的实现和关系比较简单. 首先 `stop_token` 和 `stop_source` 中都持有 `_Stop_state_ref` 类型的成员, 而这个 `_Stop_state_ref` 则是一个引用计数型的 pointer wrapper, 类似 `shared_ptr`. 其内部持有的 `_Stop_state_t` 类型的指针指向的是真正的 stop request state. 从这里可以看出是这个 `_Stop_state_t` 指针将 `stop_token` 和 `stop_source` 关联起来的, 即它们都间接通过 `_Stop_state_ref` 指向同一个位于堆上的 `_Stop_state_t`.
 
-`stop_callback` 则是一个 RAII 类, 在构造函数中它将可调用对象即 callback 注册到 `_Stop_state_t`, 并在析构函数中注销. 且注册和注销的实现则是在 `_Stop_state_t` 中持有一个双向链表的头节点, 双向链表的节点元素则是包装为 `_Stop_cb` 的 callback 本体, 这样就可以在注册时插入节点, 注销时删除节点, `stop request` 时执行链表中所有的节点. 同时标准保证所有的 callback 的执行是同步的.
+`stop_callback` 则是一个 RAII 类, 在构造函数中它将可调用对象即 callback 注册到 `_Stop_state_t`, 并在析构函数中注销. 且注册和注销的实现则是在 `_Stop_state_t` 中持有一个双向链表的头节点, 双向链表的节点元素则是包装为 `_Stop_cb` 的 callback 本体, 这样就可以在注册时插入节点, 注销时删除节点, `stop request` 时执行链表中所有的节点. 同时标准保证所有节点的执行是同步的.
 
 ![](Modern-C-Concurrency-Utilities-01-thread/stop_token.png)
 
