@@ -4,7 +4,11 @@ comment: true
 math: true
 date: 2023-04-02 19:13:52
 update: 2023-04-02 19:13:52
-tags: ["Compute System", "CS:APP"]
+tags:
+    - Compute System
+    - CS:APP
+    - C++
+    - Linkage
 categories: 知识类
 ---
 

@@ -4,7 +4,9 @@ comment: true
 math: true
 date: 2022-11-14 16:38:26
 update: 2022-11-14 16:38:26
-tags: C++ Template
+tags:
+    - C++ Template
+    - C++
 categories: 知识类
 ---
 

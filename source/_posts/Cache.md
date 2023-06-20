@@ -4,7 +4,10 @@ comment: true
 math: true
 date: 2023-03-15 22:45:25
 update: 2023-03-15 22:45:25
-tags: ["Compute System", "CS:APP"]
+tags: 
+    - Compute System
+    - CS:APP
+    - CPU Cache
 categories: 知识类
 ---
 
