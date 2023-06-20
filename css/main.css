@@ -2897,7 +2897,7 @@ header.header {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #5efe29;
+  background: #03ff38;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
@@ -2962,12 +2962,7 @@ header.header {
   font-style: italic;
   margin: 0 1em;
 }
-li code,
-h1 code,
-h2 code,
-h3 code,
-h4 code,
-p code {
+code {
   color: #c71585;
   background: #fffafa;
   margin: 2px;

@@ -614,6 +614,7 @@ M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">�
       </categories>
       <tags>
         <tag>C++ Template</tag>
+        <tag>C++</tag>
       </tags>
   </entry>
   <entry>
@@ -964,6 +965,7 @@ M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">�
       </categories>
       <tags>
         <tag>C++ Template</tag>
+        <tag>C++</tag>
       </tags>
   </entry>
   <entry>
@@ -992,6 +994,7 @@ M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">�
       </categories>
       <tags>
         <tag>C++ Template</tag>
+        <tag>C++</tag>
       </tags>
   </entry>
   <entry>
@@ -1155,6 +1158,7 @@ M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">�
       </categories>
       <tags>
         <tag>C++ Template</tag>
+        <tag>C++</tag>
       </tags>
   </entry>
   <entry>
@@ -1217,6 +1221,7 @@ C++ 14 中引入的泛型 <code>lambda</code> 表达式例如: <figure class="hi
       </categories>
       <tags>
         <tag>C++ Template</tag>
+        <tag>C++</tag>
       </tags>
   </entry>
   <entry>
@@ -1987,6 +1992,7 @@ C++ 14 中引入的泛型 <code>lambda</code> 表达式例如: <figure class="hi
       <tags>
         <tag>CS:APP</tag>
         <tag>Compute System</tag>
+        <tag>CPU Cache</tag>
       </tags>
   </entry>
   <entry>
@@ -3221,8 +3227,10 @@ c-4-3.333-8.333-7.667-13 -13l-13-13l77-155 77-156c66 199.333 139 419.667
         <category>知识类</category>
       </categories>
       <tags>
+        <tag>C++</tag>
         <tag>CS:APP</tag>
         <tag>Compute System</tag>
+        <tag>Linkage</tag>
       </tags>
   </entry>
   <entry>
@@ -5238,6 +5246,8 @@ int leftmost_one(unsigned x);<br />
       </categories>
       <tags>
         <tag>C++</tag>
+        <tag>CPU Cache</tag>
+        <tag>Concurrency</tag>
         <tag>Memory Order</tag>
       </tags>
   </entry>
