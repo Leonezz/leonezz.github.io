@@ -1,5 +1,5 @@
 ---
-title: 'Modern C++ Concurrency Utilities 03: Mutex and Lock'
+title: 'Modern C++ Concurrency Utilities 04: Mutex and Lock'
 comment: true
 math: true
 date: 2023-06-21 21:59:51
