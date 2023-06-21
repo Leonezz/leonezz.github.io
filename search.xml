@@ -3335,6 +3335,7 @@ c-4-3.333-8.333-7.667-13 -13l-13-13l77-155 77-156c66 199.333 139 419.667
     <title>Modern C++ Concurrency Utilities 03: Mutex and Lock</title>
     <url>/Modern-C-Concurrency-Utilities-03-Mutex-and-Lock/</url>
     <content><![CDATA[<p><code>mutex</code> 即 mutual exclusion, 表示一种互斥语义. 所谓互斥, 实际上是指所有权的唯一性, 即同一时刻一个互斥量只能由一个所有者持有. 在并发语境中, 互斥量这一原语的所有者一般是「线程」, 它的作用是用于阻止多个线程同时访问共享的资源, 从而避免 data race 并为多个线程的执行提供实现「同步」的机制.</p>
+<span id="more"></span>
 <h2 id="stdmutex"><a class="markdownIt-Anchor" href="#stdmutex"></a> <code>std::mutex</code></h2>
 <p>标准库中的 <code>std::mutex</code> 类提供基本的互斥量原语, 表示不可重入 (non-recursive) 的互斥语义. 它提供基本的 <code>lock</code>, <code>try_lock</code>, <code>unlock</code> 等方法:</p>
 <ul>
