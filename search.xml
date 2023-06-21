@@ -3293,8 +3293,8 @@ c-4-3.333-8.333-7.667-13 -13l-13-13l77-155 77-156c66 199.333 139 419.667
       </tags>
   </entry>
   <entry>
-    <title>Modern C++ Concurrency Utilities 02: Cache Size</title>
-    <url>/Modern-C-Concurrency-Utilities-02-Cache-Size/</url>
+    <title>Modern C++ Concurrency Utilities 02: CPU Cache and false sharing</title>
+    <url>/Modern-C-Concurrency-Utilities-02-CPU-Cache-and-false-sharing/</url>
     <content><![CDATA[<p>C++ 17 提供了两个编译时常量, 用于表示 CPU Cache 的一些参数. 合理使用这两个编译时常量可以避免在多级 Cache 结构的计算机上并发程序频繁访问同一个对象不同成员时可能发生的 <strong>伪共享 (false sharing)</strong> 问题.</p>
 <span id="more"></span>
 <p>这两个编译时常量是:</p>
@@ -3302,7 +3302,7 @@ c-4-3.333-8.333-7.667-13 -13l-13-13l77-155 77-156c66 199.333 139 419.667
 <h3 id="false-sharing"><a class="markdownIt-Anchor" href="#false-sharing"></a> False sharing</h3>
 <p>首先说一说什么是伪共享. 在 <a href="/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B">内存屏障和-C-内存模型</a> 中我们知道现代 CPU 的 Cache 是多级层次的, 不同的 CPU Core 可能持有独立的 Cache, 这种结构很有可能出现 Cache 不一致问题. 那么多个 Core 同时读写同一个内存位置时就是一种 data race. MESI 协议通过为 Cache line 引入四种状态并在需要时广播消息解决了缓存一致性的问题. 具体地说, 当 Core A 和 Core B 的独立 Cache 中都持有字节 C 的缓存时, 如果 Core A 写入字节 C 的同时 Core B 也要访问字节 C, 那么 Core B 必须先 invalidate 字节 C 所在的 Cache line, 并重新从下一级 Cache 中加载包含字节 C 的 Cache line (细节参考: <a href="/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B">内存屏障和-C-内存模型</a>).</p>
 <p>值得注意的是, Cache 的最小操作单元是 Cache line, 而一个 Cache line 通常包含几十上百个字节. 那么考虑一种情况: Core A 和 Core B 并发访问 (读写) 字节 C 和字节 C 的相邻字节 D 时, 会发生什么? 答案显而易见, 相邻字节 C 和 D 极有可能被分配到同一个 Cache line (细节参考 <a href="/Cache">Cache</a>), 这就造成明明并行程序没有访问同一个内存位置, 也就是并不存在 data race, 但 Core A 和 Core B 的 Cache 却需要频繁地 invalidate 整个 Cache line 并重新加载, 结果就是程序执行效率的下降. 这就是 <strong>false sharing</strong> 的情况. Scott Meyers 关于 CPU Cache 的一次 talk 中提到一个很好的例子, 说明了 false sharing 问题对多线程并行程序 scalability 的影响. 详情参考: <a href="https://www.aristeia.com/TalkNotes/codedive-CPUCachesHandouts.pdf">https://www.aristeia.com/TalkNotes/codedive-CPUCachesHandouts.pdf</a></p>
-<img data-src="/Modern-C-Concurrency-Utilities-02-Cache-Size/false_sharing.png" class="" title="False sharing. Image from: Scott Meyers-Cpu Caches and Why You Care">
+
 <h3 id="how-to-avoid"><a class="markdownIt-Anchor" href="#how-to-avoid"></a> How to avoid</h3>
 <p>false sharing 的避免手段主要是将可能在不同 Core 中并发访问的数据布局成合适的距离, 使得它们不可能被塞到同一个 Cache line. 例如对于如下的结构:</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">ConcurrentStruct</span> &#123;</span><br><span class="line">    <span class="type">int</span> threadA_val&#123;&#125;;</span><br><span class="line">    <span class="type">int</span> threadB_val&#123;&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
