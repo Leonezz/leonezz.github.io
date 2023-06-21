@@ -3332,6 +3332,101 @@ c-4-3.333-8.333-7.667-13 -13l-13-13l77-155 77-156c66 199.333 139 419.667
       </tags>
   </entry>
   <entry>
+    <title>Modern C++ Concurrency Utilities 03: atomic</title>
+    <url>/Modern-C-Concurrency-Utilities-03-atomic/</url>
+    <content><![CDATA[<p>Atomic 提供了开发高性能无锁 (lock free) 结构的工具和接口, 对于内置类型或自定义类型, 也可以通过 <code>atomic&lt;&gt;</code> 模板包装成支持原子操作的类型, 以实现并发安全.</p>
+<span id="more"></span>
+<h3 id="atomic"><a class="markdownIt-Anchor" href="#atomic"></a> <code>atomic</code></h3>
+<p>引用 <a href="https://en.cppreference.com/w/cpp/atomic/atomic">cppreference</a> 的说法: <code>std::atomic</code> 模板的每个实例化和全特化都定义了一个原子类型. 如果一个线程写入一个原子对象的同时另一个线程读取这个原子对象, 其行为是明确定义的. 并且, 对原子对象的访问可能会建立线程间的同步关系, 并将对非原子内存的访问排序为传入的 <code>std::memory_order</code> 参数所定义的顺序. (<code>memory_order</code> 详见 <a href="./%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B">内存屏障和-C-内存模型</a> )</p>
+<blockquote class="blockquote-center">
+<p>Each instantiation and full specialization of the <code>std::atomic</code> template defines an atomic type. If one thread writes to an atomic object while another thread reads from it, the behavior is well-defined (see memory model for details on data races).</p>
+<p>In addition, accesses to atomic objects may establish inter-thread synchronization and order non-atomic memory accesses as specified by <code>std::memory_order</code>.</p>
+
+</blockquote>
+<p>按照这个描述, 对于任意的自定义类型 (需要 <a href="https://en.cppreference.com/w/cpp/named_req/CopyConstructible">CopyConstructible</a> and <a href="https://en.cppreference.com/w/cpp/named_req/CopyAssignable">CopyAssignable</a>), 只要给它套上 <code>std::atomic</code> 这个 wrapper, 就可以定义一个原子的该对象. 但需要注意的是, 原子并不意味着 lock free. C++ 会在模板实例化时决定传入的自定义类型是否可以实现 lock free 的原子操作, 如果不能, 那么其内部仍然是通过 <code>mutex</code> 等有锁结构实现原子操作.</p>
+<p>C++ 11 中为指针类型提供了偏特化, 为 bool 类型和 <strong>所有</strong> 的整形类型都提供了 <code>atomic</code> 模板的全特化, 它们中应该多数都是 lock free 的.</p>
+<p>C++ 20 则进一步为浮点类型提供了全特化以及为 <code>std::shared_ptr&lt;U&gt;</code> 和 <code>std::weak_ptr&lt;U&gt;</code> 提供了偏特化, 而是否 lock free 则取决于 <code>U</code> 的类型. 细节参考: <a href="https://en.cppreference.com/w/cpp/atomic/atomic">std::atomic - cppreference.com</a></p>
+<p>对于任意的 <code>atomic</code> 模板实例化或全特化, 其都会提供以下操作:</p>
+<ul>
+<li>
+<p><code>is_lock_free</code>: 检查 <code>atomic</code> 对象是否是 lock free 的, C++ 保证 <code>std::atomic_flag</code> 一定是 lock free 的, 对于其他类型在不同平台上可能有不同实现.</p>
+</li>
+<li>
+<p><code>store</code>: <strong>原子地</strong> 为 <code>atomic</code> 对象赋值, 可以指定 <code>memory_order</code></p>
+</li>
+<li>
+<p><code>load</code>: <strong>原子地</strong> 读取 <code>atomic</code> 对象的值, 可以指定 <code>memory_order</code></p>
+</li>
+<li>
+<p><code>exchange</code>: <strong>原子地</strong> 为 <code>atomic</code> 对象赋值并读取它原先的值, 是 RMW (Read Modify Write) 操作.</p>
+</li>
+<li>
+<p><code>compare_exchange_weak</code> and <code>compare_exchange_strong</code>: <strong>原子地</strong> 加载并 <strong>bit wise</strong> 比较 <code>atomic</code> 对象的值和 <code>expected</code> 参数值</p>
+<ul>
+<li>如果它们不相等, 则把 <code>atomic</code> 对象的值赋给 <code>expected</code> 参数(<code>expected</code> 是个引用), 并返回 <code>false</code>.</li>
+<li>如果它们相等, 则把 <code>desired</code> 参数值赋给 <code>atomic</code> 对象.</li>
+</ul>
+<p>值得注意的是, weak 版本和 strong 版本有如下差异:</p>
+<ol>
+<li>weak 版本可能会 <strong>伪失败 (fail spuriously)</strong>, 也就是说, 即使 <code>atomic</code> 对象的值和 <code>expected</code> 相等, 函数也可能产生它们不相等时的行为 (赋值 <code>expected</code> 并返回 <code>false</code>), 而 strong 版本不会.</li>
+<li>当在循环中使用 <code>CAS</code> 时, weak 版本会有更好的性能:</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(atomic.<span class="built_in">compare_and_exchange</span>(expected, desired))</span><br><span class="line">  ;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>对于一些值相同但位表示可能不同, 即多个位表示对应同一个值的类型 (如, 浮点数的 NaN 有多个位表示, 一些维护了内部状态但这些内部状态不决定对象的值的类), 通常使用 weak 版本更有效, 因为通常对于这些类的 CAS 操作都需要循环以使之收敛到稳定的位表示.</li>
+<li>如果可以使用 strong 版本的 CAS 并且不需要循环时, strong 版本更加高效.</li>
+</ol>
+</li>
+</ul>
+<p>C++ 20 为 <code>atomic</code> 对象引入了三个主动式的线程同步操作:</p>
+<ul>
+<li>
+<p><code>wait</code>: 阻塞当前线程, 直到:</p>
+<ol>
+<li>相同的 <code>atomic</code> 对象调用了 <code>notify</code> 函数</li>
+<li><code>atomic</code> 对象的值与传入的参数值 <code>old</code> 不同.</li>
+</ol>
+<p><code>wait</code> 方法用于多线程并发编程时实现线程对原子变量值的变化监测, 需要注意的是其中的比较是 bit wise 比较.</p>
+</li>
+<li>
+<p><code>notify_one</code>: 如果存在因在当前 <code>atomic</code> 对象上调用 <code>wait</code> 函数而阻塞的线程, 那么就唤醒 <strong>至少一个</strong> 这样的线程, 如果不存在这样的线程该函数无效果.</p>
+</li>
+<li>
+<p><code>notify_all</code>: 唤醒所有因在当前 <code>atomic</code> 对象上调用 <code>wait</code> 函数而阻塞的线程.</p>
+</li>
+</ul>
+<p>对于标准库内置的特化版本, <code>atomic</code> 还提供了一系列 <code>read</code>, <code>write</code>, <code>RMW</code> 操作, 包括算术和逻辑操作. 另外 <code>atomic</code> 所有的成员函数都有对应的非成员函数模板, 可以为非 <code>atomic</code> 类型重载出对应的操作. 详见: <a href="https://en.cppreference.com/w/cpp/atomic">cppreference.com</a>.</p>
+<h3 id="atomic_ref"><a class="markdownIt-Anchor" href="#atomic_ref"></a> <code>atomic_ref</code></h3>
+<p>C++ 20 中引入了一个新的原子类, 它的语义是对一个非原子对象的「引用」, 特殊之处在于通过该「引用」进行的操作都是原子的!</p>
+<p>这意味着 <code>atomic_ref</code> 相当于在已有的非原子对象上施加了一个支持原子操作的接口, 而并非一个逻辑上独立的新对象. 当我们在程序中仅在一部分地方需要对变量施加原子操作时, <code>atomic_ref</code> 十分有用: 如果使用 <code>atomic</code>, 那么对其的访问在整个程序中都必然是原子性的.</p>
+<p>换一个角度理解 <code>atomic_ref</code>: 它相当于为「原子对象」提供了引用语义. C++ 11 中的 <code>atomic</code> 对象是值语义的, 它的构造函数接受一个非原子对象的「值」，并且在内部维护该值. 后续对该原子变量的操作实际上都是在操作原子对象本身. 而 <code>atomic_ref</code> 则不然, 它相当于并不拥有背后的非原子对象, 而只是持有对其的一个引用, 特殊之处仅在于这个引用上的操作都是原子的.</p>
+<p>以下面的程序为例说明上述概念:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// In sequential_fun, there are no concurrent running,</span></span><br><span class="line"><span class="comment">// no data races, therefore no need for atomic operation</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">sequential_fun</span><span class="params">(<span class="type">int</span>&amp; cnt)</span> </span>&#123;</span><br><span class="line">    ++atomic;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// concurrent_fun will be running in multiple threads,</span></span><br><span class="line"><span class="comment">// potentially multiple cores.</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">concurrent_fun</span><span class="params">(<span class="type">int</span>&amp; cnt)</span> </span>&#123;</span><br><span class="line">    std::atomic&lt;<span class="type">int</span>&gt; atomic_cnt&#123;cnt&#125;; <span class="comment">// an atomic int with the same value as cnt</span></span><br><span class="line">    ++atomic_cnt; <span class="comment">// not as expected: the increament should be performed to the reference parameter</span></span><br><span class="line">    <span class="comment">// unless do this:</span></span><br><span class="line">    <span class="comment">// cnt = atomic_cnt;</span></span><br><span class="line">    <span class="comment">// but it is non-atomic and what if the parameter is a large object</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的程序中, 我们仅在函数 <code>concurrent_fun</code> 中需要原子操作, 并且原子操作的结果是通过引用传递的. 此时 <code>atomic</code> 的值语义就较为麻烦, 无法安全高效地实现对引用的修改. 而 <code>atomic_ref</code> 可以胜任这种情况:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">concurrent_fun</span><span class="params">(<span class="type">int</span>&amp; cnt)</span> </span>&#123;</span><br><span class="line">    std::atomic_ref&lt;<span class="type">int</span>&gt; atomic_cnt&#123;cnt&#125;;</span><br><span class="line">    ++cnt; <span class="comment">// ok, increament is performed atomically to cnt</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>除了语义上的区别外, <code>atomic_ref</code> 与 <code>atomic</code> 在形式上区别不大, 都提供了相似的全特化和偏特化已经相似的成员函数. 详情参考: <a href="https://en.cppreference.com/w/cpp/atomic/atomic_ref">std::atomic_ref - cppreference.com</a></p>
+<h3 id="memory_order"><a class="markdownIt-Anchor" href="#memory_order"></a> <code>memory_order</code></h3>
+<p><code>memory_order</code> 是 <code>atomic</code> 相关操作中常见的参数, 它用来控制在原子操作中对内存 (非原子多级缓存结构的内存) 的访问进行排序. 包括内存写入操作执行后对于其他线程的可见性顺序. C++ 中抽象了 5 中 <code>memory_order</code>, 详见 <a href="https://en.cppreference.com/w/cpp/atomic/memory_order">std::memory_order - cppreference.com</a>, 它们是非常重要且复杂的概念, 已经在文章 <a href="./%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B">内存屏障和-C-内存模型</a> 做了初步介绍.</p>
+<h2 id="references"><a class="markdownIt-Anchor" href="#references"></a> References</h2>
+<ol>
+<li><a href="https://en.cppreference.com/w/cpp/atomic/atomic">std::atomic - cppreference.com</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/atomic/atomic_ref">std::atomic_ref - cppreference.com</a></li>
+<li><a href="https://stackoverflow.com/questions/31978324/what-exactly-is-stdatomic">c++ - What exactly is std::atomic? - Stack Overflow</a></li>
+<li><a href="https://blog.devgenius.io/a-simple-guide-to-atomics-in-c-670fc4842c8b">A simple guide to atomics in C++. There’s often confusion around when… | by Josh Weinstein | Dev Genius</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/atomic/atomic_ref">std::atomic_ref - cppreference.com</a></li>
+<li><a href="https://mariusbancila.ro/blog/2020/04/21/cpp20-atomic_ref/">C++20 atomic_ref (mariusbancila.ro)</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>知识类</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>Concurrency</tag>
+        <tag>atomic</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Pretrain, Prompt, and Predict: A Systematic Survey of Prompting Methods in Natural Language Processing</title>
     <url>/Pre-train-Prompt-and-Predict/</url>
     <content><![CDATA[<p>刘鹏飞博士著 Prompt 范式综述</p>
