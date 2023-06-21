@@ -1,5 +1,5 @@
 ---
-title: 'Modern C++ Concurrency Utilities 02: Cache Size'
+title: 'Modern C++ Concurrency Utilities 02: CPU Cache and false sharing'
 comment: true
 math: true
 date: 2023-06-20 16:15:09
