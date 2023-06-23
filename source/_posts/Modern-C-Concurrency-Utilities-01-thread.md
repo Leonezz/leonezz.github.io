@@ -100,6 +100,8 @@ C++ 20 中为线程终止所提供的三个工具:
 
 ## References
 
-1. [Concurrency support library (since C++11) - cppreference.com](https://en.cppreference.com/w/cpp/thread)
-2. [c++ - When should you use std::thread::joinable? - Stack Overflow](https://stackoverflow.com/questions/42924503/when-should-you-use-stdthreadjoinable)
-3. [c++ - What is std::jthread in c++20? - Stack Overflow](https://stackoverflow.com/questions/62325679/what-is-stdjthread-in-c20)
+1. [std::thread - cppreference.com](https://en.cppreference.com/w/cpp/thread/thread)
+2. [std::jthread - cppreference.com](https://en.cppreference.com/w/cpp/thread/jthread)
+3. [std::stop_token - cppreference.com](https://en.cppreference.com/w/cpp/thread/stop_token)
+4. [c++ - When should you use std::thread::joinable? - Stack Overflow](https://stackoverflow.com/questions/42924503/when-should-you-use-stdthreadjoinable)
+5. [c++ - What is std::jthread in c++20? - Stack Overflow](https://stackoverflow.com/questions/62325679/what-is-stdjthread-in-c20)

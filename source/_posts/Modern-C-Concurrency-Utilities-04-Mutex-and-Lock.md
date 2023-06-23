@@ -96,6 +96,11 @@ void call_once(std::once_flag& flag, Callable&& f, Args&&... args);
 ## References
 
 1. [Concurrency support library (since C++11) - cppreference.com](https://en.cppreference.com/w/cpp/thread)
-2. [c++ - std::unique_lock<std::mutex> or std::lock_guard<std::mutex>? - Stack Overflow](https://stackoverflow.com/questions/20516773/stdunique-lockstdmutex-or-stdlock-guardstdmutex)
-3. [c++ - What's the best way to lock multiple std::mutex'es? - Stack Overflow](https://stackoverflow.com/questions/17113619/whats-the-best-way-to-lock-multiple-stdmutexes/17113678#17113678)
-4. [c++ - std::lock_guard or std::scoped_lock? - Stack Overflow](https://stackoverflow.com/questions/43019598/stdlock-guard-or-stdscoped-lock)
+2. [std::mutex - cppreference.com](https://en.cppreference.com/w/cpp/thread/mutex)
+3. [std::lock_guard - cppreference.com](https://en.cppreference.com/w/cpp/thread/lock_guard)
+4. [std::scoped_lock - cppreference.com](https://en.cppreference.com/w/cpp/thread/scoped_lock)
+5. [std::unique_lock - cppreference.com](https://en.cppreference.com/w/cpp/thread/unique_lock)
+6. [std::shared_lock - cppreference.com](https://en.cppreference.com/w/cpp/thread/shared_lock)
+7. [c++ - std::unique_lock<std::mutex> or std::lock_guard<std::mutex>? - Stack Overflow](https://stackoverflow.com/questions/20516773/stdunique-lockstdmutex-or-stdlock-guardstdmutex)
+8. [c++ - What's the best way to lock multiple std::mutex'es? - Stack Overflow](https://stackoverflow.com/questions/17113619/whats-the-best-way-to-lock-multiple-stdmutexes/17113678#17113678)
+9. [c++ - std::lock_guard or std::scoped_lock? - Stack Overflow](https://stackoverflow.com/questions/43019598/stdlock-guard-or-stdscoped-lock)
