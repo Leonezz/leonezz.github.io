@@ -1,5 +1,5 @@
 ---
-title: 'Modern C++ Concurrency Utilities 05: Condition variables and Semaphores'
+title: 'Modern C++ Concurrency Utilities 05: Condition variable, Semaphore and Synchronization'
 comment: true
 math: true
 date: 2023-06-23 23:55:24

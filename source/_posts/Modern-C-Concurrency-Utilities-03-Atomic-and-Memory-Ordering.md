@@ -1,5 +1,5 @@
 ---
-title: 'Modern C++ Concurrency Utilities 03: atomic'
+title: 'Modern C++ Concurrency Utilities 03: Atomic and Memory Order'
 comment: true
 math: true
 date: 2023-06-21 14:29:49

@@ -1,5 +1,5 @@
 ---
-title: 'Modern C++ Concurrency Utilities 01: thread'
+title: 'Modern C++ Concurrency Utilities 01: Thread and Concurrent Execution'
 comment: true
 math: true
 date: 2023-06-19 22:35:31
