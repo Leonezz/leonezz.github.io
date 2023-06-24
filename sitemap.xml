@@ -2,15 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%88/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E5%92%8C%E6%A0%91%E7%9A%84%E8%A1%A8%E7%A4%BA/</loc>
     
     <lastmod>2023-06-24</lastmod>
@@ -83,42 +74,6 @@
   </url>
   
   <url>
-    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E9%97%AE%E9%A2%98/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/</loc>
     
     <lastmod>2023-06-24</lastmod>
@@ -146,25 +101,7 @@
   </url>
   
   <url>
-    <loc>https://blog.zhuwenq.cc/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/%E5%88%A4%E6%96%AD%E6%95%B4%E6%95%B0%E4%BD%8D%E6%A8%A1%E5%BC%8F%E4%B8%AD%E6%98%AF%E5%90%A6%E6%9C%89%E5%81%B6%E6%95%B0%E4%B8%AA1/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/</loc>
+    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%88/</loc>
     
     <lastmod>2023-06-24</lastmod>
     
@@ -218,7 +155,7 @@
   </url>
   
   <url>
-    <loc>https://blog.zhuwenq.cc/Xv6-Operating-system-03-page-table/</loc>
+    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86/</loc>
     
     <lastmod>2023-06-24</lastmod>
     
@@ -227,7 +164,7 @@
   </url>
   
   <url>
-    <loc>https://blog.zhuwenq.cc/hello-world/</loc>
+    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/</loc>
     
     <lastmod>2023-06-24</lastmod>
     
@@ -236,7 +173,16 @@
   </url>
   
   <url>
-    <loc>https://blog.zhuwenq.cc/hello-world_old/</loc>
+    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E9%97%AE%E9%A2%98/</loc>
     
     <lastmod>2023-06-24</lastmod>
     
@@ -281,7 +227,7 @@
   </url>
   
   <url>
-    <loc>https://blog.zhuwenq.cc/Transformer-Feed-Forward-Layers-are-Key-Value-Memories/</loc>
+    <loc>https://blog.zhuwenq.cc/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/</loc>
     
     <lastmod>2023-06-24</lastmod>
     
@@ -290,7 +236,16 @@
   </url>
   
   <url>
-    <loc>https://blog.zhuwenq.cc/Translating-Embeddings-for-Modeling-Multi-relational-Data/</loc>
+    <loc>https://blog.zhuwenq.cc/%E5%88%A4%E6%96%AD%E6%95%B4%E6%95%B0%E4%BD%8D%E6%A8%A1%E5%BC%8F%E4%B8%AD%E6%98%AF%E5%90%A6%E6%9C%89%E5%81%B6%E6%95%B0%E4%B8%AA1/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/</loc>
     
     <lastmod>2023-06-24</lastmod>
     
@@ -309,6 +264,51 @@
   
   <url>
     <loc>https://blog.zhuwenq.cc/XLNet/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/Xv6-Operating-system-03-page-table/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/hello-world/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/hello-world_old/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/Transformer-Feed-Forward-Layers-are-Key-Value-Memories/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/Translating-Embeddings-for-Modeling-Multi-relational-Data/</loc>
     
     <lastmod>2023-06-24</lastmod>
     
@@ -380,6 +380,24 @@
   </url>
   
   <url>
+    <loc>https://blog.zhuwenq.cc/Pre-train-Prompt-and-Predict/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/LayerNormalization/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.zhuwenq.cc/Linkage/</loc>
     
     <lastmod>2023-06-24</lastmod>
@@ -443,33 +461,6 @@
   </url>
   
   <url>
-    <loc>https://blog.zhuwenq.cc/Pre-train-Prompt-and-Predict/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/LayerNormalization/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/Latex-Citation-Style/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.zhuwenq.cc/Knowledge-Aware-Languege-Model-Pretraining/</loc>
     
     <lastmod>2023-06-24</lastmod>
@@ -497,6 +488,33 @@
   </url>
   
   <url>
+    <loc>https://blog.zhuwenq.cc/Latex-Citation-Style/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/K-Adapter-Infusing-Knowledge-into-Pre-Trained-Models-with-Adapters/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/IEEE754%E6%B5%AE%E7%82%B9%E6%95%B0/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.zhuwenq.cc/Improving-Multi-hop-Question-Answering-over-Knowledge-Graphs-using-Knowledge-Base-Embeddings/</loc>
     
     <lastmod>2023-06-24</lastmod>
@@ -515,7 +533,7 @@
   </url>
   
   <url>
-    <loc>https://blog.zhuwenq.cc/K-Adapter-Infusing-Knowledge-into-Pre-Trained-Models-with-Adapters/</loc>
+    <loc>https://blog.zhuwenq.cc/ERNIE-Enhanced-Language-Representation-with-Informative-Entities/</loc>
     
     <lastmod>2023-06-24</lastmod>
     
@@ -533,7 +551,7 @@
   </url>
   
   <url>
-    <loc>https://blog.zhuwenq.cc/IEEE754%E6%B5%AE%E7%82%B9%E6%95%B0/</loc>
+    <loc>https://blog.zhuwenq.cc/Case-Based-Reasoning-for-Natural-Language-Queries-over-Knowledge-Bases/</loc>
     
     <lastmod>2023-06-24</lastmod>
     
@@ -552,15 +570,6 @@
   
   <url>
     <loc>https://blog.zhuwenq.cc/ERICA-Improving-Entity-and-Relation-Understanding-for-Pre-trained-Language-Models-via-Contrastive-Learning/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/ERNIE-Enhanced-Language-Representation-with-Informative-Entities/</loc>
     
     <lastmod>2023-06-24</lastmod>
     
@@ -651,15 +660,6 @@
   
   <url>
     <loc>https://blog.zhuwenq.cc/Cache/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/Case-Based-Reasoning-for-Natural-Language-Queries-over-Knowledge-Bases/</loc>
     
     <lastmod>2023-06-24</lastmod>
     
