@@ -232,9 +232,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2023-06-23 23:55:24 / 修改时间：23:57:24" itemprop="dateCreated datePublished" datetime="2023-06-23T23:55:24+08:00">2023-06-23</time>
+      <time title="创建时间：2023-06-23 23:55:24" itemprop="dateCreated datePublished" datetime="2023-06-23T23:55:24+08:00">2023-06-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-24 14:16:28" itemprop="dateModified" datetime="2023-06-24T14:16:28+08:00">2023-06-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -271,136 +277,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <p>Condition variable 和 Semaphore 是并发编程中用于同步控制和交互的原语. 多个并发线程可以使用 Condition variable 彼此交互, 一些线程可以通过 Condition variable 等待 (wait) 其他线程的通知 (notification). <em>Condition variable 总是和 mutex 关联使用</em>. Semaphore 相比 Condition variable 更加轻量, 它用来限制多个线程对共享资源的并发访问.</p>
-<h2 id="condition_variable"><a class="markdownIt-Anchor" href="#condition_variable"></a> <code>condition_variable</code></h2>
-<p><code>condition_variable</code> 提供了线程间同步的并发原语, 具体地说, 「线程间同步」指类似下面所述的一种情况:</p>
-<ol>
-<li>一些任务分为多个阶段, 可以多线程流水线解决</li>
-<li>位于流水线较后位置的线程必须等待前面的阶段完成后才能执行</li>
-<li>每个阶段的线程完成任务后都会修改一个「共享的条件」, 从而后面的阶段可以从该条件判断前一阶段是否已完成</li>
-</ol>
-<p>上述情况中多个流水线阶段的线程如何在恰当的时机等待并在恰当的时机开始运行即「同步」所需要实现的任务. 注意到要实现这一点那么对共享的状态变量的访问就必须是原子的, 因此 condition variable 通常和 mutex 一起使用.</p>
-<p>条件变量提供了一种按特定「变量」等待和唤醒的结构化的接口. 具体地说, 多个线程可以在同一个 condition variable 上 <code>wait</code>, 这些线程会被以该 condition variable 为线索关联起来. 当其他线程在该 condition variable 上 <code>notify</code> 时, 调度系统就会从以该 condition variable 为线索而关联的那部分线程中取出并唤醒. 这就是 condition variable 所提供的机制.</p>
-<p>这一机制如何同步编程中发挥作用呢? 首先共享的状态需要使用 <code>std::mutex</code> 保护, 其次需要同步的所有线程之间共享同一个 <code>condition_variable</code>.</p>
-<ul>
-<li>需要修改共享状态的线程必须:
-<ol>
-<li>获取 <code>mutex</code> 的所有权</li>
-<li>修改共享的状态变量</li>
-<li>释放 <code>mutex</code> 的所有权</li>
-<li>在 <code>condition_variable</code> 上调用 <code>notify_*</code> 函数. 这一函数会唤醒其他在同一个 <code>condition_variable</code> 上 <code>wait</code> 并阻塞的线程.</li>
-</ol>
-</li>
-<li>需要读取共享状态的线程必须:
-<ol>
-<li>在 <code>mutex</code> 上获取一个 <code>std::unique_lock</code></li>
-<li>执行下面的步骤:
-<ol>
-<li>检查共享状态, 判断其是否满足退出等待的条件 (防止条件已经满足且已经 <code>notify</code>, 只是当前线程错过了), 如果满足就退出等待.</li>
-<li>在 <code>condition_variable</code> 上调用 <code>wait_*</code> 函数, 以 上面获取的 <code>unique_lock</code> 作为参数. 这一操作会释放 <code>unique_lock</code> 并进入阻塞状态, 直到其他线程调用 <code>notify</code>, 或者 timeout (对于 <code>wait_for</code>/<code>wait_until</code>)</li>
-<li>重复上面两步</li>
-</ol>
-</li>
-</ol>
-</li>
-</ul>
-<p><code>condition_variable</code> 提供的操作:</p>
-<ol>
-<li>
-<p><code>notify_one</code>: 唤醒一个正在当前 <code>condition_variable</code> 对象上 <code>wait</code> 的线程</p>
-</li>
-<li>
-<p><code>notify_all</code>: 唤醒所有正在当前 <code>condition_variable</code> 对象上 <code>wait</code> 的线程</p>
-</li>
-<li>
-<p><code>wait</code>: 以一个 <code>unique_lock</code> 的引用为参数, 原子地先 <code>unlock</code>, 然后阻塞该线程 (该线程以某种形式保存在该 <code>condition_variable</code> 内部, 以供 <code>notify</code> 时唤醒). 当被唤醒时, 会重新获取 <code>unique_lock</code> 然后退出.</p>
-<p><code>wait</code> 函数通常与访问共享状态的代码一起使用, 例如:</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(!<span class="built_in">stop_waiting</span>()) <span class="built_in">wait</span>(lock);  </span><br></pre></td></tr></table></figure>
-<p>有一个重载版本支持传入一个可调用对象, 效果等同于上面的代码.</p>
-<p>需要注意的是, 在进入 <code>wait</code> 函数之前, <code>unique_lock</code> 必须是 <strong>已 lock</strong> 状态, 并且在 <code>wait</code> 函数退出后, <code>unique_lock</code> 也会是 <strong>已 lock</strong> 状态.</p>
-</li>
-<li>
-<p><code>wait_for</code>: 相比 <code>wait</code> 增加了等待时间长度的参数</p>
-</li>
-<li>
-<p><code>wait_until</code>: 相比 <code>wait</code> 增加了等待到时间点的参数</p>
-</li>
-</ol>
-<p>下面是一个经典的利用 <code>condition_variable</code> 和 <code>unique_lock</code> 实现同步的例子: 用于「生产者-消费者」模型的同步队列:</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>, <span class="keyword">class</span> <span class="title class_">Cont</span> = std::deque&lt;T&gt;&gt;</span><br><span class="line"><span class="keyword">class</span> SharedQueue &#123;</span><br><span class="line">  std::queue&lt;T, Cont&gt; que&#123;&#125;;</span><br><span class="line">  std::mutex mut&#123;&#125;;</span><br><span class="line">  std::condition_variable cvProducer&#123;&#125;;</span><br><span class="line">  std::condition_variable cvConsumer&#123;&#125;;</span><br><span class="line">  std::<span class="type">size_t</span> capacity&#123;&#125;;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  <span class="function"><span class="type">bool</span> <span class="title">full</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> que.<span class="built_in">size</span>() == capacity; &#125;</span><br><span class="line">  <span class="function"><span class="type">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> que.<span class="built_in">size</span>() == <span class="number">0</span>; &#125;</span><br><span class="line">  </span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="built_in">SharedQueue</span>() : <span class="built_in">capacity</span>(<span class="number">100</span>)&#123;&#125;;</span><br><span class="line">  ~<span class="built_in">SharedQueue</span>() &#123;</span><br><span class="line">    cvConsumer.<span class="built_in">notify_all</span>();</span><br><span class="line">    cvProducer.<span class="built_in">notify_all</span>();</span><br><span class="line">  &#125;;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">template</span> &lt;<span class="keyword">class</span>... Args&gt;</span><br><span class="line">  <span class="built_in">SharedQueue</span>(<span class="type">size_t</span> capacity, Args... args)</span><br><span class="line">      : <span class="built_in">capacity</span>(capacity), <span class="built_in">que</span>(std::forward&lt;Args&gt;(args)...) &#123;&#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="type">void</span> <span class="title">push</span><span class="params">(<span class="type">const</span> T&amp; t)</span> </span>&#123;</span><br><span class="line">    <span class="function">std::unique_lock&lt;std::mutex&gt; <span class="title">lock</span><span class="params">(mut)</span></span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">full</span>()) &#123;</span><br><span class="line">      cvConsumer.<span class="built_in">notify_one</span>();</span><br><span class="line">      cvProducer.<span class="built_in">wait</span>(lock);</span><br><span class="line">    &#125;</span><br><span class="line">    que.<span class="built_in">push</span>(t);</span><br><span class="line">    cvConsumer.<span class="built_in">notify_one</span>();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function">T <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">std::unique_lock&lt;std::mutex&gt; <span class="title">lock</span><span class="params">(mut)</span></span>;</span><br><span class="line">    cvConsumer.<span class="built_in">wait</span>(lock, [<span class="keyword">this</span>] &#123; <span class="keyword">return</span> <span class="keyword">this</span>-&gt;<span class="built_in">empty</span>(); &#125;);</span><br><span class="line">    <span class="keyword">auto</span> v = que.<span class="built_in">front</span>();</span><br><span class="line">    que.<span class="built_in">pop</span>();</span><br><span class="line">    cvProducer.<span class="built_in">notify_one</span>();</span><br><span class="line">    <span class="keyword">return</span> v;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h3 id="condition_variable_any"><a class="markdownIt-Anchor" href="#condition_variable_any"></a> <code>condition_variable_any</code></h3>
-<p>标准库还提供了 <code>condition_variable</code> 的泛化版本即 <code>condition_variable_any</code>, 它可以支持任意的 <a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/named_req/BasicLockable">BasicLockable</a> 类型的锁, 而 <code>condition_variable</code> 只能和 <code>unique_lock</code> 一起使用.</p>
-<p><code>condition_variable_any</code> 的一种用法是配合 <code>shared_lock</code> 实现对 <code>shared_mutex</code> 保护的共享性资源访问的同步.</p>
-<h3 id="notify_all_at_thread_exit"><a class="markdownIt-Anchor" href="#notify_all_at_thread_exit"></a> <code>notify_all_at_thread_exit</code></h3>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">notify_all_at_thread_exit</span><span class="params">(std::condition_variable&amp; cond, std::unique_lock&lt;std::mutex&gt; lk)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>该函数提供一种机制在线程结束的最后阶段 (所有的 <code>thread_local</code> 生命周期变量都已被析构) 对给定的 <code>condition_variable</code> 调用 <code>notify_all</code>. 它执行下面的操作:</p>
-<ol>
-<li>在传递参数时线程内部的 <code>unique_lock</code> 的所有权被转移到该函数 (通过 <code>move</code>)</li>
-<li>修改当前线程的执行环境, 使得当前线程结束时执行:
-<ol>
-<li><code>lk.unlock();</code></li>
-<li><code>cond.notify_all();</code></li>
-</ol>
-</li>
-</ol>
-<h2 id="semaphore"><a class="markdownIt-Anchor" href="#semaphore"></a> <code>Semaphore</code></h2>
-<p>Semaphore 相当于一种简单的计数器, 它只提供两种操作: 递增和递减. 可以把 semaphore 计数器的值理解为资源的数量, 递增操作增加资源数量, 递减操作减少资源数量. 当资源数量为 0 时, 递减操作会阻塞, 直到有新的递增操作.</p>
-<h3 id="stdcounting_semaphore"><a class="markdownIt-Anchor" href="#stdcounting_semaphore"></a> <code>std::counting_semaphore</code></h3>
-<p>C++ 20 引入的 <code>counting_semaphore</code> 即普通意义的信号量, 可以为其设置 <code>LeastMaxValue</code> 非类型模板参数, 代表该信号量的「最大值的下限」, 即该信号量的最大值保证大于等于 <code>LeastMaxValue</code>.</p>
-<p><code>counting_semaphore</code> 提供基础的递增和阻塞以及非阻塞的递减操作:</p>
-<ol>
-<li><code>release</code>: 原子地递增内部计数器 (可传递递增的数量), 并唤醒因 <code>acquire</code> 时内部计数器为 0 而阻塞的线程</li>
-<li><code>acquire</code>: 原子地如果内部计数器数值大于 0, 递减1. 否则阻塞到其大于 0, 然后再递减 1.</li>
-<li><code>try_acquire</code>: <code>acquire</code> 的非阻塞版本</li>
-<li><code>try_acquire_for</code>/<code>try_acquire_until</code>: <code>try_acquire</code> 的 timeout 版本</li>
-</ol>
-<p>信号量常用于 signaling/notifying 的语义, 而非互斥语义. 通过初始化信号量为 0, 从而阻止尝试 <code>acquire()</code> 的 receiver, 直到 notifier 通过调用 <code>release(n)</code> 来 「signaling」. 在这方面, 信号量可以被视为 <code>std::condition_variable</code> 的替代, 并且通常具有更好的性能.</p>
-<p>通过将 <code>counting_semaphore</code> 的非类型模板参数设置为 1, 就得到了标准库内置的 <code>binary_semaphore</code>. 实际上, <code>binary_semaphore</code> 是一个 alias:</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> binary_semaphore = std::counting_semaphore&lt;<span class="number">1</span>&gt;;</span><br></pre></td></tr></table></figure>
-<h2 id="stdlatch-and-stdbarrier"><a class="markdownIt-Anchor" href="#stdlatch-and-stdbarrier"></a> <code>std::latch</code> and <code>std::barrier</code></h2>
-<p>C++ 20 引入的 <code>std::latch</code> 和 <code>std::barrier</code> 也是线程间同步机制, 它们内部是一个计数器, 可以阻塞多个线程直到内部计数器达到一个恰当的值.</p>
-<h3 id="stdlatch"><a class="markdownIt-Anchor" href="#stdlatch"></a> <code>std::latch</code></h3>
-<p><code>latch</code> 内部是一个递减计数器, 计数类型是 <code>std::ptrdiff_t</code>. <code>std::latch</code> 在构造时初始化内部计数器的数值, 线程可以在 <code>std::latch</code> 对象上阻塞, 并一直等待到其内部的计数器递减到 0.</p>
-<p><code>std::latch</code> 不提供任何增加或重置计数器的方法, 因此 <code>std::latch</code> 是单向不可复用的「屏障」. 多个线程并发调用 <code>std::latch</code> 的成员函数不会带来 data race.</p>
-<p><code>std::latch</code> 提供以下操作:</p>
-<ol>
-<li><code>count_down</code>: 非阻塞原子地递减内部计数器. 传入的递减值不能大于内部计数器的数值, 否则是 UB.</li>
-<li><code>wait</code>: 主动阻塞到内部计数器归零</li>
-<li><code>try_wait</code>: <code>wait</code> 的非阻塞版本, 内部计数器的值为 0 时返回 <code>true</code>, 否则返回 <code>false</code></li>
-<li><code>arrive_and_wait</code>: 原子地递减内部计数器并阻塞到内部计数器为 0.</li>
-</ol>
-<p><code>latch</code> 的一个用途是阻塞一系列后续线程直到指定数量的前序线程已经完成工作并递减了 <code>latch</code>.</p>
-<h3 id="stdbarrier"><a class="markdownIt-Anchor" href="#stdbarrier"></a> <code>std::barrier</code></h3>
-<p><code>barrier</code> 提供一种「屏障」, 使得可以阻塞一组 <strong>确定数量</strong> 的线程, 直到它们都到达该「屏障」. 与 <code>std::latch</code> 不同的是, <code>barrier</code> 可以复用, 同时可以在唤醒阻塞的线程时执行一个预先设置的可调用对象.</p>
-<p>一个 <code>barrier</code> 的生命周期由一个或多个「phrase」组成. 每个「phrase」都定义有该「phrase」的 「<strong>同步点 (phrase synchronization point)</strong>」, 线程可以在该「同步点」处阻塞. 一个「phrase」由下面的步骤组成:</p>
-<ol>
-<li><code>barrier</code> 内部的计数器 (expected count) 在每次调用 <code>arrive</code> 或 <code>arrive_and_drop</code> 时递减</li>
-<li>当内部计数器为 0 时, 运行「phrase completion step」, 即构造时传入的自定义可调用对象 <code>CompletionFunction</code> 会被调用, 并且所有在「同步点」处阻塞的线程都被唤醒. 上述过程会在导致内部计数器恰好降为 0 的那个调用 <code>arrive</code>/<code>arrive_and_drop</code>/<code>wait</code> 的线程内执行.</li>
-<li>当「phrase completion step」执行完毕后, 内部计数器会被重置到构造时设置的值 <strong>减去构造后调用 <code>arrive_and_drop</code> 的次数</strong>, 此时下一个「phrase」就开始了.</li>
-</ol>
-<p><code>std::barrier</code> 提供的操作:</p>
-<ol>
-<li><code>arrive</code>: 原子地构造一个与当前 phrase 同步点关联的 <code>arrive_token</code> 对象, 然后递减内部计数器.</li>
-<li><code>wait</code>: 需要传入一个 <code>arrive_token</code> 对象的右值引用作为参数, 代表需要阻塞的同步点. 如果传入的 <code>arrive_token</code> 与当前 phrase 的同步点关联, 那么就阻塞到该同步点, 直到该 phrase 的 completion step 的执行. 否则, 立即返回 (传入的 <code>arrive_token</code> 与前一个 phrase 的同步点关联) 或 UB (传入的 <code>arrive_token</code> 与更早的 phrase 的同步点关联)</li>
-<li><code>arrive_and_wait</code>: 等价于 <code>wait(arrive())</code></li>
-<li><code>arrive_and_drop</code>: 原子地先递减初始计数值, 然后递减当前 phrase 的实际计数值</li>
-</ol>
-<p><code>std::latch</code> 和 <code>std::barrier</code> 以及更新的 <code>std::flex_barrier</code> 还是第一次听说, 对它们的用法和用途还需要进一步学习. 一些参考:</p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/48985967/where-can-we-use-stdbarrier-over-stdlatch">c++ - Where can we use std::barrier over std::latch? - Stack Overflow</a></li>
-<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/51065637/why-stdlatch-if-there-is-stdbarrier">c++ - Why std::latch if there is std::barrier? - Stack Overflow</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.modernescpp.com/index.php/latches-and-barriers">Latches And Barriers - ModernesCpp.com</a></li>
-</ol>
-<h2 id="references"><a class="markdownIt-Anchor" href="#references"></a> References</h2>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/thread/latch">std::latch - cppreference.com</a></li>
-<li><a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/thread/barrier">std::barrier - cppreference.com</a></li>
-<li><a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/thread/condition_variable">std::condition_variable - cppreference.com</a></li>
-<li><a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/thread/counting_semaphore">std::counting_semaphore, std::binary_semaphore - cppreference.com</a></li>
-<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/48985967/where-can-we-use-stdbarrier-over-stdlatch">c++ - Where can we use std::barrier over std::latch? - Stack Overflow</a></li>
-<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/51065637/why-stdlatch-if-there-is-stdbarrier">c++ - Why std::latch if there is std::barrier? - Stack Overflow</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.modernescpp.com/index.php/latches-and-barriers">Latches And Barriers - ModernesCpp.com</a></li>
-</ol>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/Modern-C-Concurrency-Utilities-05-Condition-variables-and-Semaphores/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -462,7 +346,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-23 23:57:24" itemprop="dateModified" datetime="2023-06-23T23:57:24+08:00">2023-06-23</time>
+      <time title="修改时间：2023-06-24 14:16:28" itemprop="dateModified" datetime="2023-06-24T14:16:28+08:00">2023-06-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -568,7 +452,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-23 23:57:24" itemprop="dateModified" datetime="2023-06-23T23:57:24+08:00">2023-06-23</time>
+      <time title="修改时间：2023-06-24 14:16:28" itemprop="dateModified" datetime="2023-06-24T14:16:28+08:00">2023-06-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -674,7 +558,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-23 23:57:24" itemprop="dateModified" datetime="2023-06-23T23:57:24+08:00">2023-06-23</time>
+      <time title="修改时间：2023-06-24 14:16:28" itemprop="dateModified" datetime="2023-06-24T14:16:28+08:00">2023-06-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -780,7 +664,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-23 23:57:24" itemprop="dateModified" datetime="2023-06-23T23:57:24+08:00">2023-06-23</time>
+      <time title="修改时间：2023-06-24 14:16:28" itemprop="dateModified" datetime="2023-06-24T14:16:28+08:00">2023-06-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -886,7 +770,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-23 23:57:24" itemprop="dateModified" datetime="2023-06-23T23:57:24+08:00">2023-06-23</time>
+      <time title="修改时间：2023-06-24 14:16:28" itemprop="dateModified" datetime="2023-06-24T14:16:28+08:00">2023-06-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -992,7 +876,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-23 23:57:24" itemprop="dateModified" datetime="2023-06-23T23:57:24+08:00">2023-06-23</time>
+      <time title="修改时间：2023-06-24 14:16:28" itemprop="dateModified" datetime="2023-06-24T14:16:28+08:00">2023-06-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1099,7 +983,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-23 23:57:24" itemprop="dateModified" datetime="2023-06-23T23:57:24+08:00">2023-06-23</time>
+      <time title="修改时间：2023-06-24 14:16:28" itemprop="dateModified" datetime="2023-06-24T14:16:28+08:00">2023-06-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1205,7 +1089,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-23 23:57:24" itemprop="dateModified" datetime="2023-06-23T23:57:24+08:00">2023-06-23</time>
+      <time title="修改时间：2023-06-24 14:16:28" itemprop="dateModified" datetime="2023-06-24T14:16:28+08:00">2023-06-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1316,7 +1200,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-23 23:57:24" itemprop="dateModified" datetime="2023-06-23T23:57:24+08:00">2023-06-23</time>
+      <time title="修改时间：2023-06-24 14:16:28" itemprop="dateModified" datetime="2023-06-24T14:16:28+08:00">2023-06-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">

@@ -3553,6 +3553,7 @@ c-4-3.333-8.333-7.667-13 -13l-13-13l77-155 77-156c66 199.333 139 419.667
     <title>Modern C++ Concurrency Utilities 05: Condition variables and Semaphores</title>
     <url>/Modern-C-Concurrency-Utilities-05-Condition-variables-and-Semaphores/</url>
     <content><![CDATA[<p>Condition variable 和 Semaphore 是并发编程中用于同步控制和交互的原语. 多个并发线程可以使用 Condition variable 彼此交互, 一些线程可以通过 Condition variable 等待 (wait) 其他线程的通知 (notification). <em>Condition variable 总是和 mutex 关联使用</em>. Semaphore 相比 Condition variable 更加轻量, 它用来限制多个线程对共享资源的并发访问.</p>
+<span id="more"></span>
 <h2 id="condition_variable"><a class="markdownIt-Anchor" href="#condition_variable"></a> <code>condition_variable</code></h2>
 <p><code>condition_variable</code> 提供了线程间同步的并发原语, 具体地说, 「线程间同步」指类似下面所述的一种情况:</p>
 <ol>
