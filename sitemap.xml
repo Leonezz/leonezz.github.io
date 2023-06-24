@@ -2,42 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blog.zhuwenq.cc/%E9%80%BB%E8%BE%91%E4%BB%A3%E6%95%B0/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/about/index.html</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/categories/index.html</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/tags/index.html</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%88/</loc>
     
     <lastmod>2023-06-24</lastmod>
@@ -75,6 +39,42 @@
   
   <url>
     <loc>https://blog.zhuwenq.cc/%E8%8E%AB%E9%87%8C%E6%96%AF%E9%81%8D%E5%8E%86/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/%E9%80%BB%E8%BE%91%E4%BB%A3%E6%95%B0/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/about/index.html</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/categories/index.html</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/tags/index.html</loc>
     
     <lastmod>2023-06-24</lastmod>
     
@@ -218,15 +218,6 @@
   </url>
   
   <url>
-    <loc>https://blog.zhuwenq.cc/XLNet/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.zhuwenq.cc/Xv6-Operating-system-03-page-table/</loc>
     
     <lastmod>2023-06-24</lastmod>
@@ -317,6 +308,15 @@
   </url>
   
   <url>
+    <loc>https://blog.zhuwenq.cc/XLNet/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.zhuwenq.cc/TransferNet-An-Effective-and-Transparent-Framework-for-Multi-hop-Question-Answering-over-Relation-Graph/</loc>
     
     <lastmod>2023-06-24</lastmod>
@@ -344,15 +344,6 @@
   </url>
   
   <url>
-    <loc>https://blog.zhuwenq.cc/Somewhere-in-the-campus/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.zhuwenq.cc/Rigid-Formats-Controlled-Text-Generation/</loc>
     
     <lastmod>2023-06-24</lastmod>
@@ -371,7 +362,79 @@
   </url>
   
   <url>
+    <loc>https://blog.zhuwenq.cc/Somewhere-in-the-campus/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.zhuwenq.cc/Red/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/Linkage/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-01-Thread-and-Concurrent-Execution/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-02-CPU-Cache-and-false-sharing/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-03-Atomic-and-Memory-Ordering/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-04-Mutex-Lock-and-Concurrent-Access-Control/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-05-Condition-variable-Semaphore-and-Synchronization/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-06-Promise-Future-and-Asynchronous/</loc>
     
     <lastmod>2023-06-24</lastmod>
     
@@ -398,79 +461,7 @@
   </url>
   
   <url>
-    <loc>https://blog.zhuwenq.cc/Linkage/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-01-thread/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-02-CPU-Cache-and-false-sharing/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-03-atomic/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-04-Mutex-and-Lock/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-05-Condition-variables-and-Semaphores/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/Large-Scale-Relation-Learning-for-Question-Answering-over-Knowledge-Bases-with-Pre-trained-Language-Models/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.zhuwenq.cc/Latex-Citation-Style/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/K-Adapter-Infusing-Knowledge-into-Pre-Trained-Models-with-Adapters/</loc>
     
     <lastmod>2023-06-24</lastmod>
     
@@ -497,7 +488,7 @@
   </url>
   
   <url>
-    <loc>https://blog.zhuwenq.cc/IEEE754%E6%B5%AE%E7%82%B9%E6%95%B0/</loc>
+    <loc>https://blog.zhuwenq.cc/Large-Scale-Relation-Learning-for-Question-Answering-over-Knowledge-Bases-with-Pre-trained-Language-Models/</loc>
     
     <lastmod>2023-06-24</lastmod>
     
@@ -524,16 +515,7 @@
   </url>
   
   <url>
-    <loc>https://blog.zhuwenq.cc/ERICA-Improving-Entity-and-Relation-Understanding-for-Pre-trained-Language-Models-via-Contrastive-Learning/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/ERNIE-Enhanced-Language-Representation-with-Informative-Entities/</loc>
+    <loc>https://blog.zhuwenq.cc/K-Adapter-Infusing-Knowledge-into-Pre-Trained-Models-with-Adapters/</loc>
     
     <lastmod>2023-06-24</lastmod>
     
@@ -551,16 +533,7 @@
   </url>
   
   <url>
-    <loc>https://blog.zhuwenq.cc/Cache/</loc>
-    
-    <lastmod>2023-06-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.zhuwenq.cc/Case-Based-Reasoning-for-Natural-Language-Queries-over-Knowledge-Bases/</loc>
+    <loc>https://blog.zhuwenq.cc/IEEE754%E6%B5%AE%E7%82%B9%E6%95%B0/</loc>
     
     <lastmod>2023-06-24</lastmod>
     
@@ -578,7 +551,16 @@
   </url>
   
   <url>
-    <loc>https://blog.zhuwenq.cc/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/</loc>
+    <loc>https://blog.zhuwenq.cc/ERICA-Improving-Entity-and-Relation-Understanding-for-Pre-trained-Language-Models-via-Contrastive-Learning/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/ERNIE-Enhanced-Language-Representation-with-Informative-Entities/</loc>
     
     <lastmod>2023-06-24</lastmod>
     
@@ -668,7 +650,16 @@
   </url>
   
   <url>
-    <loc>https://blog.zhuwenq.cc/Attention-is-all-you-need/</loc>
+    <loc>https://blog.zhuwenq.cc/Cache/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/Case-Based-Reasoning-for-Natural-Language-Queries-over-Knowledge-Bases/</loc>
     
     <lastmod>2023-06-24</lastmod>
     
@@ -686,7 +677,16 @@
   </url>
   
   <url>
-    <loc>https://blog.zhuwenq.cc/A-random-afternoon/</loc>
+    <loc>https://blog.zhuwenq.cc/BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/Attention-is-all-you-need/</loc>
     
     <lastmod>2023-06-24</lastmod>
     
@@ -696,6 +696,15 @@
   
   <url>
     <loc>https://blog.zhuwenq.cc/A-Simple-but-Effective-Pluggable-Entity-Lookup-Table-for-Pre-trained-Language-Models/</loc>
+    
+    <lastmod>2023-06-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/A-random-afternoon/</loc>
     
     <lastmod>2023-06-24</lastmod>
     
@@ -1024,6 +1033,27 @@
   
   <url>
     <loc>https://blog.zhuwenq.cc/tags/synchronization/</loc>
+    <lastmod>2023-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/tags/Promise/</loc>
+    <lastmod>2023-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/tags/Future/</loc>
+    <lastmod>2023-06-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.zhuwenq.cc/tags/Asynchronous/</loc>
     <lastmod>2023-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
