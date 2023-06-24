@@ -5,10 +5,6 @@
     <lastmod>2023-06-24</lastmod>
   </url>
   <url>
-    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/</loc>
-    <lastmod>2023-06-24</lastmod>
-  </url>
-  <url>
     <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%88/</loc>
     <lastmod>2023-06-24</lastmod>
   </url>
@@ -26,26 +22,6 @@
   </url>
   <url>
     <loc>https://blog.zhuwenq.cc/%E8%8E%AB%E9%87%8C%E6%96%AF%E9%81%8D%E5%8E%86/</loc>
-    <lastmod>2023-06-24</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/%E5%8F%AF%E9%87%8D%E5%AE%9A%E4%BD%8D%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/</loc>
-    <lastmod>2023-06-24</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/%E5%9B%9E%E7%AD%94/</loc>
-    <lastmod>2023-06-24</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/%E5%AE%A3%E5%91%8A/</loc>
-    <lastmod>2023-06-24</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/</loc>
-    <lastmod>2023-06-24</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E4%BA%8C%E5%8F%89%E6%A0%91%E5%92%8C%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%82%A8%E5%AD%98%E7%BB%93%E6%9E%84/</loc>
     <lastmod>2023-06-24</lastmod>
   </url>
   <url>
@@ -73,19 +49,7 @@
     <lastmod>2023-06-24</lastmod>
   </url>
   <url>
-    <loc>https://blog.zhuwenq.cc/leftmost-one/</loc>
-    <lastmod>2023-06-24</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/xv6-Operating-system-01-interface/</loc>
-    <lastmod>2023-06-24</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/xv6-Operating-system-02-organization/</loc>
-    <lastmod>2023-06-24</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/%E5%85%B1%E4%BA%AB%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6-%E5%85%B1%E4%BA%AB%E5%BA%93/</loc>
+    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/</loc>
     <lastmod>2023-06-24</lastmod>
   </url>
   <url>
@@ -101,11 +65,23 @@
     <lastmod>2023-06-24</lastmod>
   </url>
   <url>
-    <loc>https://blog.zhuwenq.cc/Translating-Embeddings-for-Modeling-Multi-relational-Data/</loc>
+    <loc>https://blog.zhuwenq.cc/%E5%8F%AF%E9%87%8D%E5%AE%9A%E4%BD%8D%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/</loc>
     <lastmod>2023-06-24</lastmod>
   </url>
   <url>
-    <loc>https://blog.zhuwenq.cc/Ubuntu-WSL2-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85Qt-5-15-2/</loc>
+    <loc>https://blog.zhuwenq.cc/%E5%9B%9E%E7%AD%94/</loc>
+    <lastmod>2023-06-24</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/%E5%AE%A3%E5%91%8A/</loc>
+    <lastmod>2023-06-24</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/</loc>
+    <lastmod>2023-06-24</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E4%BA%8C%E5%8F%89%E6%A0%91%E5%92%8C%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%82%A8%E5%AD%98%E7%BB%93%E6%9E%84/</loc>
     <lastmod>2023-06-24</lastmod>
   </url>
   <url>
@@ -125,7 +101,31 @@
     <lastmod>2023-06-24</lastmod>
   </url>
   <url>
+    <loc>https://blog.zhuwenq.cc/leftmost-one/</loc>
+    <lastmod>2023-06-24</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/xv6-Operating-system-01-interface/</loc>
+    <lastmod>2023-06-24</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/xv6-Operating-system-02-organization/</loc>
+    <lastmod>2023-06-24</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/%E5%85%B1%E4%BA%AB%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6-%E5%85%B1%E4%BA%AB%E5%BA%93/</loc>
+    <lastmod>2023-06-24</lastmod>
+  </url>
+  <url>
     <loc>https://blog.zhuwenq.cc/Transformer-Feed-Forward-Layers-are-Key-Value-Memories/</loc>
+    <lastmod>2023-06-24</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/Translating-Embeddings-for-Modeling-Multi-relational-Data/</loc>
+    <lastmod>2023-06-24</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/Ubuntu-WSL2-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85Qt-5-15-2/</loc>
     <lastmod>2023-06-24</lastmod>
   </url>
   <url>
@@ -157,6 +157,14 @@
     <lastmod>2023-06-24</lastmod>
   </url>
   <url>
+    <loc>https://blog.zhuwenq.cc/Pre-train-Prompt-and-Predict/</loc>
+    <lastmod>2023-06-24</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/LayerNormalization/</loc>
+    <lastmod>2023-06-24</lastmod>
+  </url>
+  <url>
     <loc>https://blog.zhuwenq.cc/Linkage/</loc>
     <lastmod>2023-06-24</lastmod>
   </url>
@@ -181,22 +189,6 @@
     <lastmod>2023-06-24</lastmod>
   </url>
   <url>
-    <loc>https://blog.zhuwenq.cc/Pre-train-Prompt-and-Predict/</loc>
-    <lastmod>2023-06-24</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/LayerNormalization/</loc>
-    <lastmod>2023-06-24</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/Knowledge-Aware-Languege-Model-Pretraining/</loc>
-    <lastmod>2023-06-24</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/LUKE-Deep-Contextualized-Entity-Representations-with-Entity-aware-Self-attention/</loc>
-    <lastmod>2023-06-24</lastmod>
-  </url>
-  <url>
     <loc>https://blog.zhuwenq.cc/Large-Scale-Relation-Learning-for-Question-Answering-over-Knowledge-Bases-with-Pre-trained-Language-Models/</loc>
     <lastmod>2023-06-24</lastmod>
   </url>
@@ -209,7 +201,11 @@
     <lastmod>2023-06-24</lastmod>
   </url>
   <url>
-    <loc>https://blog.zhuwenq.cc/ERNIE-Enhanced-Representation-through-Knowledge-Integration/</loc>
+    <loc>https://blog.zhuwenq.cc/Knowledge-Aware-Languege-Model-Pretraining/</loc>
+    <lastmod>2023-06-24</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/LUKE-Deep-Contextualized-Entity-Representations-with-Entity-aware-Self-attention/</loc>
     <lastmod>2023-06-24</lastmod>
   </url>
   <url>
@@ -233,23 +229,7 @@
     <lastmod>2023-06-24</lastmod>
   </url>
   <url>
-    <loc>https://blog.zhuwenq.cc/C-%E6%A8%A1%E6%9D%BF01-%E6%A8%A1%E6%9D%BF%E5%9F%BA%E7%A1%80/</loc>
-    <lastmod>2023-06-24</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/C-%E6%A8%A1%E6%9D%BF021-%E9%9D%9E%E7%B1%BB%E5%9E%8B%E6%A8%A1%E6%9D%BF%E5%8F%82%E6%95%B0/</loc>
-    <lastmod>2023-06-24</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/C-%E6%A8%A1%E6%9D%BF022-%E5%8F%AF%E5%8F%98%E6%A8%A1%E6%9D%BF/</loc>
-    <lastmod>2023-06-24</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/C-%E6%A8%A1%E6%9D%BF03-%E5%9F%BA%E6%9C%AC%E6%8A%80%E5%B7%A7/</loc>
-    <lastmod>2023-06-24</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.zhuwenq.cc/CS-APP-Lab1-DataLab/</loc>
+    <loc>https://blog.zhuwenq.cc/ERNIE-Enhanced-Representation-through-Knowledge-Integration/</loc>
     <lastmod>2023-06-24</lastmod>
   </url>
   <url>
@@ -285,6 +265,26 @@
     <lastmod>2023-06-24</lastmod>
   </url>
   <url>
+    <loc>https://blog.zhuwenq.cc/C-%E6%A8%A1%E6%9D%BF01-%E6%A8%A1%E6%9D%BF%E5%9F%BA%E7%A1%80/</loc>
+    <lastmod>2023-06-24</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/C-%E6%A8%A1%E6%9D%BF021-%E9%9D%9E%E7%B1%BB%E5%9E%8B%E6%A8%A1%E6%9D%BF%E5%8F%82%E6%95%B0/</loc>
+    <lastmod>2023-06-24</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/C-%E6%A8%A1%E6%9D%BF022-%E5%8F%AF%E5%8F%98%E6%A8%A1%E6%9D%BF/</loc>
+    <lastmod>2023-06-24</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/C-%E6%A8%A1%E6%9D%BF03-%E5%9F%BA%E6%9C%AC%E6%8A%80%E5%B7%A7/</loc>
+    <lastmod>2023-06-24</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.zhuwenq.cc/CS-APP-Lab1-DataLab/</loc>
+    <lastmod>2023-06-24</lastmod>
+  </url>
+  <url>
     <loc>https://blog.zhuwenq.cc/Attention-is-all-you-need/</loc>
     <lastmod>2023-06-24</lastmod>
   </url>
@@ -293,11 +293,11 @@
     <lastmod>2023-06-24</lastmod>
   </url>
   <url>
-    <loc>https://blog.zhuwenq.cc/A-Simple-but-Effective-Pluggable-Entity-Lookup-Table-for-Pre-trained-Language-Models/</loc>
+    <loc>https://blog.zhuwenq.cc/A-random-afternoon/</loc>
     <lastmod>2023-06-24</lastmod>
   </url>
   <url>
-    <loc>https://blog.zhuwenq.cc/A-random-afternoon/</loc>
+    <loc>https://blog.zhuwenq.cc/A-Simple-but-Effective-Pluggable-Entity-Lookup-Table-for-Pre-trained-Language-Models/</loc>
     <lastmod>2023-06-24</lastmod>
   </url>
   <url>
