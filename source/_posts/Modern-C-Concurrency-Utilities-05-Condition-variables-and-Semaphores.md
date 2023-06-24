@@ -16,6 +16,8 @@ categories:
 
 Condition variable 和 Semaphore 是并发编程中用于同步控制和交互的原语. 多个并发线程可以使用 Condition variable 彼此交互, 一些线程可以通过 Condition variable 等待 (wait) 其他线程的通知 (notification). *Condition variable 总是和 mutex 关联使用*. Semaphore 相比 Condition variable 更加轻量, 它用来限制多个线程对共享资源的并发访问.
 
+<!--more-->
+
 ## `condition_variable`
 
 `condition_variable` 提供了线程间同步的并发原语, 具体地说, 「线程间同步」指类似下面所述的一种情况:
