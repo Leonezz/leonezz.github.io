@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>zhuwenq</title>
+  <icon>https://blog.zhuwenq.cc/icon.png</icon>
+  
+  <link href="https://blog.zhuwenq.cc/atom.xml" rel="self"/>
+  
+  <link href="https://blog.zhuwenq.cc/"/>
+  <updated>2023-06-25T15:04:39.450Z</updated>
+  <id>https://blog.zhuwenq.cc/</id>
+  
+  <author>
+    <name>zhuwenq</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Modern C++ Concurrency Utilities 06: Promise, Future and Asynchronous</title>
+    <link href="https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-06-Promise-Future-and-Asynchronous/"/>
+    <id>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-06-Promise-Future-and-Asynchronous/</id>
+    <published>2023-06-24T13:44:54.000Z</published>
+    <updated>2023-06-25T15:04:39.450Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;「期值」是标准库为异步任务中返回值以及异常的传递提供的基础设施. 具体的做法是将这些值关联到共享的「future」对象上. 异步任务可以向这些期值对象中写入返回值或异常值, 异步任务的发起线程则可以通过这些期值对象等待, 读取, 检查其所需要的异步结果. 标准库中为上述功能提供的设施即 &lt;code&gt;std::promise&lt;/code&gt; 和 &lt;code&gt;std::future&lt;/code&gt;.&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="知识类" scheme="https://blog.zhuwenq.cc/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/"/>
+    
+    
+    <category term="C++" scheme="https://blog.zhuwenq.cc/tags/C/"/>
+    
+    <category term="Concurrency" scheme="https://blog.zhuwenq.cc/tags/Concurrency/"/>
+    
+    <category term="Promise" scheme="https://blog.zhuwenq.cc/tags/Promise/"/>
+    
+    <category term="Future" scheme="https://blog.zhuwenq.cc/tags/Future/"/>
+    
+    <category term="Asynchronous" scheme="https://blog.zhuwenq.cc/tags/Asynchronous/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Modern C++ Concurrency Utilities 05: Condition variable, Semaphore and Synchronization</title>
+    <link href="https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-05-Condition-variable-Semaphore-and-Synchronization/"/>
+    <id>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-05-Condition-variable-Semaphore-and-Synchronization/</id>
+    <published>2023-06-23T15:55:24.000Z</published>
+    <updated>2023-06-25T15:04:39.450Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;Condition variable 和 Semaphore 是并发编程中用于同步控制和交互的原语. 多个并发线程可以使用 Condition variable 彼此交互, 一些线程可以通过 Condition variable 等待 (wait) 其他线程的通知 (notification). &lt;em&gt;Condition variable 总是和 mutex 关联使用&lt;/em&gt;. Semaphore 相比 Condition variable 更加轻量, 它用来限制多个线程对共享资源的并发访问.&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="知识类" scheme="https://blog.zhuwenq.cc/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/"/>
+    
+    
+    <category term="C++" scheme="https://blog.zhuwenq.cc/tags/C/"/>
+    
+    <category term="Concurrency" scheme="https://blog.zhuwenq.cc/tags/Concurrency/"/>
+    
+    <category term="condition variable" scheme="https://blog.zhuwenq.cc/tags/condition-variable/"/>
+    
+    <category term="semaphore" scheme="https://blog.zhuwenq.cc/tags/semaphore/"/>
+    
+    <category term="synchronization" scheme="https://blog.zhuwenq.cc/tags/synchronization/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Modern C++ Concurrency Utilities 04: Mutex, Lock and Concurrent Access Control</title>
+    <link href="https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-04-Mutex-Lock-and-Concurrent-Access-Control/"/>
+    <id>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-04-Mutex-Lock-and-Concurrent-Access-Control/</id>
+    <published>2023-06-21T13:59:51.000Z</published>
+    <updated>2023-06-25T15:04:39.450Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;code&gt;mutex&lt;/code&gt; 即 mutual exclusion, 表示一种互斥语义. 所谓互斥, 实际上是指所有权的唯一性, 即同一时刻一个互斥量只能由一个所有者持有. 在并发语境中, 互斥量这一原语的所有者一般是「线程」, 它的作用是用于阻止多个线程同时访问共享的资源, 从而避免 data race 并为多个线程的执行提供实现「同步」的机制.&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="知识类" scheme="https://blog.zhuwenq.cc/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/"/>
+    
+    
+    <category term="C++" scheme="https://blog.zhuwenq.cc/tags/C/"/>
+    
+    <category term="Concurrency" scheme="https://blog.zhuwenq.cc/tags/Concurrency/"/>
+    
+    <category term="mutex" scheme="https://blog.zhuwenq.cc/tags/mutex/"/>
+    
+    <category term="lock" scheme="https://blog.zhuwenq.cc/tags/lock/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Modern C++ Concurrency Utilities 03: Atomic and Memory Order</title>
+    <link href="https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-03-Atomic-and-Memory-Ordering/"/>
+    <id>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-03-Atomic-and-Memory-Ordering/</id>
+    <published>2023-06-21T06:29:49.000Z</published>
+    <updated>2023-06-25T15:04:39.450Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;Atomic 提供了开发高性能无锁 (lock free) 结构的工具和接口, 对于内置类型或自定义类型, 也可以通过 &lt;code&gt;atomic&amp;lt;&amp;gt;&lt;/code&gt; 模板包装成支持原子操作的类型, 以实现并发安全.&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="知识类" scheme="https://blog.zhuwenq.cc/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/"/>
+    
+    
+    <category term="C++" scheme="https://blog.zhuwenq.cc/tags/C/"/>
+    
+    <category term="Concurrency" scheme="https://blog.zhuwenq.cc/tags/Concurrency/"/>
+    
+    <category term="atomic" scheme="https://blog.zhuwenq.cc/tags/atomic/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Modern C++ Concurrency Utilities 02: CPU Cache and false sharing</title>
+    <link href="https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-02-CPU-Cache-and-false-sharing/"/>
+    <id>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-02-CPU-Cache-and-false-sharing/</id>
+    <published>2023-06-20T08:15:09.000Z</published>
+    <updated>2023-06-25T15:04:39.450Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;C++ 17 提供了两个编译时常量, 用于表示 CPU Cache 的一些参数. 合理使用这两个编译时常量可以避免在多级 Cache 结构的计算机上并发程序频繁访问同一个对象不同成员时可能发生的 &lt;strong&gt;伪共享 (false sharing)&lt;/strong&gt; 问题.&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="知识类" scheme="https://blog.zhuwenq.cc/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/"/>
+    
+    
+    <category term="C++" scheme="https://blog.zhuwenq.cc/tags/C/"/>
+    
+    <category term="CPU Cache" scheme="https://blog.zhuwenq.cc/tags/CPU-Cache/"/>
+    
+    <category term="Concurrency" scheme="https://blog.zhuwenq.cc/tags/Concurrency/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Modern C++ Concurrency Utilities 01: Thread and Concurrent Execution</title>
+    <link href="https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-01-Thread-and-Concurrent-Execution/"/>
+    <id>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-01-Thread-and-Concurrent-Execution/</id>
+    <published>2023-06-19T14:35:31.000Z</published>
+    <updated>2023-06-25T15:04:39.450Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;C++ 11 及之后的版本中提供了一系列并发编程的工具和对并发控制原语的抽象封装, 如 &lt;code&gt;thread&lt;/code&gt;, &lt;code&gt;atomic&lt;/code&gt;, &lt;code&gt;mutex&lt;/code&gt;, &lt;code&gt;condition_varible&lt;/code&gt; 等. 本文介绍 &lt;code&gt;thread&lt;/code&gt; 以及 &lt;code&gt;jthread&lt;/code&gt; 的基本语义和功能, 它们在实际场景中的 best practice 和与之密切相关的编程模式不在本文讨论范围之内.&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="知识类" scheme="https://blog.zhuwenq.cc/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/"/>
+    
+    
+    <category term="C++" scheme="https://blog.zhuwenq.cc/tags/C/"/>
+    
+    <category term="Concurrency" scheme="https://blog.zhuwenq.cc/tags/Concurrency/"/>
+    
+    <category term="thread" scheme="https://blog.zhuwenq.cc/tags/thread/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C++ storage duration and specifiers</title>
+    <link href="https://blog.zhuwenq.cc/C-storage-duration-and-specifiers/"/>
+    <id>https://blog.zhuwenq.cc/C-storage-duration-and-specifiers/</id>
+    <published>2023-06-19T08:17:18.000Z</published>
+    <updated>2023-06-25T15:04:39.406Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;偶然在 vscode 的代码提示中看到了 &lt;code&gt;thread_local&lt;/code&gt; 这个关键字, 心想 C++ 中什么时候提供了这种东西. 翻了下 cppreference 才知道早在 C++ 11 中就引入了这个修饰符, 用于声明线程生命周期. 趁此机会系统地看了下 C++ 变量的 4 种生命周期, 特此记录.&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="知识类" scheme="https://blog.zhuwenq.cc/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/"/>
+    
+    
+    <category term="C++" scheme="https://blog.zhuwenq.cc/tags/C/"/>
+    
+    <category term="storage duration" scheme="https://blog.zhuwenq.cc/tags/storage-duration/"/>
+    
+    <category term="basic concepts" scheme="https://blog.zhuwenq.cc/tags/basic-concepts/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C++ black magic: 利用友元函数和显式实例化突破访问权限</title>
+    <link href="https://blog.zhuwenq.cc/C-black-magic-%E5%88%A9%E7%94%A8%E5%8F%8B%E5%85%83%E5%87%BD%E6%95%B0%E5%92%8C%E6%98%BE%E5%BC%8F%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%AA%81%E7%A0%B4%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90/"/>
+    <id>https://blog.zhuwenq.cc/C-black-magic-%E5%88%A9%E7%94%A8%E5%8F%8B%E5%85%83%E5%87%BD%E6%95%B0%E5%92%8C%E6%98%BE%E5%BC%8F%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%AA%81%E7%A0%B4%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90/</id>
+    <published>2023-06-03T14:34:16.000Z</published>
+    <updated>2023-06-25T15:04:39.406Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;C++ 中的非继承类有两种访问权限, &lt;code&gt;private&lt;/code&gt; 和 &lt;code&gt;public&lt;/code&gt;. 一般来说, &lt;code&gt;private&lt;/code&gt; 只允许类型内部使用, 不允许外部访问. 然而, 由于 C++ 语言巨大的复杂性, 这一约束存在若干漏洞. 一种简单的做法就是假设 C++ 编译器不会对类对象的内存布局做奇怪的扰动, 这一假设通常是正确的, 因此可以通过猜测私有成员相对对象整体的地址偏移量访问私有成员. 或者更加方便地通过定义一个成员完全相同但访问权限相反的类, 并将原类对象的指针转换成新类的指针的方式访问原类对象的私有指针.&lt;/p&gt;
+&lt;p&gt;这两种方法本质上都基于「假设」, 即假设 C++ 编译器不会对类型的成员做特殊的处理. 本文介绍一种更加优雅的方法, 可以稳定地实现对私有成员的访问.&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="知识类" scheme="https://blog.zhuwenq.cc/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/"/>
+    
+    
+    <category term="C++ Template" scheme="https://blog.zhuwenq.cc/tags/C-Template/"/>
+    
+    <category term="黑魔法" scheme="https://blog.zhuwenq.cc/tags/%E9%BB%91%E9%AD%94%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C++ 对象、虚函数与继承</title>
+    <link href="https://blog.zhuwenq.cc/C-%E5%AF%B9%E8%B1%A1%E3%80%81%E8%99%9A%E5%87%BD%E6%95%B0%E4%B8%8E%E7%BB%A7%E6%89%BF/"/>
+    <id>https://blog.zhuwenq.cc/C-%E5%AF%B9%E8%B1%A1%E3%80%81%E8%99%9A%E5%87%BD%E6%95%B0%E4%B8%8E%E7%BB%A7%E6%89%BF/</id>
+    <published>2023-04-14T08:00:26.000Z</published>
+    <updated>2023-06-25T15:04:39.406Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;C++ 中以继承的方式实现动态多态是存在额外开销的, 具体地说，C++ 对象使用了额外的内存保存关于基类信息才实现了运行时多态. 但这种额外信息究竟以何种方式在对象的内存中报错对我来说仍是未知. 受到前人文章的启发, 本文借助 GDB 调试器一步步地观察记录 C++ 对象的内存布局, 力求理解实际 C++ 编译器 (gcc 9.4.0) 对 C++ 对象的内存布局以及派生类的实现.&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="知识类" scheme="https://blog.zhuwenq.cc/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/"/>
+    
+    
+    <category term="C++" scheme="https://blog.zhuwenq.cc/tags/C/"/>
+    
+    <category term="多态" scheme="https://blog.zhuwenq.cc/tags/%E5%A4%9A%E6%80%81/"/>
+    
+    <category term="内存模型" scheme="https://blog.zhuwenq.cc/tags/%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>内存屏障和 C++ 内存模型</title>
+    <link href="https://blog.zhuwenq.cc/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/"/>
+    <id>https://blog.zhuwenq.cc/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/</id>
+    <published>2023-04-08T14:47:44.000Z</published>
+    <updated>2023-06-25T15:04:39.542Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;Memory Barrier 是 CPU 提供的一种机制, 它的作用是在程序中设置一个内存屏障, CPU 会保证所有在 Memory Barrier 之前的代码对内存的访问 (改动) 在 Memory Barrier 之后都是可见的. 这一保证据有两方面的效应:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;所有 Memory Barrier 之后的代码都不能被重排 (Reordering) 到 Memory Barrier 之前执行&lt;/li&gt;
+&lt;li&gt;当执行到 Memory Barrier 时, CPU 必须在所有 Core 之间同步 Cache, 保证此刻所有 Core 看到的内存是一致的.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Memory Order 是 C++ 11 提供的一种并发编程机制, 它允许显式地限制编译器/CPU 对指令的重排 (Reordering), 以及显式地控制多核 CPU Cache 之间的同步. 其效果是使得不同线程/不同 CPU Core 所观察到的原子操作附近的内存操作具有可预测的顺序.&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="知识类" scheme="https://blog.zhuwenq.cc/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/"/>
+    
+    
+    <category term="C++" scheme="https://blog.zhuwenq.cc/tags/C/"/>
+    
+    <category term="CPU Cache" scheme="https://blog.zhuwenq.cc/tags/CPU-Cache/"/>
+    
+    <category term="Concurrency" scheme="https://blog.zhuwenq.cc/tags/Concurrency/"/>
+    
+    <category term="Memory Order" scheme="https://blog.zhuwenq.cc/tags/Memory-Order/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>共享目标文件/共享库</title>
+    <link href="https://blog.zhuwenq.cc/%E5%85%B1%E4%BA%AB%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6-%E5%85%B1%E4%BA%AB%E5%BA%93/"/>
+    <id>https://blog.zhuwenq.cc/%E5%85%B1%E4%BA%AB%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6-%E5%85%B1%E4%BA%AB%E5%BA%93/</id>
+    <published>2023-04-02T12:08:44.000Z</published>
+    <updated>2023-06-25T15:04:39.542Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;对于被广泛使用的标准库或其他库, 如果一个系统中多个程序都在引用相同的符号, 此时使用静态库将需要为每个程序都加载一份符号定义的代码和数据, 这对内存是极大的浪费.&lt;/p&gt;
+&lt;p&gt;共享库 (shared library) 是解决静态库这一问题的产物. 共享库是一个目标模块, 在运行或加载时可以被加载到任意内存地址, 并和一个在内存中的程序链接起来. 这一过程称为动态链接, 是由一个叫做 &lt;em&gt;动态链接器 (dynamic linker)&lt;/em&gt; 的程序执行的.&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="知识类" scheme="https://blog.zhuwenq.cc/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/"/>
+    
+    
+    <category term="CS:APP" scheme="https://blog.zhuwenq.cc/tags/CS-APP/"/>
+    
+    <category term="Computer System" scheme="https://blog.zhuwenq.cc/tags/Computer-System/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>可执行目标文件</title>
+    <link href="https://blog.zhuwenq.cc/%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/"/>
+    <id>https://blog.zhuwenq.cc/%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/</id>
+    <published>2023-04-02T12:03:27.000Z</published>
+    <updated>2023-06-25T15:04:39.546Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;链接器 &lt;a href=&quot;../Linkage&quot;&gt;链接&lt;/a&gt; 的结果是生成一个可执行目标文件, 这个目标文件中包含将程序加载到内存并运行的所有信息. 下图是一个 ELF 可执行目标文件所包含的信息:&lt;/p&gt;
+&lt;img data-src=&quot;/%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/1.png&quot; class=&quot;&quot;&gt;</summary>
+    
+    
+    
+    <category term="知识类" scheme="https://blog.zhuwenq.cc/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/"/>
+    
+    
+    <category term="CS:APP" scheme="https://blog.zhuwenq.cc/tags/CS-APP/"/>
+    
+    <category term="Computer System" scheme="https://blog.zhuwenq.cc/tags/Computer-System/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>可重定位目标文件</title>
+    <link href="https://blog.zhuwenq.cc/%E5%8F%AF%E9%87%8D%E5%AE%9A%E4%BD%8D%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/"/>
+    <id>https://blog.zhuwenq.cc/%E5%8F%AF%E9%87%8D%E5%AE%9A%E4%BD%8D%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/</id>
+    <published>2023-04-02T11:19:23.000Z</published>
+    <updated>2023-06-25T15:04:39.546Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;现代 x86-64 系统使用可执行可链接格式文件 (Executable and Linkable Format, ELF)&lt;/p&gt;
+&lt;p&gt;ELF 文件的结构:&lt;/p&gt;
+&lt;img data-src=&quot;/%E5%8F%AF%E9%87%8D%E5%AE%9A%E4%BD%8D%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/1.png&quot; class=&quot;&quot;&gt;</summary>
+    
+    
+    
+    <category term="知识类" scheme="https://blog.zhuwenq.cc/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/"/>
+    
+    
+    <category term="CS:APP" scheme="https://blog.zhuwenq.cc/tags/CS-APP/"/>
+    
+    <category term="Compute System" scheme="https://blog.zhuwenq.cc/tags/Compute-System/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linkage</title>
+    <link href="https://blog.zhuwenq.cc/Linkage/"/>
+    <id>https://blog.zhuwenq.cc/Linkage/</id>
+    <published>2023-04-02T11:13:52.000Z</published>
+    <updated>2023-06-25T15:04:39.450Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;程序从源代码到可执行文件需要经过 4 个步骤, 链接就是其中重要的一步.&lt;/p&gt;
+&lt;p&gt;链接器的主要工作是将具备引用关系的不同编译单元的编译结果 (i.e. 可重定位目标文件) 相互连接, 组成一个可执行文件.&lt;/p&gt;
+&lt;p&gt;静态链接器以一组可重定位目标文件和命令行参数作为输入, 生成一个完全链接的, 可以加载运行的可执行目标文件.&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="知识类" scheme="https://blog.zhuwenq.cc/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/"/>
+    
+    
+    <category term="C++" scheme="https://blog.zhuwenq.cc/tags/C/"/>
+    
+    <category term="CS:APP" scheme="https://blog.zhuwenq.cc/tags/CS-APP/"/>
+    
+    <category term="Compute System" scheme="https://blog.zhuwenq.cc/tags/Compute-System/"/>
+    
+    <category term="Linkage" scheme="https://blog.zhuwenq.cc/tags/Linkage/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Cache</title>
+    <link href="https://blog.zhuwenq.cc/Cache/"/>
+    <id>https://blog.zhuwenq.cc/Cache/</id>
+    <published>2023-03-15T14:45:25.000Z</published>
+    <updated>2023-06-25T15:04:39.410Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;计算机存储器具有金字塔式结构, 即: 较高层的存储器容量小速度快, 低层的存储器容量大速度慢, 计算机通过缓存的方式提高储存系统的整体性能.&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="知识类" scheme="https://blog.zhuwenq.cc/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/"/>
+    
+    
+    <category term="CS:APP" scheme="https://blog.zhuwenq.cc/tags/CS-APP/"/>
+    
+    <category term="Compute System" scheme="https://blog.zhuwenq.cc/tags/Compute-System/"/>
+    
+    <category term="CPU Cache" scheme="https://blog.zhuwenq.cc/tags/CPU-Cache/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Xv6 Operating system 03-page table</title>
+    <link href="https://blog.zhuwenq.cc/Xv6-Operating-system-03-page-table/"/>
+    <id>https://blog.zhuwenq.cc/Xv6-Operating-system-03-page-table/</id>
+    <published>2023-03-09T11:13:11.000Z</published>
+    <updated>2023-06-25T15:04:39.542Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;页表是操作系统之所以能够为进程提供独立的地址空间和内存所依赖的机制。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="知识类" scheme="https://blog.zhuwenq.cc/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/"/>
+    
+    
+    <category term="Operating System" scheme="https://blog.zhuwenq.cc/tags/Operating-System/"/>
+    
+    <category term="xv6" scheme="https://blog.zhuwenq.cc/tags/xv6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C++ 模板03--基本技巧</title>
+    <link href="https://blog.zhuwenq.cc/C-%E6%A8%A1%E6%9D%BF03-%E5%9F%BA%E6%9C%AC%E6%8A%80%E5%B7%A7/"/>
+    <id>https://blog.zhuwenq.cc/C-%E6%A8%A1%E6%9D%BF03-%E5%9F%BA%E6%9C%AC%E6%8A%80%E5%B7%A7/</id>
+    <published>2023-03-06T12:04:48.000Z</published>
+    <updated>2023-06-25T15:04:39.410Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;C++ template 中关于实践的一些技巧和基础机制&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="知识类" scheme="https://blog.zhuwenq.cc/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/"/>
+    
+    
+    <category term="C++ Template" scheme="https://blog.zhuwenq.cc/tags/C-Template/"/>
+    
+    <category term="C++" scheme="https://blog.zhuwenq.cc/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Xv6 Operating system 02-organization</title>
+    <link href="https://blog.zhuwenq.cc/xv6-Operating-system-02-organization/"/>
+    <id>https://blog.zhuwenq.cc/xv6-Operating-system-02-organization/</id>
+    <published>2023-03-05T12:15:06.000Z</published>
+    <updated>2023-06-25T15:04:39.542Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;the-core-functionality-of-an-os&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#the-core-functionality-of-an-os&quot;&gt;&lt;/a&gt; The core functionality of an OS&lt;/h2&gt;
+&lt;p&gt;操作系统的核心任务在于&lt;strong&gt;同时支持多个活动&lt;/strong&gt;，即，操作系统必须将硬件资源分时共享给所有的进程使用。&lt;/p&gt;
+&lt;p&gt;为了保证进程的活动质量，操作系统还必须保证进程的执行是 &lt;strong&gt;独立/孤立(isolation)&lt;/strong&gt; 的，即进程不会因意外或恶意目的破坏其他进程的执行，以及不会被其他进程破坏。&lt;/p&gt;
+&lt;p&gt;保证独立性的前提下，进程之间合理的交互和通信也应该被支持，因此操作系统应该提供 &lt;strong&gt;进程间通信&lt;/strong&gt; 的方式，例如 &lt;code&gt;pipe&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;总的来说，操作系统必须为进程提供以下服务：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;mark&gt;时分复用&lt;/mark&gt; 底层硬件&lt;/li&gt;
+&lt;li&gt;&lt;mark&gt;独立&lt;/mark&gt; 的执行环境(内存，内核状态等)&lt;/li&gt;
+&lt;li&gt;进程之间的合法 &lt;mark&gt;交互&lt;/mark&gt;&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    <category term="知识类" scheme="https://blog.zhuwenq.cc/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/"/>
+    
+    
+    <category term="Operating System" scheme="https://blog.zhuwenq.cc/tags/Operating-System/"/>
+    
+    <category term="xv6" scheme="https://blog.zhuwenq.cc/tags/xv6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Xv6 Operating system 01-interface</title>
+    <link href="https://blog.zhuwenq.cc/xv6-Operating-system-01-interface/"/>
+    <id>https://blog.zhuwenq.cc/xv6-Operating-system-01-interface/</id>
+    <published>2023-03-02T14:36:49.000Z</published>
+    <updated>2023-06-25T15:04:39.542Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;操作系统的职责是在多个程序(进程)之间共享计算机提供的物理资源，并提供一系列比直接操作硬件更有用的服务。具体地说，操作系统为计算机硬件提供一层抽象，使软件程序不需要关心硬件的具体实现。操作系统还必须通过某种时分复用的机制使得多个程序可以共享底层硬件。最后，操作系统也必须为不同程序进程提供某种通信机制。&lt;/p&gt;
+&lt;p&gt;操作系统中，运行的程序被抽象成进程，一个进程的内容即它所占用的内存及其他资源。其中，在内存中存有进程的指令，数据，堆栈等运行时上下文。操作系统接口即操作系统内核为其他进程提供的一系列服务的接口，称为系统调用 (system call) 。当进程需要调用系统服务时，其只能通过调用操作系统接口实现.&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="知识类" scheme="https://blog.zhuwenq.cc/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/"/>
+    
+    
+    <category term="Operating System" scheme="https://blog.zhuwenq.cc/tags/Operating-System/"/>
+    
+    <category term="xv6" scheme="https://blog.zhuwenq.cc/tags/xv6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C++ 模板022-可变模板</title>
+    <link href="https://blog.zhuwenq.cc/C-%E6%A8%A1%E6%9D%BF022-%E5%8F%AF%E5%8F%98%E6%A8%A1%E6%9D%BF/"/>
+    <id>https://blog.zhuwenq.cc/C-%E6%A8%A1%E6%9D%BF022-%E5%8F%AF%E5%8F%98%E6%A8%A1%E6%9D%BF/</id>
+    <published>2023-02-15T08:49:38.000Z</published>
+    <updated>2023-06-25T15:04:39.410Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;自 C++ 11， 模板可以接受可变数量的参数，这一特性允许向模板传入任意数目的任意类型参数&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="知识类" scheme="https://blog.zhuwenq.cc/categories/%E7%9F%A5%E8%AF%86%E7%B1%BB/"/>
+    
+    
+    <category term="C++ Template" scheme="https://blog.zhuwenq.cc/tags/C-Template/"/>
+    
+    <category term="C++" scheme="https://blog.zhuwenq.cc/tags/C/"/>
+    
+  </entry>
+  
+</feed>
