@@ -31,7 +31,7 @@
 <meta property="og:description" content="C++ 17 提供了两个编译时常量, 用于表示 CPU Cache 的一些参数. 合理使用这两个编译时常量可以避免在多级 Cache 结构的计算机上并发程序频繁访问同一个对象不同成员时可能发生的 伪共享 (false sharing) 问题.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-06-20T08:15:09.000Z">
-<meta property="article:modified_time" content="2024-01-02T15:41:22.614Z">
+<meta property="article:modified_time" content="2024-06-23T16:26:57.763Z">
 <meta property="article:author" content="zhuwenq">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="CPU Cache">
@@ -102,7 +102,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">84</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">79</span></a></li><li class="menu-item menu-item-books"><a href="https://zhuwenq.notion.site/Book-List-69ab897ee3184ccea99eb33eac976f3e" rel="section" target="_blank"><i class="fas fa-book fa-fw"></i>books</a></li><li class="menu-item menu-item-movies"><a href="https://zhuwenq.notion.site/Movie-List-f2d5b594d437400091712ac108963427" rel="section" target="_blank"><i class="fas fa-film fa-fw"></i>movies</a></li><li class="menu-item menu-item-photograph"><a href="/categories/Photograph/" rel="section"><i class="fa fa-camera-retro fa-fw"></i>photograph</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">85</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">80</span></a></li><li class="menu-item menu-item-books"><a href="https://zhuwenq.notion.site/Book-List-69ab897ee3184ccea99eb33eac976f3e" rel="section" target="_blank"><i class="fas fa-book fa-fw"></i>books</a></li><li class="menu-item menu-item-movies"><a href="https://zhuwenq.notion.site/Movie-List-f2d5b594d437400091712ac108963427" rel="section" target="_blank"><i class="fas fa-film fa-fw"></i>movies</a></li><li class="menu-item menu-item-photograph"><a href="/categories/Photograph/" rel="section"><i class="fa fa-camera-retro fa-fw"></i>photograph</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -153,7 +153,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#false-sharing"><span class="nav-number">1.</span> <span class="nav-text"> False sharing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#how-to-avoid"><span class="nav-number">2.</span> <span class="nav-text"> How to avoid</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#false-sharing-avoiding-in-modern-c"><span class="nav-number">3.</span> <span class="nav-text"> False sharing avoiding in modern C++</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#references"><span class="nav-number"></span> <span class="nav-text"> References</span></a></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#False-sharing"><span class="nav-number">1.</span> <span class="nav-text">False sharing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-avoid"><span class="nav-number">2.</span> <span class="nav-text">How to avoid</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#False-sharing-avoiding-in-modern-C"><span class="nav-number">3.</span> <span class="nav-text">False sharing avoiding in modern C++</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number"></span> <span class="nav-text">References</span></a></div>
         </div>
         <!--/noindex-->
 
@@ -168,7 +168,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-count">80</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -179,7 +179,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">84</span>
+        <span class="site-state-item-count">85</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -254,7 +254,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-01-02 23:41:22" itemprop="dateModified" datetime="2024-01-02T23:41:22+08:00">2024-01-02</time>
+      <time title="修改时间：2024-06-24 00:26:57" itemprop="dateModified" datetime="2024-06-24T00:26:57+08:00">2024-06-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -300,25 +300,21 @@
 <span id="more"></span>
 <p>这两个编译时常量是:</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span> <span class="keyword">constexpr</span> std::<span class="type">size_t</span> hardware_destrutive_interference_size; <span class="comment">// 下简称: hdis</span></span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">constexpr</span> std::<span class="type">size_t</span> hardware_constructive_interence_size; <span class="comment">// 下简称: hcis</span></span><br></pre></td></tr></table></figure>
-<h3 id="false-sharing"><a class="markdownIt-Anchor" href="#false-sharing"></a> False sharing</h3>
-<p>首先说一说什么是伪共享. 在 <a href="/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B">内存屏障和-C-内存模型</a> 中我们知道现代 CPU 的 Cache 是多级层次的, 不同的 CPU Core 可能持有独立的 Cache, 这种结构很有可能出现 Cache 不一致问题. 那么多个 Core 同时读写同一个内存位置时就是一种 data race. MESI 协议通过为 Cache line 引入四种状态并在需要时广播消息解决了缓存一致性的问题. 具体地说, 当 Core A 和 Core B 的独立 Cache 中都持有字节 C 的缓存时, 如果 Core A 写入字节 C 的同时 Core B 也要访问字节 C, 那么 Core B 必须先 invalidate 字节 C 所在的 Cache line, 并重新从下一级 Cache 中加载包含字节 C 的 Cache line (细节参考: <a href="/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B">内存屏障和-C-内存模型</a>).</p>
+<h3 id="False-sharing"><a href="#False-sharing" class="headerlink" title="False sharing"></a>False sharing</h3><p>首先说一说什么是伪共享. 在 <a href="/内存屏障和-C-内存模型">内存屏障和-C-内存模型</a> 中我们知道现代 CPU 的 Cache 是多级层次的, 不同的 CPU Core 可能持有独立的 Cache, 这种结构很有可能出现 Cache 不一致问题. 那么多个 Core 同时读写同一个内存位置时就是一种 data race. MESI 协议通过为 Cache line 引入四种状态并在需要时广播消息解决了缓存一致性的问题. 具体地说, 当 Core A 和 Core B 的独立 Cache 中都持有字节 C 的缓存时, 如果 Core A 写入字节 C 的同时 Core B 也要访问字节 C, 那么 Core B 必须先 invalidate 字节 C 所在的 Cache line, 并重新从下一级 Cache 中加载包含字节 C 的 Cache line (细节参考: <a href="/内存屏障和-C-内存模型">内存屏障和-C-内存模型</a>).</p>
 <p>值得注意的是, Cache 的最小操作单元是 Cache line, 而一个 Cache line 通常包含几十上百个字节. 那么考虑一种情况: Core A 和 Core B 并发访问 (读写) 字节 C 和字节 C 的相邻字节 D 时, 会发生什么? 答案显而易见, 相邻字节 C 和 D 极有可能被分配到同一个 Cache line (细节参考 <a href="/Cache">Cache</a>), 这就造成明明并行程序没有访问同一个内存位置, 也就是并不存在 data race, 但 Core A 和 Core B 的 Cache 却需要频繁地 invalidate 整个 Cache line 并重新加载, 结果就是程序执行效率的下降. 这就是 <strong>false sharing</strong> 的情况. Scott Meyers 关于 CPU Cache 的一次 talk 中提到一个很好的例子, 说明了 false sharing 问题对多线程并行程序 scalability 的影响. 详情参考: <a target="_blank" rel="noopener" href="https://www.aristeia.com/TalkNotes/codedive-CPUCachesHandouts.pdf">https://www.aristeia.com/TalkNotes/codedive-CPUCachesHandouts.pdf</a></p>
 
-<h3 id="how-to-avoid"><a class="markdownIt-Anchor" href="#how-to-avoid"></a> How to avoid</h3>
-<p>false sharing 的避免手段主要是将可能在不同 Core 中并发访问的数据布局成合适的距离, 使得它们不可能被塞到同一个 Cache line. 例如对于如下的结构:</p>
+<h3 id="How-to-avoid"><a href="#How-to-avoid" class="headerlink" title="How to avoid"></a>How to avoid</h3><p>false sharing 的避免手段主要是将可能在不同 Core 中并发访问的数据布局成合适的距离, 使得它们不可能被塞到同一个 Cache line. 例如对于如下的结构:</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">ConcurrentStruct</span> &#123;</span><br><span class="line">    <span class="type">int</span> threadA_val&#123;&#125;;</span><br><span class="line">    <span class="type">int</span> threadB_val&#123;&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>如果成员 <code>threadA_val</code> 和 <code>threadB_val</code> 分别在两个 Core 中被频繁读写, 我们可以尝试在它们中间插入一些 padding 字节以强迫它们配分配到不同 Cache line (对于 64 bytes 大小的 cache line):</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">FastConcurrentStruct</span> &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> padding1[<span class="number">60</span>];</span><br><span class="line">    <span class="type">int</span> threadA_val&#123;&#125;;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> padding2[<span class="number">60</span>];</span><br><span class="line">    <span class="type">int</span> threadB_val&#123;&#125;;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> padding3[<span class="number">60</span>];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>这种 padding 不仅使得 <code>threadA_val</code> 和 <code>threadB_val</code> 无法加载到同一个 Cache line, 也避免了它们和程序其它部分的值加载到同一个 cache line. 那么在不同 Cache line 大小的 CPU 上如何写出统一的避免 false sharing 的代码呢? 操作系统的内核可能会提供一些特殊的宏定义. 那么如何写出跨操作系统统一的代码呢? 这就是上面介绍的两个 C++ 编译时常量 <code>hdis</code>, <code>hcis</code> 的作用.</p>
-<h3 id="false-sharing-avoiding-in-modern-c"><a class="markdownIt-Anchor" href="#false-sharing-avoiding-in-modern-c"></a> False sharing avoiding in modern C++</h3>
-<p>引用 <a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/thread/hardware_destructive_interference_size">cppreference</a> 提供的例子:</p>
+<h3 id="False-sharing-avoiding-in-modern-C"><a href="#False-sharing-avoiding-in-modern-C" class="headerlink" title="False sharing avoiding in modern C++"></a>False sharing avoiding in modern C++</h3><p>引用 <a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/thread/hardware_destructive_interference_size">cppreference</a> 提供的例子:</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">keep_apart</span> &#123;</span><br><span class="line">    <span class="built_in">alignas</span>(std::hardware_destructive_interference_size) std::atomic&lt;<span class="type">int</span>&gt; cat;</span><br><span class="line">    <span class="built_in">alignas</span>(std::hardware_destructive_interference_size) std::atomic&lt;<span class="type">int</span>&gt; dog;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p><code>hdis</code> 表示要避免 false sharing 两个变量的地址所需要的 <strong>最小</strong> 差值. 下面的测试程序说明了它的效果:</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;new&gt;</span></span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">no_fs</span> &#123;</span><br><span class="line">  <span class="built_in">alignas</span>(std::hardware_destructive_interference_size) <span class="type">int</span> a&#123;&#125;;</span><br><span class="line">  <span class="built_in">alignas</span>(std::hardware_destructive_interference_size) <span class="type">int</span> b&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">fs</span> &#123;</span><br><span class="line">  <span class="type">int</span> a&#123;&#125;;</span><br><span class="line">  <span class="type">int</span> b&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  no_fs nf&#123;&#125;;</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;No false sharing: &quot;</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span></span><br><span class="line">            &lt;&lt; &amp;nf &lt;&lt; <span class="string">&quot;\n&quot;</span></span><br><span class="line">            &lt;&lt; &amp;(nf.a) &lt;&lt; <span class="string">&quot;\n&quot;</span></span><br><span class="line">            &lt;&lt; &amp;(nf.b) &lt;&lt; <span class="string">&quot;\n&quot;</span></span><br><span class="line">            &lt;&lt; std::hardware_destructive_interference_size &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">  fs f&#123;&#125;;</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;false sharing: &quot;</span> &lt;&lt; <span class="string">&#x27;\n&#x27;</span></span><br><span class="line">            &lt;&lt; &amp;f &lt;&lt; <span class="string">&quot;\n&quot;</span></span><br><span class="line">            &lt;&lt; &amp;(f.a) &lt;&lt; <span class="string">&quot;\n&quot;</span></span><br><span class="line">            &lt;&lt; &amp;(f.b) &lt;&lt; <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** output:</span></span><br><span class="line"><span class="comment">No false sharing: </span></span><br><span class="line"><span class="comment">0x7ffe0174ff00</span></span><br><span class="line"><span class="comment">0x7ffe0174ff00</span></span><br><span class="line"><span class="comment">0x7ffe0174ff40</span></span><br><span class="line"><span class="comment">64</span></span><br><span class="line"><span class="comment">false sharing: </span></span><br><span class="line"><span class="comment">0x7ffe0174fef8</span></span><br><span class="line"><span class="comment">0x7ffe0174fef8</span></span><br><span class="line"><span class="comment">0x7ffe0174fefc</span></span><br><span class="line"><span class="comment">**/</span></span><br></pre></td></tr></table></figure>
 <p>可以看出测试平台 (<a target="_blank" rel="noopener" href="https://godbolt.org/z/M3bs16cY6">https://godbolt.org/z/M3bs16cY6</a>) 的 Cache line 大小是 64 字节, 并且 <code>no_fs</code> 结构体中的成员地址都按照 64 字节对齐. 而 <code>fs</code> 结构的成员则是 trivial layout, 即成员是紧密排列的.</p>
 <p>另外一个常量 <code>hcis</code> 表示 true sharing 的最大连续内存长度, 即可能被放入同一个 cache line 的最大字节数. 用于增大整个结构或连续的变量被放入同一个 cache line 的可能性, 不详细介绍, 可以参考 cppreference 给出的例子: <a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/thread/hardware_destructive_interference_size">std::hardware_destructive_interference_size, std::hardware_constructive_interference_size - cppreference.com</a>.</p>
-<h2 id="references"><a class="markdownIt-Anchor" href="#references"></a> References</h2>
-<ol>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
 <li>Scott Meyers. 2013. <strong>Cpu Caches and Why You Care</strong>. In <em>code::dive conference</em>. <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=WDIkqP4JbkE">video</a>. <a target="_blank" rel="noopener" href="https://www.aristeia.com/TalkNotes/codedive-CPUCachesHandouts.pdf">slide</a></li>
 <li><a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/thread/hardware_destructive_interference_size">std::hardware_destructive_interference_size, std::hardware_constructive_interference_size - cppreference.com</a></li>
 </ol>
@@ -437,14 +433,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">295k</span>
+    <span title="站点总字数">253k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:28</span>
+    <span title="站点阅读时长">3:50</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动

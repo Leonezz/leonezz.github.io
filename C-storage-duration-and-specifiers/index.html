@@ -31,7 +31,7 @@
 <meta property="og:description" content="偶然在 vscode 的代码提示中看到了 thread_local 这个关键字, 心想 C++ 中什么时候提供了这种东西. 翻了下 cppreference 才知道早在 C++ 11 中就引入了这个修饰符, 用于声明线程生命周期. 趁此机会系统地看了下 C++ 变量的 4 种生命周期, 特此记录.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-06-19T08:17:18.000Z">
-<meta property="article:modified_time" content="2024-01-02T15:41:22.578Z">
+<meta property="article:modified_time" content="2024-06-23T16:26:57.727Z">
 <meta property="article:author" content="zhuwenq">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="storage duration">
@@ -102,7 +102,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">84</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">79</span></a></li><li class="menu-item menu-item-books"><a href="https://zhuwenq.notion.site/Book-List-69ab897ee3184ccea99eb33eac976f3e" rel="section" target="_blank"><i class="fas fa-book fa-fw"></i>books</a></li><li class="menu-item menu-item-movies"><a href="https://zhuwenq.notion.site/Movie-List-f2d5b594d437400091712ac108963427" rel="section" target="_blank"><i class="fas fa-film fa-fw"></i>movies</a></li><li class="menu-item menu-item-photograph"><a href="/categories/Photograph/" rel="section"><i class="fa fa-camera-retro fa-fw"></i>photograph</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">85</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">80</span></a></li><li class="menu-item menu-item-books"><a href="https://zhuwenq.notion.site/Book-List-69ab897ee3184ccea99eb33eac976f3e" rel="section" target="_blank"><i class="fas fa-book fa-fw"></i>books</a></li><li class="menu-item menu-item-movies"><a href="https://zhuwenq.notion.site/Movie-List-f2d5b594d437400091712ac108963427" rel="section" target="_blank"><i class="fas fa-film fa-fw"></i>movies</a></li><li class="menu-item menu-item-photograph"><a href="/categories/Photograph/" rel="section"><i class="fa fa-camera-retro fa-fw"></i>photograph</a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -153,7 +153,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#references"><span class="nav-number">1.</span> <span class="nav-text"> References</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">1.</span> <span class="nav-text">References</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -168,7 +168,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-count">80</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -179,7 +179,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">84</span>
+        <span class="site-state-item-count">85</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -254,7 +254,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-01-02 23:41:22" itemprop="dateModified" datetime="2024-01-02T23:41:22+08:00">2024-01-02</time>
+      <time title="修改时间：2024-06-24 00:26:57" itemprop="dateModified" datetime="2024-06-24T00:26:57+08:00">2024-06-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -313,8 +313,7 @@
 <li><code>extern</code>: 不影响变量的存储周期, 只表示该变量 (符号) 具有 external linkage. 但是由于 <code>extern</code> 声明符只能用在全局变量或函数的 <em>声明</em> 中, 因此凡是被 <code>extern</code> 修饰的变量都具有 static 或 thread 存储周期.</li>
 <li><code>thread_local</code>: thread. <code>thread_local</code> 是 C++ 11 中引入的关键字, 用于修饰全局变量, 局部变量或 <em>静态</em> 成员变量. 表示该变量具有 thread 存储周期. 用在局部变量上时, 隐含有 static 语义. 用在全局变量上时, 可以和 <code>static</code> 或 <code>extern</code> 合用, 表示 internal/external linkage.</li>
 </ol>
-<h2 id="references"><a class="markdownIt-Anchor" href="#references"></a> References</h2>
-<ol>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
 <li><a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/language/storage_duration">Storage class specifiers - cppreference.com</a></li>
 </ol>
 
@@ -432,14 +431,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">295k</span>
+    <span title="站点总字数">253k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:28</span>
+    <span title="站点阅读时长">3:50</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
