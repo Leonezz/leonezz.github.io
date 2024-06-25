@@ -6,7 +6,7 @@
   <link href="https://blog.zhuwenq.cc/atom.xml" rel="self"/>
   
   <link href="https://blog.zhuwenq.cc/"/>
-  <updated>2024-06-25T01:54:57.026Z</updated>
+  <updated>2024-06-25T02:18:31.109Z</updated>
   <id>https://blog.zhuwenq.cc/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://blog.zhuwenq.cc/std-string-%E6%8B%BC%E6%8E%A5%E6%93%8D%E4%BD%9C%E7%9A%84%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/"/>
     <id>https://blog.zhuwenq.cc/std-string-%E6%8B%BC%E6%8E%A5%E6%93%8D%E4%BD%9C%E7%9A%84%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/</id>
     <published>2024-06-23T07:34:26.000Z</published>
-    <updated>2024-06-25T01:54:57.026Z</updated>
+    <updated>2024-06-25T02:18:31.109Z</updated>
     
     
     <summary type="html">&lt;p&gt;C++ 标准库中提供的 &lt;code&gt;std::string&lt;/code&gt; 类型有一些坑, 不小心使用的话很可能对程序性能造成影响. 例如字符串拼接这一常见简单的操作, 在 C++ 中大约有 4 种方式实现:&lt;/p&gt;
@@ -48,7 +48,7 @@
     <link href="https://blog.zhuwenq.cc/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84-std-function-%E5%AE%9E%E7%8E%B0/"/>
     <id>https://blog.zhuwenq.cc/%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84-std-function-%E5%AE%9E%E7%8E%B0/</id>
     <published>2023-08-10T05:25:09.000Z</published>
-    <updated>2024-06-25T01:54:57.026Z</updated>
+    <updated>2024-06-25T02:18:31.109Z</updated>
     
     
     <summary type="html">&lt;p&gt;一个简单的 &lt;code&gt;std::function&lt;/code&gt; 实现, 能够完成基本功能, 即可以代理:&lt;/p&gt;
@@ -79,7 +79,7 @@
     <link href="https://blog.zhuwenq.cc/%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E4%B8%80%E4%B8%AA%E7%82%B9%E5%9C%A8%E4%B8%80%E4%B8%AA%E4%B8%89%E8%A7%92%E5%BD%A2%E5%86%85%E9%83%A8/"/>
     <id>https://blog.zhuwenq.cc/%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E4%B8%80%E4%B8%AA%E7%82%B9%E5%9C%A8%E4%B8%80%E4%B8%AA%E4%B8%89%E8%A7%92%E5%BD%A2%E5%86%85%E9%83%A8/</id>
     <published>2023-07-16T14:31:52.000Z</published>
-    <updated>2024-06-25T01:54:57.030Z</updated>
+    <updated>2024-06-25T02:18:31.113Z</updated>
     
     
     <summary type="html">&lt;p&gt;最近遇到这么一个问题: 给定一个点 &lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;P&lt;/mi&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;P&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&quot;katex-html&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.68333em;vertical-align:0em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot; style=&quot;margin-right:0.13889em;&quot;&gt;P&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt; 和三角形的三个点 &lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mo separator=&quot;true&quot;&gt;,&lt;/mo&gt;&lt;mi&gt;B&lt;/mi&gt;&lt;mo separator=&quot;true&quot;&gt;,&lt;/mo&gt;&lt;mi&gt;C&lt;/mi&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;A, B, C&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&quot;katex-html&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.8777699999999999em;vertical-align:-0.19444em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;mpunct&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.16666666666666666em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot; style=&quot;margin-right:0.05017em;&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;mpunct&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.16666666666666666em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot; style=&quot;margin-right:0.07153em;&quot;&gt;C&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;, 如何判断点 &lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;P&lt;/mi&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;P&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&quot;katex-html&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.68333em;vertical-align:0em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot; style=&quot;margin-right:0.13889em;&quot;&gt;P&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt; 是否在 &lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;msub&gt;&lt;mi mathvariant=&quot;normal&quot;&gt;△&lt;/mi&gt;&lt;mrow&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mi&gt;B&lt;/mi&gt;&lt;mi&gt;C&lt;/mi&gt;&lt;/mrow&gt;&lt;/msub&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;&#92;triangle_{ABC}&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&quot;katex-html&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:0.8888799999999999em;vertical-align:-0.19444em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;&lt;span class=&quot;mord&quot;&gt;△&lt;/span&gt;&lt;span class=&quot;msupsub&quot;&gt;&lt;span class=&quot;vlist-t vlist-t2&quot;&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:0.32833099999999993em;&quot;&gt;&lt;span style=&quot;top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;&lt;span class=&quot;mord mathnormal mtight&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;mord mathnormal mtight&quot; style=&quot;margin-right:0.05017em;&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;mord mathnormal mtight&quot; style=&quot;margin-right:0.07153em;&quot;&gt;C&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;vlist-s&quot;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:0.15em;&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt; 内部?&lt;/p&gt;</summary>
@@ -100,7 +100,7 @@
     <link href="https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-06-Promise-Future-and-Asynchronous/"/>
     <id>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-06-Promise-Future-and-Asynchronous/</id>
     <published>2023-06-24T13:44:54.000Z</published>
-    <updated>2024-06-25T01:54:56.942Z</updated>
+    <updated>2024-06-25T02:18:31.025Z</updated>
     
     
     <summary type="html">&lt;p&gt;「期值」是标准库为异步任务中返回值以及异常的传递提供的基础设施. 具体的做法是将这些值关联到共享的「future」对象上. 异步任务可以向这些期值对象中写入返回值或异常值, 异步任务的发起线程则可以通过这些期值对象等待, 读取, 检查其所需要的异步结果. 标准库中为上述功能提供的设施即 &lt;code&gt;std::promise&lt;/code&gt; 和 &lt;code&gt;std::future&lt;/code&gt;.&lt;/p&gt;</summary>
@@ -127,7 +127,7 @@
     <link href="https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-05-Condition-variable-Semaphore-and-Synchronization/"/>
     <id>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-05-Condition-variable-Semaphore-and-Synchronization/</id>
     <published>2023-06-23T15:55:24.000Z</published>
-    <updated>2024-06-25T01:54:56.942Z</updated>
+    <updated>2024-06-25T02:18:31.025Z</updated>
     
     
     <summary type="html">&lt;p&gt;Condition variable 和 Semaphore 是并发编程中用于同步控制和交互的原语. 多个并发线程可以使用 Condition variable 彼此交互, 一些线程可以通过 Condition variable 等待 (wait) 其他线程的通知 (notification). &lt;em&gt;Condition variable 总是和 mutex 关联使用&lt;/em&gt;. Semaphore 相比 Condition variable 更加轻量, 它用来限制多个线程对共享资源的并发访问.&lt;/p&gt;</summary>
@@ -154,7 +154,7 @@
     <link href="https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-04-Mutex-Lock-and-Concurrent-Access-Control/"/>
     <id>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-04-Mutex-Lock-and-Concurrent-Access-Control/</id>
     <published>2023-06-21T13:59:51.000Z</published>
-    <updated>2024-06-25T01:54:56.942Z</updated>
+    <updated>2024-06-25T02:18:31.025Z</updated>
     
     
     <summary type="html">&lt;p&gt;&lt;code&gt;mutex&lt;/code&gt; 即 mutual exclusion, 表示一种互斥语义. 所谓互斥, 实际上是指所有权的唯一性, 即同一时刻一个互斥量只能由一个所有者持有. 在并发语境中, 互斥量这一原语的所有者一般是「线程」, 它的作用是用于阻止多个线程同时访问共享的资源, 从而避免 data race 并为多个线程的执行提供实现「同步」的机制.&lt;/p&gt;</summary>
@@ -179,7 +179,7 @@
     <link href="https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-03-Atomic-and-Memory-Ordering/"/>
     <id>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-03-Atomic-and-Memory-Ordering/</id>
     <published>2023-06-21T06:29:49.000Z</published>
-    <updated>2024-06-25T01:54:56.942Z</updated>
+    <updated>2024-06-25T02:18:31.025Z</updated>
     
     
     <summary type="html">&lt;p&gt;Atomic 提供了开发高性能无锁 (lock free) 结构的工具和接口, 对于内置类型或自定义类型, 也可以通过 &lt;code&gt;atomic&amp;lt;&amp;gt;&lt;/code&gt; 模板包装成支持原子操作的类型, 以实现并发安全.&lt;/p&gt;</summary>
@@ -202,7 +202,7 @@
     <link href="https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-02-CPU-Cache-and-false-sharing/"/>
     <id>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-02-CPU-Cache-and-false-sharing/</id>
     <published>2023-06-20T08:15:09.000Z</published>
-    <updated>2024-06-25T01:54:56.942Z</updated>
+    <updated>2024-06-25T02:18:31.025Z</updated>
     
     
     <summary type="html">&lt;p&gt;C++ 17 提供了两个编译时常量, 用于表示 CPU Cache 的一些参数. 合理使用这两个编译时常量可以避免在多级 Cache 结构的计算机上并发程序频繁访问同一个对象不同成员时可能发生的 &lt;strong&gt;伪共享 (false sharing)&lt;/strong&gt; 问题.&lt;/p&gt;</summary>
@@ -225,7 +225,7 @@
     <link href="https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-01-Thread-and-Concurrent-Execution/"/>
     <id>https://blog.zhuwenq.cc/Modern-C-Concurrency-Utilities-01-Thread-and-Concurrent-Execution/</id>
     <published>2023-06-19T14:35:31.000Z</published>
-    <updated>2024-06-25T01:54:56.942Z</updated>
+    <updated>2024-06-25T02:18:31.025Z</updated>
     
     
     <summary type="html">&lt;p&gt;C++ 11 及之后的版本中提供了一系列并发编程的工具和对并发控制原语的抽象封装, 如 &lt;code&gt;thread&lt;/code&gt;, &lt;code&gt;atomic&lt;/code&gt;, &lt;code&gt;mutex&lt;/code&gt;, &lt;code&gt;condition_varible&lt;/code&gt; 等. 本文介绍 &lt;code&gt;thread&lt;/code&gt; 以及 &lt;code&gt;jthread&lt;/code&gt; 的基本语义和功能, 它们在实际场景中的 best practice 和与之密切相关的编程模式不在本文讨论范围之内.&lt;/p&gt;</summary>
@@ -248,7 +248,7 @@
     <link href="https://blog.zhuwenq.cc/C-storage-duration-and-specifiers/"/>
     <id>https://blog.zhuwenq.cc/C-storage-duration-and-specifiers/</id>
     <published>2023-06-19T08:17:18.000Z</published>
-    <updated>2024-06-25T01:54:56.902Z</updated>
+    <updated>2024-06-25T02:18:30.985Z</updated>
     
     
     <summary type="html">&lt;p&gt;偶然在 vscode 的代码提示中看到了 &lt;code&gt;thread_local&lt;/code&gt; 这个关键字, 心想 C++ 中什么时候提供了这种东西. 翻了下 cppreference 才知道早在 C++ 11 中就引入了这个修饰符, 用于声明线程生命周期. 趁此机会系统地看了下 C++ 变量的 4 种生命周期, 特此记录.&lt;/p&gt;</summary>
@@ -271,7 +271,7 @@
     <link href="https://blog.zhuwenq.cc/C-black-magic-%E5%88%A9%E7%94%A8%E5%8F%8B%E5%85%83%E5%87%BD%E6%95%B0%E5%92%8C%E6%98%BE%E5%BC%8F%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%AA%81%E7%A0%B4%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90/"/>
     <id>https://blog.zhuwenq.cc/C-black-magic-%E5%88%A9%E7%94%A8%E5%8F%8B%E5%85%83%E5%87%BD%E6%95%B0%E5%92%8C%E6%98%BE%E5%BC%8F%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%AA%81%E7%A0%B4%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90/</id>
     <published>2023-06-03T14:34:16.000Z</published>
-    <updated>2024-06-25T01:54:56.902Z</updated>
+    <updated>2024-06-25T02:18:30.985Z</updated>
     
     
     <summary type="html">&lt;p&gt;C++ 中的非继承类有两种访问权限, &lt;code&gt;private&lt;/code&gt; 和 &lt;code&gt;public&lt;/code&gt;. 一般来说, &lt;code&gt;private&lt;/code&gt; 只允许类型内部使用, 不允许外部访问. 然而, 由于 C++ 语言巨大的复杂性, 这一约束存在若干漏洞. 一种简单的做法就是假设 C++ 编译器不会对类对象的内存布局做奇怪的扰动, 这一假设通常是正确的, 因此可以通过猜测私有成员相对对象整体的地址偏移量访问私有成员. 或者更加方便地通过定义一个成员完全相同但访问权限相反的类, 并将原类对象的指针转换成新类的指针的方式访问原类对象的私有指针.&lt;/p&gt;
@@ -293,7 +293,7 @@
     <link href="https://blog.zhuwenq.cc/C-%E5%AF%B9%E8%B1%A1%E3%80%81%E8%99%9A%E5%87%BD%E6%95%B0%E4%B8%8E%E7%BB%A7%E6%89%BF/"/>
     <id>https://blog.zhuwenq.cc/C-%E5%AF%B9%E8%B1%A1%E3%80%81%E8%99%9A%E5%87%BD%E6%95%B0%E4%B8%8E%E7%BB%A7%E6%89%BF/</id>
     <published>2023-04-14T08:00:26.000Z</published>
-    <updated>2024-06-25T01:54:56.902Z</updated>
+    <updated>2024-06-25T02:18:30.985Z</updated>
     
     
     <summary type="html">&lt;p&gt;C++ 中以继承的方式实现动态多态是存在额外开销的, 具体地说，C++ 对象使用了额外的内存保存关于基类信息才实现了运行时多态. 但这种额外信息究竟以何种方式在对象的内存中报错对我来说仍是未知. 受到前人文章的启发, 本文借助 GDB 调试器一步步地观察记录 C++ 对象的内存布局, 力求理解实际 C++ 编译器 (gcc 9.4.0) 对 C++ 对象的内存布局以及派生类的实现.&lt;/p&gt;</summary>
@@ -316,7 +316,7 @@
     <link href="https://blog.zhuwenq.cc/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/"/>
     <id>https://blog.zhuwenq.cc/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/</id>
     <published>2023-04-08T14:47:44.000Z</published>
-    <updated>2024-06-25T01:54:57.030Z</updated>
+    <updated>2024-06-25T02:18:31.113Z</updated>
     
     
     <summary type="html">&lt;p&gt;Memory Barrier 是 CPU 提供的一种机制, 它的作用是在程序中设置一个内存屏障, CPU 会保证所有在 Memory Barrier 之前的代码对内存的访问 (改动) 在 Memory Barrier 之后都是可见的. 这一保证据有两方面的效应:&lt;/p&gt;
@@ -346,7 +346,7 @@
     <link href="https://blog.zhuwenq.cc/%E5%85%B1%E4%BA%AB%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6-%E5%85%B1%E4%BA%AB%E5%BA%93/"/>
     <id>https://blog.zhuwenq.cc/%E5%85%B1%E4%BA%AB%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6-%E5%85%B1%E4%BA%AB%E5%BA%93/</id>
     <published>2023-04-02T12:08:44.000Z</published>
-    <updated>2024-06-25T01:54:57.026Z</updated>
+    <updated>2024-06-25T02:18:31.109Z</updated>
     
     
     <summary type="html">&lt;p&gt;对于被广泛使用的标准库或其他库, 如果一个系统中多个程序都在引用相同的符号, 此时使用静态库将需要为每个程序都加载一份符号定义的代码和数据, 这对内存是极大的浪费.&lt;/p&gt;
@@ -368,7 +368,7 @@
     <link href="https://blog.zhuwenq.cc/%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/"/>
     <id>https://blog.zhuwenq.cc/%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/</id>
     <published>2023-04-02T12:03:27.000Z</published>
-    <updated>2024-06-25T01:54:57.030Z</updated>
+    <updated>2024-06-25T02:18:31.113Z</updated>
     
     
     <summary type="html">&lt;p&gt;链接器 &lt;a href=&quot;../Linkage&quot;&gt;链接&lt;/a&gt; 的结果是生成一个可执行目标文件, 这个目标文件中包含将程序加载到内存并运行的所有信息. 下图是一个 ELF 可执行目标文件所包含的信息:&lt;/p&gt;
@@ -390,7 +390,7 @@
     <link href="https://blog.zhuwenq.cc/%E5%8F%AF%E9%87%8D%E5%AE%9A%E4%BD%8D%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/"/>
     <id>https://blog.zhuwenq.cc/%E5%8F%AF%E9%87%8D%E5%AE%9A%E4%BD%8D%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/</id>
     <published>2023-04-02T11:19:23.000Z</published>
-    <updated>2024-06-25T01:54:57.030Z</updated>
+    <updated>2024-06-25T02:18:31.113Z</updated>
     
     
     <summary type="html">&lt;p&gt;现代 x86-64 系统使用可执行可链接格式文件 (Executable and Linkable Format, ELF)&lt;/p&gt;
@@ -413,7 +413,7 @@
     <link href="https://blog.zhuwenq.cc/Linkage/"/>
     <id>https://blog.zhuwenq.cc/Linkage/</id>
     <published>2023-04-02T11:13:52.000Z</published>
-    <updated>2024-06-25T01:54:56.942Z</updated>
+    <updated>2024-06-25T02:18:31.025Z</updated>
     
     
     <summary type="html">&lt;p&gt;程序从源代码到可执行文件需要经过 4 个步骤, 链接就是其中重要的一步.&lt;/p&gt;
@@ -440,7 +440,7 @@
     <link href="https://blog.zhuwenq.cc/Cache/"/>
     <id>https://blog.zhuwenq.cc/Cache/</id>
     <published>2023-03-15T14:45:25.000Z</published>
-    <updated>2024-06-25T01:54:56.906Z</updated>
+    <updated>2024-06-25T02:18:30.989Z</updated>
     
     
     <summary type="html">&lt;p&gt;计算机存储器具有金字塔式结构, 即: 较高层的存储器容量小速度快, 低层的存储器容量大速度慢, 计算机通过缓存的方式提高储存系统的整体性能.&lt;/p&gt;</summary>
@@ -463,7 +463,7 @@
     <link href="https://blog.zhuwenq.cc/Xv6-Operating-system-03-page-table/"/>
     <id>https://blog.zhuwenq.cc/Xv6-Operating-system-03-page-table/</id>
     <published>2023-03-09T11:13:11.000Z</published>
-    <updated>2024-06-25T01:54:57.026Z</updated>
+    <updated>2024-06-25T02:18:31.109Z</updated>
     
     
     <summary type="html">&lt;p&gt;页表是操作系统之所以能够为进程提供独立的地址空间和内存所依赖的机制。&lt;/p&gt;</summary>
@@ -484,7 +484,7 @@
     <link href="https://blog.zhuwenq.cc/C-%E6%A8%A1%E6%9D%BF03-%E5%9F%BA%E6%9C%AC%E6%8A%80%E5%B7%A7/"/>
     <id>https://blog.zhuwenq.cc/C-%E6%A8%A1%E6%9D%BF03-%E5%9F%BA%E6%9C%AC%E6%8A%80%E5%B7%A7/</id>
     <published>2023-03-06T12:04:48.000Z</published>
-    <updated>2024-06-25T01:54:56.906Z</updated>
+    <updated>2024-06-25T02:18:30.985Z</updated>
     
     
     <summary type="html">&lt;p&gt;C++ template 中关于实践的一些技巧和基础机制&lt;/p&gt;</summary>
