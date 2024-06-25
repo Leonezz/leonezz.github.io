@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favatar.png">
@@ -31,7 +31,7 @@
 <meta property="og:description" content="自 C++ 11， 模板可以接受可变数量的参数，这一特性允许向模板传入任意数目的任意类型参数">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-02-15T08:49:38.000Z">
-<meta property="article:modified_time" content="2024-06-23T16:26:57.727Z">
+<meta property="article:modified_time" content="2024-06-25T01:52:50.507Z">
 <meta property="article:author" content="zhuwenq">
 <meta property="article:tag" content="C++ Template">
 <meta property="article:tag" content="C++">
@@ -152,7 +152,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF"><span class="nav-number">1.</span> <span class="nav-text">可变函数模板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E8%BD%BD%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E6%A8%A1%E6%9D%BF"><span class="nav-number">1.1.</span> <span class="nav-text">重载可变参数模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E6%A8%A1%E6%9D%BF%E7%9A%84-sizeof-%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.2.</span> <span class="nav-text">可变参数模板的 sizeof 运算符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fold-expressions"><span class="nav-number">2.</span> <span class="nav-text">fold expressions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E7%B1%BB%E6%A8%A1%E6%9D%BF%E5%92%8C%E5%85%B6%E4%BB%96%E5%8F%AF%E5%8F%98%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">可变类模板和其他可变表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">3.1.</span> <span class="nav-text">可变表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E7%B4%A2%E5%BC%95"><span class="nav-number">3.2.</span> <span class="nav-text">可变索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E7%B1%BB%E6%A8%A1%E6%9D%BF"><span class="nav-number">3.3.</span> <span class="nav-text">可变类模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#variadic-deduction-guides"><span class="nav-number">3.4.</span> <span class="nav-text">variadic deduction guides</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E5%9F%BA%E7%B1%BB%E5%92%8C-using-%E5%A3%B0%E6%98%8E"><span class="nav-number">3.5.</span> <span class="nav-text">可变基类和 using 声明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E6%A8%A1%E6%9D%BF%E4%B8%80%E4%BA%9B%E5%9C%BA%E6%99%AF"><span class="nav-number">4.</span> <span class="nav-text">可变参数模板一些场景</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF"><span class="nav-number">1.</span> <span class="nav-text"> 可变函数模板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E8%BD%BD%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E6%A8%A1%E6%9D%BF"><span class="nav-number">1.1.</span> <span class="nav-text"> 重载可变参数模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E6%A8%A1%E6%9D%BF%E7%9A%84-sizeof-%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.2.</span> <span class="nav-text"> 可变参数模板的 sizeof 运算符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fold-expressions"><span class="nav-number">2.</span> <span class="nav-text"> fold expressions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E7%B1%BB%E6%A8%A1%E6%9D%BF%E5%92%8C%E5%85%B6%E4%BB%96%E5%8F%AF%E5%8F%98%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text"> 可变类模板和其他可变表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">3.1.</span> <span class="nav-text"> 可变表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E7%B4%A2%E5%BC%95"><span class="nav-number">3.2.</span> <span class="nav-text"> 可变索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E7%B1%BB%E6%A8%A1%E6%9D%BF"><span class="nav-number">3.3.</span> <span class="nav-text"> 可变类模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#variadic-deduction-guides"><span class="nav-number">3.4.</span> <span class="nav-text"> variadic deduction guides</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E5%9F%BA%E7%B1%BB%E5%92%8C-using-%E5%A3%B0%E6%98%8E"><span class="nav-number">3.5.</span> <span class="nav-text"> 可变基类和 using 声明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E6%A8%A1%E6%9D%BF%E4%B8%80%E4%BA%9B%E5%9C%BA%E6%99%AF"><span class="nav-number">4.</span> <span class="nav-text"> 可变参数模板一些场景</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -253,7 +253,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-06-24 00:26:57" itemprop="dateModified" datetime="2024-06-24T00:26:57+08:00">2024-06-24</time>
+      <time title="修改时间：2024-06-25 09:52:50" itemprop="dateModified" datetime="2024-06-25T09:52:50+08:00">2024-06-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -297,23 +297,26 @@
     
     <div class="post-body" itemprop="articleBody"><p>自 C++ 11， 模板可以接受可变数量的参数，这一特性允许向模板传入任意数目的任意类型参数</p>
 <span id="more"></span>
-<h2 id="可变函数模板"><a href="#可变函数模板" class="headerlink" title="可变函数模板"></a>可变函数模板</h2><p>例如，可以定义如下函数以实现任意类型任意参数的输出:</p>
+<h2 id="可变函数模板"><a class="markdownIt-Anchor" href="#可变函数模板"></a> 可变函数模板</h2>
+<p>例如，可以定义如下函数以实现任意类型任意参数的输出:</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, Typename... Args&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">print</span><span class="params">(T t, Args... args)</span></span>&#123;</span><br><span class="line">    std::cout &lt;&lt; t &lt;&lt; std::endl;</span><br><span class="line">    <span class="built_in">print</span>(args...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>当传入一个或多个参数时，参数列表中的第一个参数将匹配到 <code>T t</code>, 其余参数则被聚合在 <code>Args... args</code> 中，称为模板参数包.</p>
 <p>在 <code>print</code> 模板内, 函数会递归地解包模板参数包并执行实例化的函数</p>
 <p>当所有参数都解包完成时, 空的参数列表会匹配到 <code>print</code> 的非模板实现, 以终止递归</p>
-<h3 id="重载可变参数模板"><a href="#重载可变参数模板" class="headerlink" title="重载可变参数模板"></a>重载可变参数模板</h3><p>要实现可变参数模板的递归终止, 也可以为其重载一个非可变参数模板:</p>
+<h3 id="重载可变参数模板"><a class="markdownIt-Anchor" href="#重载可变参数模板"></a> 重载可变参数模板</h3>
+<p>要实现可变参数模板的递归终止, 也可以为其重载一个非可变参数模板:</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">print</span><span class="params">(T t)</span></span>&#123;</span><br><span class="line">    std::cout &lt;&lt; t &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span>... Args&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">print</span><span class="params">(T t, Args... args)</span></span>&#123;</span><br><span class="line">    <span class="built_in">print</span>(t);</span><br><span class="line">    <span class="built_in">print</span>(args...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这是因为, 当两个函数模板仅区别于可变参数包时, 非可变参数模板将优先被决议. 因此当参数解包到只剩下一个参数时, 非可变参数模板将优先被匹配</p>
-<h3 id="可变参数模板的-sizeof-运算符"><a href="#可变参数模板的-sizeof-运算符" class="headerlink" title="可变参数模板的 sizeof 运算符"></a>可变参数模板的 <code>sizeof</code> 运算符</h3><p>C++ 11 为模板参数包引入了新的 <code>sizeof</code> 运算符:</p>
+<h3 id="可变参数模板的-sizeof-运算符"><a class="markdownIt-Anchor" href="#可变参数模板的-sizeof-运算符"></a> 可变参数模板的 <code>sizeof</code> 运算符</h3>
+<p>C++ 11 为模板参数包引入了新的 <code>sizeof</code> 运算符:</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span>... Ts&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">size</span><span class="params">(T t, Ts... ts)</span></span>&#123;</span><br><span class="line">    <span class="keyword">sizeof</span>...(Ts); <span class="comment">// number of types in Ts</span></span><br><span class="line">    <span class="keyword">sizeof</span>...(ts); <span class="comment">// number of values in ts</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="fold-expressions"><a href="#fold-expressions" class="headerlink" title="fold expressions"></a>fold expressions</h2><p>fold expressions 是 C++ 17 引入的一项新特性，它允许使用二元运算符在模板参数包中的所有参数上计算结果</p>
+<h2 id="fold-expressions"><a class="markdownIt-Anchor" href="#fold-expressions"></a> fold expressions</h2>
+<p>fold expressions 是 C++ 17 引入的一项新特性，它允许使用二元运算符在模板参数包中的所有参数上计算结果</p>
 <p>例如如下的函数模板：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Ts&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">foldSum</span><span class="params">(Ts... ts)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (... + ts);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>其效果是从 <code>ts</code> 中的第一个参数加到其最后一个参数，即:</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(((ts1 + ts2) + ... )+ tsn)</span><br></pre></td></tr></table></figure>
 <p>注意如果传入的参数包为空，那么 fold expression 通常不会通过编译(ill-formed)。但对于以下操作符，其可以返回确定的结果:</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -329,8 +332,6 @@
 <tr>
 <td>`</td>
 <td></td>
-<td>`</td>
-<td><code>false</code></td>
 </tr>
 <tr>
 <td><code>,</code></td>
@@ -338,9 +339,7 @@
 </tr>
 </tbody>
 </table>
-</div>
 <p>fold expression 的所有形式:</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -367,15 +366,16 @@
 </tr>
 </tbody>
 </table>
-</div>
-<h2 id="可变类模板和其他可变表达式"><a href="#可变类模板和其他可变表达式" class="headerlink" title="可变类模板和其他可变表达式"></a>可变类模板和其他可变表达式</h2><p>可变参数包可以出现在:</p>
+<h2 id="可变类模板和其他可变表达式"><a class="markdownIt-Anchor" href="#可变类模板和其他可变表达式"></a> 可变类模板和其他可变表达式</h2>
+<p>可变参数包可以出现在:</p>
 <ul>
 <li>表达式</li>
 <li>类模板</li>
 <li>using 声明</li>
 <li>deduction guides</li>
 </ul>
-<h3 id="可变表达式"><a href="#可变表达式" class="headerlink" title="可变表达式"></a>可变表达式</h3><p>一些例子:</p>
+<h3 id="可变表达式"><a class="markdownIt-Anchor" href="#可变表达式"></a> 可变表达式</h3>
+<p>一些例子:</p>
 <ol>
 <li>打印翻倍后的参数：</li>
 </ol>
@@ -383,52 +383,57 @@
 <p>效果相当于:</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(</span><br><span class="line">    arg1 + arg1,</span><br><span class="line">    arg2 + arg2,</span><br><span class="line">    ...</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 <p>注意到此时 <code>print</code> 也应该是一个可变参数模板</p>
-<ol>
+<ol start="2">
 <li>打印加 1 后的参数：</li>
 </ol>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printPlusOne</span><span class="params">(T... args)</span></span>&#123;</span><br><span class="line">    <span class="built_in">print</span>(args + <span class="number">1</span> ...);</span><br><span class="line">    <span class="comment">// or: print((args + 1)...);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>相当于:</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(</span><br><span class="line">    arg1 + <span class="number">1</span>,</span><br><span class="line">    arg2 + <span class="number">1</span>,</span><br><span class="line">    ...</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 <p>注意到此时 <code>...</code> 符号不能直接跟在数字 1 后面，需要空开一个空格</p>
-<ol>
+<ol start="3">
 <li>编译时表达式:</li>
 </ol>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1, <span class="keyword">typename</span>... TN&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">bool</span> <span class="title">isHoMogeneous</span><span class="params">(T1, TN...)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (std::is_same_v&lt;T1, TN&gt; &amp;&amp; ...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="可变索引"><a href="#可变索引" class="headerlink" title="可变索引"></a>可变索引</h3><p>利用可变表达式，可以实现对任意数量的数组索引访问的函数:</p>
+<h3 id="可变索引"><a class="markdownIt-Anchor" href="#可变索引"></a> 可变索引</h3>
+<p>利用可变表达式，可以实现对任意数量的数组索引访问的函数:</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container, <span class="keyword">typename</span>... Idx&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printElems</span><span class="params">(Container <span class="type">const</span>&amp; c, Idx... idx)</span></span>&#123;</span><br><span class="line">    <span class="built_in">print</span>(c[idx]...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>注意到此时作为数组索引的参数 idx 可以是任意数量和任意类型，也可以将其声明为非类型模板参数以限制其类型:</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;std::<span class="type">size_t</span>... idx, <span class="keyword">typename</span> Container&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printElems</span><span class="params">(Container <span class="type">const</span>&amp; c)</span></span>&#123;</span><br><span class="line">    <span class="built_in">print</span>(c[idx]...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以以下面的形式调用该函数: </p>
+<p>可以以下面的形式调用该函数:</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printElems</span>&lt;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>&gt;(c); <span class="comment">// print(c[1], c[2], c[3], c[5]); </span></span><br></pre></td></tr></table></figure>
-<h3 id="可变类模板"><a href="#可变类模板" class="headerlink" title="可变类模板"></a>可变类模板</h3><ol>
+<h3 id="可变类模板"><a class="markdownIt-Anchor" href="#可变类模板"></a> 可变类模板</h3>
+<ol>
 <li>元组类</li>
 </ol>
 <p>元组类需要能够持有任意数量任意类型的值:</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Elems&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Turple</span>;</span><br></pre></td></tr></table></figure>
-<ol>
+<ol start="2">
 <li><code>Variant</code></li>
 </ol>
 <p><code>Variant</code> 对象可以持有预先声明的任意类型的值:</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Elems&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Variant</span>;</span><br></pre></td></tr></table></figure>
-<ol>
+<ol start="3">
 <li>表示任意下标列表的类型</li>
 </ol>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;std::<span class="type">size_t</span>... idx&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Index</span> &#123;&#125;;</span><br></pre></td></tr></table></figure>
 <p>此类型可以将传入的下标表示为列表, 但是其并未实际(内存上)持有这些下标值, 毕竟该类型定义为一个空的 <code>struct</code>。</p>
 <p>它的表示功能实际上发生在编译期, 当该类型的对象作为参数传入函数时, 实际上是某种类型萃取功能实现了 <code>Idx</code> 的传递:</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Container, std::<span class="type">size_t</span>... Idx&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printByIdx</span><span class="params">(Container <span class="type">const</span>&amp; c, Index&lt;Idx...&gt;)</span></span>&#123; <span class="comment">// trait Idx out</span></span><br><span class="line">    <span class="built_in">print</span>(c[Idx]...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="variadic-deduction-guides"><a href="#variadic-deduction-guides" class="headerlink" title="variadic deduction guides"></a>variadic deduction guides</h3><p>对于接受可变参数的函数模板，当其需要返回值deduction guide 时，deduction guide 也可以是可变表达式。</p>
+<h3 id="variadic-deduction-guides"><a class="markdownIt-Anchor" href="#variadic-deduction-guides"></a> variadic deduction guides</h3>
+<p>对于接受可变参数的函数模板，当其需要返回值deduction guide 时，deduction guide 也可以是可变表达式。</p>
 <p>例如 STL 中对 <code>std::array</code> 构造函数的声明:</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> std &#123;</span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T,<span class="keyword">typename</span> ... U&gt;</span></span><br><span class="line"><span class="function"><span class="title">array</span><span class="params">(T, U...)</span> -&gt; array&lt;</span></span><br><span class="line"><span class="function">    <span class="type">enable_if_t</span>&lt;<span class="params">(is_same_v&lt;T, U&gt; &amp;&amp; ...)</span>, T&gt;,</span></span><br><span class="line"><span class="function">    <span class="params">(<span class="number">1</span> + <span class="keyword">sizeof</span>...(U))</span>&gt;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>此声明中为 <code>std::array</code> 定义了返回值 deduction guide, 并在其中使用了 <code>enable_if</code>, 以实现当构造函数传入的初始值类型不同时禁用构造函数. </p>
+<p>此声明中为 <code>std::array</code> 定义了返回值 deduction guide, 并在其中使用了 <code>enable_if</code>, 以实现当构造函数传入的初始值类型不同时禁用构造函数.</p>
 <p>在构造函数传入的可变参数包的类型判断上，该 deduction guide 使用了可变表达式。 同时在参数包数量的计算上，使用了用于可变参数包的 <code>sizeof</code> 操作符</p>
-<h3 id="可变基类和-using-声明"><a href="#可变基类和-using-声明" class="headerlink" title="可变基类和 using 声明"></a>可变基类和 <code>using</code> 声明</h3><p>在继承体系中基类也可以是可变的，即，可以通过参数包实现对任意数量任意类型的继承。</p>
+<h3 id="可变基类和-using-声明"><a class="markdownIt-Anchor" href="#可变基类和-using-声明"></a> 可变基类和 <code>using</code> 声明</h3>
+<p>在继承体系中基类也可以是可变的，即，可以通过参数包实现对任意数量任意类型的继承。</p>
 <p>例如：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unordered_map&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Customer</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    std::string name;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Customer</span>(std::string <span class="type">const</span>&amp; n) : <span class="built_in">name</span>(n) &#123; &#125;</span><br><span class="line">    <span class="function">std::string <span class="title">getName</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> name; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">CustomerEq</span> &#123;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(Customer <span class="type">const</span>&amp; c1, Customer <span class="type">const</span>&amp; c2)</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> c1.<span class="built_in">getName</span>() == c2.<span class="built_in">getName</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">CustomerHash</span> &#123;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(Customer <span class="type">const</span>&amp; c)</span> <span class="type">const</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> std::<span class="built_in">hash</span>&lt;std::string&gt;(c.<span class="built_in">getName</span>());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Bases&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Overloader</span> : Bases... &#123;</span><br><span class="line">    <span class="function"><span class="keyword">using</span> <span class="title">Bases::operator</span><span class="params">()</span>...</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">using</span> CustomOps = Overloader&lt;CustomerEq, CustomerHash&gt;;</span><br><span class="line">    std::unordered_set&lt;Customer, CustomerHash, CustomerEq&gt; s1;</span><br><span class="line">    std::unordered_set&lt;Customer, CustomOps, CustomOps&gt; s2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>该例中，<code>CustomOps</code> 通过可变基类同时继承了 <code>CustomerEq</code> 和 <code>CustomerHash</code> 这两个函数对象, 并且在定义中使用可变 <code>using</code> 声明同时启用了两个基类的 <code>()</code> 操作符</p>
 <p>此时的 <code>CustomOps</code> 同时具备了 <code>CustomerEq</code> 和 <code>CustomerHash</code> 这两个函数对象的功能. 即通过 <code>CustomOps</code> 调用 <code>()</code> 操作符时，其会根据参数自动匹配基类的定义。</p>
 <p>因此，在 <code>main</code> 函数中定义的两个自定义相等和哈希操作的 <code>unordered_set</code> 能够实现相同的功能。</p>
-<h2 id="可变参数模板一些场景"><a href="#可变参数模板一些场景" class="headerlink" title="可变参数模板一些场景"></a>可变参数模板一些场景</h2><p>可变参数模板在标准模板库中应用广泛, 主要用途体现在参数转发上</p>
+<h2 id="可变参数模板一些场景"><a class="markdownIt-Anchor" href="#可变参数模板一些场景"></a> 可变参数模板一些场景</h2>
+<p>可变参数模板在标准模板库中应用广泛, 主要用途体现在参数转发上</p>
 <ul>
 <li>在一些资源管理类中其可用于转发任意数量任意类型的参数到被管理对象的构造函数。 如:</li>
 </ul>
@@ -556,14 +561,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">253k</span>
+    <span title="站点总字数">298k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:50</span>
+    <span title="站点阅读时长">4:31</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动

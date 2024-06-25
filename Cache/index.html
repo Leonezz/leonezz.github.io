@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favatar.png">
@@ -33,10 +33,10 @@
 <meta property="og:image" content="https://blog.zhuwenq.cc/Cache/1.png">
 <meta property="og:image" content="https://blog.zhuwenq.cc/Cache/2.png">
 <meta property="article:published_time" content="2023-03-15T14:45:25.000Z">
-<meta property="article:modified_time" content="2024-06-23T16:26:57.727Z">
+<meta property="article:modified_time" content="2024-06-25T01:52:50.507Z">
 <meta property="article:author" content="zhuwenq">
-<meta property="article:tag" content="Compute System">
 <meta property="article:tag" content="CS:APP">
+<meta property="article:tag" content="Compute System">
 <meta property="article:tag" content="CPU Cache">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://blog.zhuwenq.cc/Cache/1.png">
@@ -156,7 +156,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#cache-%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">cache 组织结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cache-%E5%9D%97%E7%9A%84%E5%AE%9A%E4%BD%8D%E8%BF%87%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">cache 块的定位过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%99%E5%85%A5%E5%86%85%E5%AD%98%E6%97%B6%E4%B8%8E-cache-%E6%9C%89%E5%85%B3%E7%9A%84%E8%8B%A5%E5%B9%B2%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.</span> <span class="nav-text">写入内存时与 cache 有关的若干问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%9F%E5%AE%9E%E7%9A%84-cache"><span class="nav-number">2.</span> <span class="nav-text">真实的 cache</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#cache-%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text"> cache 组织结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cache-%E5%9D%97%E7%9A%84%E5%AE%9A%E4%BD%8D%E8%BF%87%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text"> cache 块的定位过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%99%E5%85%A5%E5%86%85%E5%AD%98%E6%97%B6%E4%B8%8E-cache-%E6%9C%89%E5%85%B3%E7%9A%84%E8%8B%A5%E5%B9%B2%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.</span> <span class="nav-text"> 写入内存时与 cache 有关的若干问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%9F%E5%AE%9E%E7%9A%84-cache"><span class="nav-number">2.</span> <span class="nav-text"> 真实的 cache</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -257,7 +257,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-06-24 00:26:57" itemprop="dateModified" datetime="2024-06-24T00:26:57+08:00">2024-06-24</time>
+      <time title="修改时间：2024-06-25 09:52:50" itemprop="dateModified" datetime="2024-06-25T09:52:50+08:00">2024-06-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -282,14 +282,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.6k</span>
+      <span>1.7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -302,42 +302,49 @@
     <div class="post-body" itemprop="articleBody"><p>计算机存储器具有金字塔式结构, 即: 较高层的存储器容量小速度快, 低层的存储器容量大速度慢, 计算机通过缓存的方式提高储存系统的整体性能.</p>
 <span id="more"></span>
 <ul>
-<li>缓存命中: 当程序需要第 $k+1$ 层的某个数据对象 $d$ 时, 它首先在当前存储在第 $k$ 层的某个块中查找 $d$. 如果 $d$ 刚好在第 $k$ 层中, 那么就称之为缓存命中 (cache hit)</li>
-<li>缓存不命中: 如果程序在第 $k$ 层没有找到数据对象 $d$, 就称之为 缓存不命中 (cache miss). 缓存不命中有以下几种:<ul>
+<li>缓存命中: 当程序需要第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 层的某个数据对象 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi></mrow><annotation encoding="application/x-tex">d</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">d</span></span></span></span> 时, 它首先在当前存储在第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> 层的某个块中查找 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi></mrow><annotation encoding="application/x-tex">d</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">d</span></span></span></span>. 如果 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi></mrow><annotation encoding="application/x-tex">d</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">d</span></span></span></span> 刚好在第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> 层中, 那么就称之为缓存命中 (cache hit)</li>
+<li>缓存不命中: 如果程序在第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> 层没有找到数据对象 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi></mrow><annotation encoding="application/x-tex">d</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">d</span></span></span></span>, 就称之为 缓存不命中 (cache miss). 缓存不命中有以下几种:
+<ul>
 <li>强制性不命中 (compulsory miss)/冷不命中 (cold miss): 当系统刚启动时, 缓存一般是空的, 即任何数据对象的访问都会不命中. 这种情况称为冷不命中</li>
 <li>冲突不命中(conflict miss): 由于高层的缓存容量通常远小于低层的储存器容量, 为了完整映射较大容量的低层存储器, 通常数据对象在缓存中放置的位置需要符合某种放置策略. 因放置策略的原因导致缓存中存有另一个数据对象导致的不命中称为冲突不命中.</li>
 <li>容量不命中 (capacity miss): 由于程序在某个阶段访问的数据量过大超过缓存的容量导致的不命中称为容量不命中</li>
 </ul>
 </li>
 </ul>
-<h2 id="cache-组织结构"><a href="#cache-组织结构" class="headerlink" title="cache 组织结构"></a>cache 组织结构</h2><p>对于一个地址为 $m$ 位的计算机, 总共有 $M=2^m$ 个不同的地址, 其 cache 一般符合下图的组织结构:</p>
+<h2 id="cache-组织结构"><a class="markdownIt-Anchor" href="#cache-组织结构"></a> cache 组织结构</h2>
+<p>对于一个地址为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">m</span></span></span></span> 位的计算机, 总共有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><msup><mn>2</mn><mi>m</mi></msup></mrow><annotation encoding="application/x-tex">M=2^m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.664392em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span></span></span></span></span></span></span> 个不同的地址, 其 cache 一般符合下图的组织结构:</p>
 <img data-src="/Cache/1.png" class="">
-<p>其中包含由 $S=2^s$ 个<strong>缓存组 (cache set)</strong>, 每个缓存组包含 $E$ 个<strong>缓存行 (cache line)</strong>, 每个缓存行是由一个 $B=2^b$ 字节的<strong>数据块 (block)</strong>, 一个<strong>有效位 (valid bit)</strong> 和 $t=m-(b+s)$ 个 <strong>标记位 (tag bit)</strong> 组成的. </p>
+<p>其中包含由 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><msup><mn>2</mn><mi>s</mi></msup></mrow><annotation encoding="application/x-tex">S=2^s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.664392em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span></span></span></span></span></span></span></span> 个<strong>缓存组 (cache set)</strong>, 每个缓存组包含 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span></span> 个<strong>缓存行 (cache line)</strong>, 每个缓存行是由一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><msup><mn>2</mn><mi>b</mi></msup></mrow><annotation encoding="application/x-tex">B=2^b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.849108em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span></span></span></span></span></span></span></span> 字节的<strong>数据块 (block)</strong>, 一个<strong>有效位 (valid bit)</strong> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mi>m</mi><mo>−</mo><mo stretchy="false">(</mo><mi>b</mi><mo>+</mo><mi>s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">t=m-(b+s)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">m</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">s</span><span class="mclose">)</span></span></span></span> 个 <strong>标记位 (tag bit)</strong> 组成的.</p>
 <p>其中有效位标记着这个行是否存有有意义的信息, 标记位时当前块地址的一个子集.</p>
-<h3 id="cache-块的定位过程"><a href="#cache-块的定位过程" class="headerlink" title="cache 块的定位过程"></a>cache 块的定位过程</h3><p>对于 $m$ 位的地址, 其被分为三个部分解读: 位于高位部分的标记位, 位于中间部位的组索引 (set index) 和位于低位部位的块偏移 (block offset).</p>
+<h3 id="cache-块的定位过程"><a class="markdownIt-Anchor" href="#cache-块的定位过程"></a> cache 块的定位过程</h3>
+<p>对于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">m</span></span></span></span> 位的地址, 其被分为三个部分解读: 位于高位部分的标记位, 位于中间部位的组索引 (set index) 和位于低位部位的块偏移 (block offset).</p>
 <ol>
 <li><strong>组选择</strong>: 首先对于位于中间部位的组索引 (set index), 通过它可以直接索引到 cache 块所在的 cache set</li>
-<li><strong>行匹配</strong>: 对于一个 cache set 中 $E$ 个 cache line 的每一个, 首先检查 valid bit 是否设置, 只有对于设置了 valid bit 的 cache line, 如果其 tag bit 与地址高位部分的 tag bit 相符, 则说明这个 cache line 中存有要定位的块.</li>
-<li><strong>字选择</strong>: 对于确定了的 cache line, 地址低位部分的 $b$ 位 block offset 可以直接定位到要查找的块</li>
+<li><strong>行匹配</strong>: 对于一个 cache set 中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span></span> 个 cache line 的每一个, 首先检查 valid bit 是否设置, 只有对于设置了 valid bit 的 cache line, 如果其 tag bit 与地址高位部分的 tag bit 相符, 则说明这个 cache line 中存有要定位的块.</li>
+<li><strong>字选择</strong>: 对于确定了的 cache line, 地址低位部分的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">b</span></span></span></span> 位 block offset 可以直接定位到要查找的块</li>
 </ol>
 <p>当发生 cache miss 时, 必须从更低一层的存储器中取出一行数据并放在缓存中:</p>
 <ul>
 <li><strong>行替换</strong>: 如果对应的组中存在一个空行, 那么可以直接将新的行写入空行中. 如果不存在空行, 则必须替换一个有效的行. 常见的替换策略有随机替换, LRU, LFU 等.</li>
 </ul>
-<h3 id="写入内存时与-cache-有关的若干问题"><a href="#写入内存时与-cache-有关的若干问题" class="headerlink" title="写入内存时与 cache 有关的若干问题"></a>写入内存时与 cache 有关的若干问题</h3><ol>
-<li>写命中 (write hit), 即要写入的数据对象存在于 cache 中时, 有两种数据更新策略:<ol>
+<h3 id="写入内存时与-cache-有关的若干问题"><a class="markdownIt-Anchor" href="#写入内存时与-cache-有关的若干问题"></a> 写入内存时与 cache 有关的若干问题</h3>
+<ol>
+<li>写命中 (write hit), 即要写入的数据对象存在于 cache 中时, 有两种数据更新策略:
+<ol>
 <li>直写 (write through): 即立即将修改后的 cache 块写到低一层的存储器中. 这种策略较为简单, 但是其会引起大量的总写流量</li>
 <li>写回 (write back): 即尽可能迟地推迟更新, 只在替换策略即将驱逐这个更新过了的块时才将其写入到低一层的存储器中. 这种策略能够显著减少总线流量, 但它需要每个 cache line 维护额外的状态位 (dirty bit) 标记这个 cache 块是否被修改过</li>
 </ol>
 </li>
-<li>写不命中 (write miss) 时, 对应地也有两种数据更新策略:<ol>
+<li>写不命中 (write miss) 时, 对应地也有两种数据更新策略:
+<ol>
 <li>写分配 (write allocate): 加载相应的数据到 cache 中, 然后更新 cache 块</li>
 <li>非写分配 (non-write-allocate): 绕开 cache, 直接写入到低一层的存储器</li>
 </ol>
 </li>
 </ol>
 <p>通常写回策略与写分配策略会搭配使用</p>
-<h2 id="真实的-cache"><a href="#真实的-cache" class="headerlink" title="真实的 cache"></a>真实的 cache</h2><p>通常每个 CPU 会有两个 L1 cache, 一个用于缓存数据, 一个用于缓存指令; 同一个 CPU 的两个 L1 cache 共享一个 L2 cache; 所有 CPU 的 L2 cache 共享一个 L3 cache.</p>
+<h2 id="真实的-cache"><a class="markdownIt-Anchor" href="#真实的-cache"></a> 真实的 cache</h2>
+<p>通常每个 CPU 会有两个 L1 cache, 一个用于缓存数据, 一个用于缓存指令; 同一个 CPU 的两个 L1 cache 共享一个 L2 cache; 所有 CPU 的 L2 cache 共享一个 L3 cache.</p>
 <img data-src="/Cache/2.png" class="">
 
     </div>
@@ -404,8 +411,8 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/Compute-System/" rel="tag"># Compute System</a>
               <a href="/tags/CS-APP/" rel="tag"># CS:APP</a>
+              <a href="/tags/Compute-System/" rel="tag"># Compute System</a>
               <a href="/tags/CPU-Cache/" rel="tag"># CPU Cache</a>
           </div>
 
@@ -454,14 +461,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">253k</span>
+    <span title="站点总字数">298k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:50</span>
+    <span title="站点阅读时长">4:31</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动

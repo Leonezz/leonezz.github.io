@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favatar.png">
@@ -23,15 +23,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhuwenq.cc","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":false,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="CS:APP homework 2.66 题：  写出代码实现如下函数：&#x2F;*  Generate mask indicating leftmost 1 in x, Assume w &#x3D; 32. For example, 0xFF00 -&gt; 0x8000, and 0x6000 -&gt; 0x4000. If x &#x3D; 0, return 0*&#x2F;int leftmost_one(unsigne">
+    <meta name="description" content="CS:APP homework 2.66 题：  写出代码实现如下函数： &#x2F;*  Generate mask indicating leftmost 1 in x, Assume w &#x3D; 32. For example, 0xFF00 -&gt; 0x8000, and 0x6000 -&gt; 0x4000. If x &#x3D; 0, return 0 *&#x2F; int leftmost_one(unsi">
 <meta property="og:type" content="article">
 <meta property="og:title" content="leftmost_one">
 <meta property="og:url" content="https://blog.zhuwenq.cc/leftmost-one/index.html">
 <meta property="og:site_name" content="zhuwenq">
-<meta property="og:description" content="CS:APP homework 2.66 题：  写出代码实现如下函数：&#x2F;*  Generate mask indicating leftmost 1 in x, Assume w &#x3D; 32. For example, 0xFF00 -&gt; 0x8000, and 0x6000 -&gt; 0x4000. If x &#x3D; 0, return 0*&#x2F;int leftmost_one(unsigne">
+<meta property="og:description" content="CS:APP homework 2.66 题：  写出代码实现如下函数： &#x2F;*  Generate mask indicating leftmost 1 in x, Assume w &#x3D; 32. For example, 0xFF00 -&gt; 0x8000, and 0x6000 -&gt; 0x4000. If x &#x3D; 0, return 0 *&#x2F; int leftmost_one(unsi">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-07-22T11:16:50.000Z">
-<meta property="article:modified_time" content="2024-06-23T16:26:57.851Z">
+<meta property="article:modified_time" content="2024-06-25T01:52:50.627Z">
 <meta property="article:author" content="zhuwenq">
 <meta property="article:tag" content="CS:APP">
 <meta property="article:tag" content="位运算">
@@ -252,7 +252,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-06-24 00:26:57" itemprop="dateModified" datetime="2024-06-24T00:26:57+08:00">2024-06-24</time>
+      <time title="修改时间：2024-06-25 09:52:50" itemprop="dateModified" datetime="2024-06-25T09:52:50+08:00">2024-06-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -277,7 +277,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>842</span>
+      <span>952</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -296,19 +296,29 @@
     
     <div class="post-body" itemprop="articleBody"><p>CS:APP homework 2.66 题：</p>
 <blockquote>
-<p>写出代码实现如下函数：<br>/*</p>
+<p>写出代码实现如下函数：<br />
+/*</p>
 <ul>
 <li>Generate mask indicating leftmost 1 in x, Assume w = 32.</li>
 <li>For example, 0xFF00 -&gt; 0x8000, and 0x6000 -&gt; 0x4000.</li>
-<li>If x = 0, return 0<br>*/<br>int leftmost_one(unsigned x);<br>函数应该遵循位级整数编码规则，不过可以假设数据类型 int 有 w=32 位。<br>你的代码最多只能包含15个算术运算，位运算和逻辑运算。<br>提示：先将 x 转换成形如[0…011…1]的位向量。</li>
+<li>If x = 0, return 0<br />
+*/<br />
+int leftmost_one(unsigned x);<br />
+函数应该遵循位级整数编码规则，不过可以假设数据类型 int 有 w=32 位。<br />
+你的代码最多只能包含15个算术运算，位运算和逻辑运算。<br />
+提示：先将 x 转换成形如[0…011…1]的位向量。</li>
 </ul>
 </blockquote>
 <span id="more"></span>
 <p>一开始没有注意到提示是什么意思，后来才反应过来是要将从左侧第一个1开始向右都设置为1。看了答案发现解法与2.65题<a target="_blank" rel="noopener" href="https://blog.zhuwenq.icu/2021/07/19/%E5%88%A4%E6%96%AD%E6%95%B4%E6%95%B0%E4%BD%8D%E6%A8%A1%E5%BC%8F%E4%B8%AD%E6%98%AF%E5%90%A6%E6%9C%89%E5%81%B6%E6%95%B0%E4%B8%AA1/">偶数个1</a>十分相似：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">leftmost_one</span><span class="params">(<span class="type">unsigned</span> x)</span></span><br><span class="line">&#123;</span><br><span class="line">  x |= x &gt;&gt; <span class="number">1</span>;</span><br><span class="line">  x |= x &gt;&gt; <span class="number">2</span>;</span><br><span class="line">  x |= x &gt;&gt; <span class="number">4</span>;</span><br><span class="line">  x |= x &gt;&gt; <span class="number">8</span>;</span><br><span class="line">  x |= x &gt;&gt; <span class="number">16</span>;</span><br><span class="line">  <span class="keyword">return</span> (x &gt;&gt; <span class="number">1</span>) + (x &amp;&amp; <span class="number">0x1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>结合2.65题的启示，这道题的解法可能是要做到每一位的或运算。经过推导 <code>w = 4</code> 的情况：</p>
-<script type="math/tex; mode=display">x = [x_3, x_2, x_1, x_0]</script><p>则最终 <code>(x |= x &gt;&gt; 16)</code> 的结果为：</p>
-<script type="math/tex; mode=display">x = [x_0, x_0 | x_1, x_0 | x_1 | x_2, x_0 | x_1 | x_2 | x_3]</script><p>这一结果可以将从最左侧的1的位置以右的所有位都置为1，具体的情形是：这一结果的位模式从最左侧开始分别是原位向量的最左侧向右逐步取或，这样一旦原位模式中有1存在，则该位置开始向右都将变为1。</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>x</mi><mo>=</mo><mo stretchy="false">[</mo><msub><mi>x</mi><mn>3</mn></msub><mo separator="true">,</mo><msub><mi>x</mi><mn>2</mn></msub><mo separator="true">,</mo><msub><mi>x</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>x</mi><mn>0</mn></msub><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">x = [x_3, x_2, x_1, x_0]
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span></span></span></span></span></p>
+<p>则最终 <code>(x |= x &gt;&gt; 16)</code> 的结果为：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>x</mi><mo>=</mo><mo stretchy="false">[</mo><msub><mi>x</mi><mn>0</mn></msub><mo separator="true">,</mo><msub><mi>x</mi><mn>0</mn></msub><mi mathvariant="normal">∣</mi><msub><mi>x</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>x</mi><mn>0</mn></msub><mi mathvariant="normal">∣</mi><msub><mi>x</mi><mn>1</mn></msub><mi mathvariant="normal">∣</mi><msub><mi>x</mi><mn>2</mn></msub><mo separator="true">,</mo><msub><mi>x</mi><mn>0</mn></msub><mi mathvariant="normal">∣</mi><msub><mi>x</mi><mn>1</mn></msub><mi mathvariant="normal">∣</mi><msub><mi>x</mi><mn>2</mn></msub><mi mathvariant="normal">∣</mi><msub><mi>x</mi><mn>3</mn></msub><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">x = [x_0, x_0 | x_1, x_0 | x_1 | x_2, x_0 | x_1 | x_2 | x_3]
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">]</span></span></span></span></span></p>
+<p>这一结果可以将从最左侧的1的位置以右的所有位都置为1，具体的情形是：这一结果的位模式从最左侧开始分别是原位向量的最左侧向右逐步取或，这样一旦原位模式中有1存在，则该位置开始向右都将变为1。</p>
 <p>完成上述过程后，将所得的结果向右逻辑移动1位，相当于最左侧位置再向右一位开始的位都为1，此时若再加1，则由于进位，原位向量中最左侧1的位置将进位为1，而其余位置为0，这样就达到了题目要求。当 x == 0 时，<code>x &amp;&amp; 0x1</code> 得到结果0，最终返回0。</p>
 <p>关于最左侧的1的情况就是这样。</p>
 
@@ -425,14 +435,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">253k</span>
+    <span title="站点总字数">298k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:50</span>
+    <span title="站点阅读时长">4:31</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
