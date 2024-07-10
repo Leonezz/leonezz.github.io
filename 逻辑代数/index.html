@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favatar.png">
@@ -23,15 +23,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhuwenq.cc","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":false,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="0x00 定义 逻辑代数是代数的一个分支，与普通代数相比，逻辑代数主要定义了与，或，非三种运算，是用普通代数描述数字之间关系的方式来描述逻辑关系的形式主义[^wikipedia]。 逻辑代数是乔治·布尔（George Boole）在他的第一本书《逻辑的数学分析》（1847年）中引入的，并在他的《思想规律的研究》（1854年）中更充分的提出了逻辑代数。[^BooleGeorge]">
+    <meta name="description" content="0x00 定义逻辑代数是代数的一个分支，与普通代数相比，逻辑代数主要定义了与，或，非三种运算，是用普通代数描述数字之间关系的方式来描述逻辑关系的形式主义wikipedia。 逻辑代数是乔治·布尔（George Boole）在他的第一本书《逻辑的数学分析》（1847年）中引入的，并在他的《思想规律的研究》（1854年）中更充分的提出了逻辑代数。BooleGeorge">
 <meta property="og:type" content="article">
 <meta property="og:title" content="逻辑代数">
 <meta property="og:url" content="https://blog.zhuwenq.cc/%E9%80%BB%E8%BE%91%E4%BB%A3%E6%95%B0/index.html">
 <meta property="og:site_name" content="zhuwenq">
-<meta property="og:description" content="0x00 定义 逻辑代数是代数的一个分支，与普通代数相比，逻辑代数主要定义了与，或，非三种运算，是用普通代数描述数字之间关系的方式来描述逻辑关系的形式主义[^wikipedia]。 逻辑代数是乔治·布尔（George Boole）在他的第一本书《逻辑的数学分析》（1847年）中引入的，并在他的《思想规律的研究》（1854年）中更充分的提出了逻辑代数。[^BooleGeorge]">
+<meta property="og:description" content="0x00 定义逻辑代数是代数的一个分支，与普通代数相比，逻辑代数主要定义了与，或，非三种运算，是用普通代数描述数字之间关系的方式来描述逻辑关系的形式主义wikipedia。 逻辑代数是乔治·布尔（George Boole）在他的第一本书《逻辑的数学分析》（1847年）中引入的，并在他的《思想规律的研究》（1854年）中更充分的提出了逻辑代数。BooleGeorge">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-07-28T10:39:35.000Z">
-<meta property="article:modified_time" content="2024-06-25T02:18:31.121Z">
+<meta property="article:modified_time" content="2024-07-10T02:00:53.003Z">
 <meta property="article:author" content="zhuwenq">
 <meta property="article:tag" content="逻辑代数">
 <meta name="twitter:card" content="summary">
@@ -151,7 +151,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x00-%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text"> 0x00 定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-%E8%B5%B7%E5%9B%A0"><span class="nav-number">2.</span> <span class="nav-text"> 0x01 起因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x02-%E5%9F%BA%E6%9C%AC%E8%A7%84%E5%BE%8B"><span class="nav-number">3.</span> <span class="nav-text"> 0x02 基本规律</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#01%E5%BE%8B"><span class="nav-number">3.1.</span> <span class="nav-text"> 0&#x2F;1律</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%98%E5%8E%9F%E5%BE%8B%E9%87%8D%E5%8F%A0%E5%BE%8B%E4%BA%92%E8%A1%A5%E5%BE%8B"><span class="nav-number">3.2.</span> <span class="nav-text"> 还原律&#x2F;重叠律&#x2F;互补律</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E6%8D%A2%E5%BE%8B%E7%BB%93%E5%90%88%E5%BE%8B%E5%88%86%E9%85%8D%E5%BE%8B"><span class="nav-number">3.3.</span> <span class="nav-text"> 交换律&#x2F;结合律&#x2F;分配律</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%A9%E6%A0%B9%E5%AE%9A%E5%BE%8B"><span class="nav-number">3.4.</span> <span class="nav-text"> 摩根定律</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%85%AC%E5%BC%8F"><span class="nav-number">3.5.</span> <span class="nav-text"> 常用公式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E5%87%BD%E6%95%B0%E5%8C%96%E7%AE%80%E4%B8%8E%E5%8D%A1%E8%AF%BA%E5%9B%BE"><span class="nav-number">4.</span> <span class="nav-text"> 逻辑函数化简与卡诺图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0xff-%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text"> 0xFF 参考</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x00-%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">0x00 定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-%E8%B5%B7%E5%9B%A0"><span class="nav-number">2.</span> <span class="nav-text">0x01 起因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x02-%E5%9F%BA%E6%9C%AC%E8%A7%84%E5%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">0x02 基本规律</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-1%E5%BE%8B"><span class="nav-number">3.1.</span> <span class="nav-text">0&#x2F;1律</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%98%E5%8E%9F%E5%BE%8B-%E9%87%8D%E5%8F%A0%E5%BE%8B-%E4%BA%92%E8%A1%A5%E5%BE%8B"><span class="nav-number">3.2.</span> <span class="nav-text">还原律&#x2F;重叠律&#x2F;互补律</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E6%8D%A2%E5%BE%8B-%E7%BB%93%E5%90%88%E5%BE%8B-%E5%88%86%E9%85%8D%E5%BE%8B"><span class="nav-number">3.3.</span> <span class="nav-text">交换律&#x2F;结合律&#x2F;分配律</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%A9%E6%A0%B9%E5%AE%9A%E5%BE%8B"><span class="nav-number">3.4.</span> <span class="nav-text">摩根定律</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%85%AC%E5%BC%8F"><span class="nav-number">3.5.</span> <span class="nav-text">常用公式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E5%87%BD%E6%95%B0%E5%8C%96%E7%AE%80%E4%B8%8E%E5%8D%A1%E8%AF%BA%E5%9B%BE"><span class="nav-number">4.</span> <span class="nav-text">逻辑函数化简与卡诺图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0xFF-%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">0xFF 参考</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -252,7 +252,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-06-25 10:18:31" itemprop="dateModified" datetime="2024-06-25T10:18:31+08:00">2024-06-25</time>
+      <time title="修改时间：2024-07-10 10:00:53" itemprop="dateModified" datetime="2024-07-10T10:00:53+08:00">2024-07-10</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -277,7 +277,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.9k</span>
+      <span>2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -294,32 +294,26 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h1 id="0x00-定义"><a class="markdownIt-Anchor" href="#0x00-定义"></a> 0x00 定义</h1>
-<p>逻辑代数是代数的一个分支，与普通代数相比，逻辑代数主要定义了与，或，非三种运算，是用普通代数描述数字之间关系的方式来描述逻辑关系的形式主义[^wikipedia]。</p>
-<p>逻辑代数是乔治·布尔（George Boole）在他的第一本书《逻辑的数学分析》（1847年）中引入的，并在他的《思想规律的研究》（1854年）中更充分的提出了逻辑代数。[^BooleGeorge]</p>
+    <div class="post-body" itemprop="articleBody"><h1 id="0x00-定义"><a href="#0x00-定义" class="headerlink" title="0x00 定义"></a>0x00 定义</h1><p>逻辑代数是代数的一个分支，与普通代数相比，逻辑代数主要定义了与，或，非三种运算，是用普通代数描述数字之间关系的方式来描述逻辑关系的形式主义<sup><a href="#fn_wikipedia" id="reffn_wikipedia">wikipedia</a></sup>。</p>
+<p>逻辑代数是乔治·布尔（George Boole）在他的第一本书《逻辑的数学分析》（1847年）中引入的，并在他的《思想规律的研究》（1854年）中更充分的提出了逻辑代数。<sup><a href="#fn_BooleGeorge" id="reffn_BooleGeorge">BooleGeorge</a></sup></p>
 <span id="more"></span>
-<h1 id="0x01-起因"><a class="markdownIt-Anchor" href="#0x01-起因"></a> 0x01 起因</h1>
-<p>在学习 CS:APP 这本书的第2章时，常常用到位级运算，甚至它的习题还有只允许使用部分位级逻辑运算的规矩。当时在笔记上记下了要复习数字逻辑电路的知识，不过一直没有行动。今天在做 CS:APP 的 DataLab 时，更是感觉数字逻辑电路中常用的组合逻辑函数十分有用。在后悔大学数字电路没有好好学习而且没有笔记之后，还是得重新学习这方面的知识。</p>
-<p>逻辑代数与计算机电子电路的行为紧密相关，实际上，香农在它的硕士学位论文中证明了两者之间的等价性[^Shannon]。在非硬件的场合，也非常有用，可以用它对复合条件表达式化简，写出最高效的逻辑表达式；或者可以作为完成CS:APP作业的后备知识。</p>
+<h1 id="0x01-起因"><a href="#0x01-起因" class="headerlink" title="0x01 起因"></a>0x01 起因</h1><p>在学习 CS:APP 这本书的第2章时，常常用到位级运算，甚至它的习题还有只允许使用部分位级逻辑运算的规矩。当时在笔记上记下了要复习数字逻辑电路的知识，不过一直没有行动。今天在做 CS:APP 的 DataLab 时，更是感觉数字逻辑电路中常用的组合逻辑函数十分有用。在后悔大学数字电路没有好好学习而且没有笔记之后，还是得重新学习这方面的知识。</p>
+<p>逻辑代数与计算机电子电路的行为紧密相关，实际上，香农在它的硕士学位论文中证明了两者之间的等价性<sup><a href="#fn_Shannon" id="reffn_Shannon">Shannon</a></sup>。在非硬件的场合，也非常有用，可以用它对复合条件表达式化简，写出最高效的逻辑表达式；或者可以作为完成CS:APP作业的后备知识。</p>
 <p>由于课本早已丢失，以下的内容均来自互联网。具体来说，主要来自<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/80693923">这篇博客</a>。</p>
-<h1 id="0x02-基本规律"><a class="markdownIt-Anchor" href="#0x02-基本规律"></a> 0x02 基本规律</h1>
-<p>在逻辑代数中，我们使用大写字母 <code>A, B, C...</code> 等作为基本单元，它们可以是变量或者逻辑表达式。在编程语言中，常用 <code>&amp;, |, ~</code> 来表示位级的与，或，非，在逻辑代数中，<code>AB</code> 代表 <code>A &amp; B</code>；<code>A + B</code> 代表 <code>A | B</code>；<code>A'</code> 则代表 <code>~A</code>。</p>
-<h2 id="01律"><a class="markdownIt-Anchor" href="#01律"></a> 0/1律</h2>
-<ul>
+<h1 id="0x02-基本规律"><a href="#0x02-基本规律" class="headerlink" title="0x02 基本规律"></a>0x02 基本规律</h1><p>在逻辑代数中，我们使用大写字母 <code>A, B, C...</code> 等作为基本单元，它们可以是变量或者逻辑表达式。在编程语言中，常用 <code>&amp;, |, ~</code> 来表示位级的与，或，非，在逻辑代数中，<code>AB</code> 代表 <code>A &amp; B</code>；<code>A + B</code> 代表 <code>A | B</code>；<code>A&#39;</code> 则代表 <code>~A</code>。</p>
+<h2 id="0-1律"><a href="#0-1律" class="headerlink" title="0/1律"></a>0/1律</h2><ul>
 <li><code>0 + A = A</code></li>
 <li><code>0·A = 0</code></li>
 <li><code>1 + A = 1</code></li>
 <li><code>1·A = A</code></li>
 </ul>
 <p>这几条十分简单，不多解释。但是其常用于复杂表达式的化简过程中。</p>
-<h2 id="还原律重叠律互补律"><a class="markdownIt-Anchor" href="#还原律重叠律互补律"></a> 还原律/重叠律/互补律</h2>
-<ul>
-<li><code>A'' = A</code></li>
+<h2 id="还原律-重叠律-互补律"><a href="#还原律-重叠律-互补律" class="headerlink" title="还原律/重叠律/互补律"></a>还原律/重叠律/互补律</h2><ul>
+<li><code>A&#39;&#39; = A</code></li>
 <li><code>A + A = A, A·A = A</code></li>
-<li><code>A + A' = 1, A·A' = 0</code></li>
+<li><code>A + A&#39; = 1, A·A&#39; = 0</code></li>
 </ul>
-<h2 id="交换律结合律分配律"><a class="markdownIt-Anchor" href="#交换律结合律分配律"></a> 交换律/结合律/分配律</h2>
-<p>将与和或看作普通代数中的乘和加，这些规律也与普通代数中具有的类似。</p>
+<h2 id="交换律-结合律-分配律"><a href="#交换律-结合律-分配律" class="headerlink" title="交换律/结合律/分配律"></a>交换律/结合律/分配律</h2><p>将与和或看作普通代数中的乘和加，这些规律也与普通代数中具有的类似。</p>
 <ul>
 <li><code>A + B = B + A</code></li>
 <li><code>A·B = B·A</code></li>
@@ -330,40 +324,31 @@
 </ul>
 <p>较为特殊的是最后一条或对与的分配律，它与倒数第二条与对或的分配律形式上同构，但是与普通代数差异较大。</p>
 <p>证明：<code>(A + B)(A + C) = A + AB + AC + BC = A(1 + B + C) + BC = A + BC</code></p>
-<h2 id="摩根定律"><a class="markdownIt-Anchor" href="#摩根定律"></a> 摩根定律</h2>
-<ul>
-<li><code>(A + B)' = A'B'</code></li>
-<li><code>(AB)' = A' + B'</code></li>
+<h2 id="摩根定律"><a href="#摩根定律" class="headerlink" title="摩根定律"></a>摩根定律</h2><ul>
+<li><code>(A + B)&#39; = A&#39;B&#39;</code></li>
+<li><code>(AB)&#39; = A&#39; + B&#39;</code></li>
 </ul>
 <p>这一规律可以总结为：或的非是非的与，与的非是非的或，或者用集合的概念讲：</p>
 <blockquote>
 <p>并集的补集是补集的交集，交集的补集是补集的并集</p>
 </blockquote>
-<p>这个公式十分重要，在逻辑函数化简和逻辑转换中必不可缺。例如，可以使用它将与逻辑转换为或逻辑和非逻辑——<code>AB = (A' + B')'</code>，也可以反过来——<code>A + B = (A'B')'</code></p>
+<p>这个公式十分重要，在逻辑函数化简和逻辑转换中必不可缺。例如，可以使用它将与逻辑转换为或逻辑和非逻辑——<code>AB = (A&#39; + B&#39;)&#39;</code>，也可以反过来——<code>A + B = (A&#39;B&#39;)&#39;</code></p>
 <p>根据这一定律的思想可以推出两条规则</p>
 <ol>
-<li>反演规则：在对逻辑函数取反时，或变为与，与变为或，然后对每个量取反，但要保留组合量的非号。<br />
-如：<code>(((A + B)C + D)(E + F))' = ((A'B' + C')D') + E'F'</code></li>
-<li>对偶规则：这个规则是上面提到的与或逻辑转换的一个严谨定义。它的内容是：若两个逻辑式<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mn>1</mn></msub><mo>=</mo><msub><mi>F</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">F_1 = F_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>成立，那么它们的对偶式<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>F</mi><mn>1</mn><mi>D</mi></msubsup><mo>=</mo><msubsup><mi>F</mi><mn>2</mn><mi>D</mi></msubsup></mrow><annotation encoding="application/x-tex">F_1^D = F_2^D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0894389999999998em;vertical-align:-0.24810799999999997em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-2.4518920000000004em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">D</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.24810799999999997em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.0894389999999998em;vertical-align:-0.24810799999999997em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-2.4518920000000004em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">D</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.24810799999999997em;"><span></span></span></span></span></span></span></span></span></span>也成立。<br />
-如：<code>A(B + C) = AB + AC</code>，分别求左右两边的对偶式：<code>A + BC = (A + B)(A + C)</code>。<br />
-取对偶式的规则是：或变与，与变或，保证运算顺序不变；常数项0变1，1变0</li>
+<li>反演规则：在对逻辑函数取反时，或变为与，与变为或，然后对每个量取反，但要保留组合量的非号。<br>如：<code>(((A + B)C + D)(E + F))&#39; = ((A&#39;B&#39; + C&#39;)D&#39;) + E&#39;F&#39;</code></li>
+<li>对偶规则：这个规则是上面提到的与或逻辑转换的一个严谨定义。它的内容是：若两个逻辑式$F_1 = F_2$成立，那么它们的对偶式$F_1^D = F_2^D$也成立。<br>如：<code>A(B + C) = AB + AC</code>，分别求左右两边的对偶式：<code>A + BC = (A + B)(A + C)</code>。<br>取对偶式的规则是：或变与，与变或，保证运算顺序不变；常数项0变1，1变0</li>
 </ol>
-<h2 id="常用公式"><a class="markdownIt-Anchor" href="#常用公式"></a> 常用公式</h2>
-<p>这一部分中的公式是根据上面基本公式推导而来，在逻辑函数化简时经常用到。</p>
+<h2 id="常用公式"><a href="#常用公式" class="headerlink" title="常用公式"></a>常用公式</h2><p>这一部分中的公式是根据上面基本公式推导而来，在逻辑函数化简时经常用到。</p>
 <ul>
 <li>吸收公式：<code>A + AB = A</code></li>
-<li>消因子公式：<code>A + A'B = A + B</code></li>
-<li>并项公式：<code>AB + AB' = A</code></li>
-<li>消项公式：<code>AB + A'C + BC = AB + A'C</code></li>
+<li>消因子公式：<code>A + A&#39;B = A + B</code></li>
+<li>并项公式：<code>AB + AB&#39; = A</code></li>
+<li>消项公式：<code>AB + A&#39;C + BC = AB + A&#39;C</code></li>
 </ul>
 <p>其中消因子公式利用了或对与的分配律，吸收公式和并项公式利用了与对或的分配律的逆运算，消项公式的证明如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">AB + A&#x27;C + BC</span><br><span class="line">= AB + A&#x27;C + (A + A&#x27;)BC</span><br><span class="line">= AB + A&#x27;C + ABC + A&#x27;BC</span><br><span class="line">= AB(1 + C) + A&#x27;C(1 + B)</span><br><span class="line">= AB + A&#x27;C</span><br></pre></td></tr></table></figure>
-<h1 id="逻辑函数化简与卡诺图"><a class="markdownIt-Anchor" href="#逻辑函数化简与卡诺图"></a> 逻辑函数化简与卡诺图</h1>
-<p>（这部分等到需要用了再写…</p>
-<h1 id="0xff-参考"><a class="markdownIt-Anchor" href="#0xff-参考"></a> 0xFF 参考</h1>
-<p>[^wikipedia] <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%80%BB%E8%BE%91%E4%BB%A3%E6%95%B0">维基百科-逻辑代数</a><br />
-[^BooleGeorge] Boole, George. An Investigation of the Laws of Thought. Prometheus Books. 2003 [1854]. ISBN 978-1-59102-089-9.<br />
-[^Shannon] Shannon C E. A symbolic analysis of relay and switching circuits[J]. Electrical Engineering, 1938, 57(12): 713-723.</p>
+<h1 id="逻辑函数化简与卡诺图"><a href="#逻辑函数化简与卡诺图" class="headerlink" title="逻辑函数化简与卡诺图"></a>逻辑函数化简与卡诺图</h1><p>（这部分等到需要用了再写…</p>
+<h1 id="0xFF-参考"><a href="#0xFF-参考" class="headerlink" title="0xFF 参考"></a>0xFF 参考</h1><p><sup><a href="#fn_wikipedia" id="reffn_wikipedia">wikipedia</a></sup> <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%80%BB%E8%BE%91%E4%BB%A3%E6%95%B0">维基百科-逻辑代数</a><br><sup><a href="#fn_BooleGeorge" id="reffn_BooleGeorge">BooleGeorge</a></sup> Boole, George. An Investigation of the Laws of Thought. Prometheus Books. 2003 [1854]. ISBN 978-1-59102-089-9.<br><sup><a href="#fn_Shannon" id="reffn_Shannon">Shannon</a></sup> Shannon C E. A symbolic analysis of relay and switching circuits[J]. Electrical Engineering, 1938, 57(12): 713-723.</p>
 
     </div>
 
@@ -477,14 +462,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">298k</span>
+    <span title="站点总字数">253k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:31</span>
+    <span title="站点阅读时长">3:50</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动

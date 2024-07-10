@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favatar.png">
@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/1.png">
 <meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/1.png">
 <meta property="article:published_time" content="2022-03-20T08:11:56.000Z">
-<meta property="article:modified_time" content="2024-06-25T02:18:31.117Z">
+<meta property="article:modified_time" content="2024-07-10T02:00:52.995Z">
 <meta property="article:author" content="zhuwenq">
 <meta property="article:tag" content="数据结构">
 <meta property="article:tag" content="图">
@@ -156,7 +156,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E9%81%8D%E5%8E%86"><span class="nav-number">1.</span> <span class="nav-text"> 两种遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2-depth-first-searchdfs"><span class="nav-number">1.1.</span> <span class="nav-text"> 深度优先搜索 (Depth First Search,DFS)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2-breadth-first-searchbfs"><span class="nav-number">1.2.</span> <span class="nav-text"> 广度优先搜索 (Breadth First Search,BFS)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E7%9A%84%E4%B8%80%E4%BA%9B%E6%9C%AF%E8%AF%AD"><span class="nav-number">2.</span> <span class="nav-text"> 图的一些术语</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E9%81%8D%E5%8E%86"><span class="nav-number">1.</span> <span class="nav-text">两种遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2-Depth-First-Search-DFS"><span class="nav-number">1.1.</span> <span class="nav-text">深度优先搜索 (Depth First Search,DFS)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2-Breadth-First-Search-BFS"><span class="nav-number">1.2.</span> <span class="nav-text">广度优先搜索 (Breadth First Search,BFS)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E7%9A%84%E4%B8%80%E4%BA%9B%E6%9C%AF%E8%AF%AD"><span class="nav-number">2.</span> <span class="nav-text">图的一些术语</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -257,7 +257,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-06-25 10:18:31" itemprop="dateModified" datetime="2024-06-25T10:18:31+08:00">2024-06-25</time>
+      <time title="修改时间：2024-07-10 10:00:52" itemprop="dateModified" datetime="2024-07-10T10:00:52+08:00">2024-07-10</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -303,10 +303,7 @@
 <p>本文写于 2020 年 4 月 2 日，2022 年 3 月 20 日重新整理</p>
 </blockquote>
 <span id="more"></span>
-<h1 id="两种遍历"><a class="markdownIt-Anchor" href="#两种遍历"></a> 两种遍历</h1>
-<h2 id="深度优先搜索-depth-first-searchdfs"><a class="markdownIt-Anchor" href="#深度优先搜索-depth-first-searchdfs"></a> 深度优先搜索 <code>(Depth First Search,DFS)</code></h2>
-<p>深度优先搜索顾名思义就是在搜索过程中瞅准某条路径一直向下访问，直到访问到了这条路径的终点才切换到其他路径。问题是，在某条路径上一路向下访问时，需要保存住来时的路径信息，否则在到达终点的时候将无法返回到起点切换其他路径。<br />
-这种一路向下直到某个条件（终点）再原路返回的过程很像程序设计中的递归思想，因此，深度优先搜索可以方便的使用栈 <code>(Stack)</code> 实现。</p>
+<h1 id="两种遍历"><a href="#两种遍历" class="headerlink" title="两种遍历"></a>两种遍历</h1><h2 id="深度优先搜索-Depth-First-Search-DFS"><a href="#深度优先搜索-Depth-First-Search-DFS" class="headerlink" title="深度优先搜索 (Depth First Search,DFS)"></a>深度优先搜索 <code>(Depth First Search,DFS)</code></h2><p>深度优先搜索顾名思义就是在搜索过程中瞅准某条路径一直向下访问，直到访问到了这条路径的终点才切换到其他路径。问题是，在某条路径上一路向下访问时，需要保存住来时的路径信息，否则在到达终点的时候将无法返回到起点切换其他路径。<br>这种一路向下直到某个条件（终点）再原路返回的过程很像程序设计中的递归思想，因此，深度优先搜索可以方便的使用栈 <code>(Stack)</code> 实现。</p>
 <p>如下面所示的图：</p>
 <img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/1.png" class="" title="无向无权图">
 <p>假设使用深度优先搜索从节点 <code>0</code> 开始遍历，则首先对节点 <code>0</code> 的所有邻居节点（与 <code>0</code> 直接相连的节点）中的一个访问，假设访问到了节点 <code>2</code> ，则对节点 <code>2</code> 的邻居节点进行访问。首先访问邻居节点 <code>0</code> ，<code>0</code> 已经被访问，因此切换到节点 <code>1</code> 。接着对节点 <code>1</code> 的邻居节点 <code>2</code> 访问， <code>2</code> 已被访问，因此切换到 <code>3</code> 。接着访问 <code>3</code> 的邻居节点 <code>4</code> 。访问到节点 <code>4</code> 之后，对节点 <code>4</code> 的所有邻居节点访问，发现均被访问过。然后开始回溯，查找是否有尚未访问到的分支。比如此例中回溯到节点 <code>3</code> ，发现所有邻居节点都被访问过，继续回溯亦然，当回溯到起始节点 <code>0</code> 时，便知道所有节点都被访问过，遍历完成。</p>
@@ -316,18 +313,15 @@
 <li>访问节点 <code>0</code> 的邻居节点 <code>2</code> ，把 <code>2</code> 压栈</li>
 <li>访问节点 <code>2</code> 的未访问节点 <code>1</code> ，把 <code>1</code> 压栈</li>
 <li>访问节点 <code>3,4</code> ，把 <code>3,4</code> 压栈</li>
-<li>遍历节点 <code>4</code> 的邻居节点之后，前方无路可走，开始出栈
-<ul>
+<li>遍历节点 <code>4</code> 的邻居节点之后，前方无路可走，开始出栈<ul>
 <li>首先出栈节点 <code>3</code> ，访问节点 <code>3</code> 的未访问邻居节点并压栈，一直访问并压栈到尽头。之后对每个出栈的顶点做同样的操作，直到栈为空（顶点全部弹出）。</li>
 </ul>
 </li>
 </ul>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> Visited[Size] = <span class="number">0</span>;</span><br><span class="line"><span class="comment">//深度优先搜索</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">depthFirstSearch</span><span class="params">(Graph *graph, Vertex *vertex)</span></span><br><span class="line">&#123;</span><br><span class="line">    Stack *<span class="built_in">stack</span> = createStack();</span><br><span class="line">    Vertex *nextNode = vertex;</span><br><span class="line">    <span class="keyword">while</span> (!isEmpty(<span class="built_in">stack</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        visit(nextNode);                                <span class="comment">//visit vertex</span></span><br><span class="line">        push(<span class="built_in">stack</span>, nextNode);                          <span class="comment">//push vertex to stack</span></span><br><span class="line">        Visited[nextNode-&gt;id] = <span class="number">1</span>;                      <span class="comment">//shows that this vertex was visted</span></span><br><span class="line">        <span class="type">int</span> end = <span class="number">1</span>;                                    <span class="comment">//flag that shows if route comes to end</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; nextNode-&gt;neighborNum; ++i) <span class="comment">//neighbor of vertex</span></span><br><span class="line">        &#123;</span><br><span class="line">            Vertex *neighbor = nextNode-&gt;neighbors[i];</span><br><span class="line">            <span class="keyword">if</span> (!Visited[neighbor-&gt;id]) <span class="comment">//if not visited</span></span><br><span class="line">            &#123;</span><br><span class="line">                nextNode = neighbor; <span class="comment">//set nextNode neighbor not visited</span></span><br><span class="line">                end = <span class="number">-1</span>;            <span class="comment">//shows that end is not coming</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (end)</span><br><span class="line">        &#123;</span><br><span class="line">            nextNode = pop(<span class="built_in">stack</span>); <span class="comment">//if end comes,pop a vertex from stack</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这个实现首先构造了一个顶点个数长度的数组来标识顶点是否被访问，然后利用循环和堆栈实现遍历过程。这是一个并不优雅的实现，甚至不知道是否正确。<br />
-如果直接用递归程序会非常清晰：(两段代码实际上都是伪代码，因为节点的邻居节点信息的取出是不规范的，不正确的)</p>
+<p>这个实现首先构造了一个顶点个数长度的数组来标识顶点是否被访问，然后利用循环和堆栈实现遍历过程。这是一个并不优雅的实现，甚至不知道是否正确。<br>如果直接用递归程序会非常清晰：(两段代码实际上都是伪代码，因为节点的邻居节点信息的取出是不规范的，不正确的)</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> Visited[Size] = <span class="number">0</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">depthFirstSearch</span><span class="params">(Graph *graph, Vertex *vertex)</span></span><br><span class="line">&#123;   </span><br><span class="line">    visit(vertex);</span><br><span class="line">    Visted[vertex-&gt;id] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>;i &lt; vertex-&gt;neighborNum;++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(!Visited[vertex-&gt;neighbor[i]])&#123;</span><br><span class="line">            depthFirstSearch(graph,vertex);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="广度优先搜索-breadth-first-searchbfs"><a class="markdownIt-Anchor" href="#广度优先搜索-breadth-first-searchbfs"></a> 广度优先搜索 <code>(Breadth First Search,BFS)</code></h2>
-<p>广度优先搜索过程类似于二叉树的层序遍历，都是先访问某节点，然后把该节点的相邻节点挨个访问，同样类似的是，广度优先遍历的实现也可以使用 队列 <code>(Queue)</code> 实现。</p>
+<h2 id="广度优先搜索-Breadth-First-Search-BFS"><a href="#广度优先搜索-Breadth-First-Search-BFS" class="headerlink" title="广度优先搜索 (Breadth First Search,BFS)"></a>广度优先搜索 <code>(Breadth First Search,BFS)</code></h2><p>广度优先搜索过程类似于二叉树的层序遍历，都是先访问某节点，然后把该节点的相邻节点挨个访问，同样类似的是，广度优先遍历的实现也可以使用 队列 <code>(Queue)</code> 实现。</p>
 <p>同一个图：</p>
 <img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/1.png" class="">
 <p>使用广度优先遍历的过程大致是，首先从起始顶点 <code>0</code> 出发，挨个访问它的邻居顶点 <code>2,4</code> 。然后访问节点 <code>2</code> 和它的邻居节点 <code>0</code> (已被访问), <code>1,3</code> ，然后访问节点 <code>4</code> 和它的邻居节点 <code>0,1,3</code> 。最后对节点 <code>0,1,3</code> 挨个进行上述的动作。</p>
@@ -340,22 +334,19 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">breadthFirstSearch</span><span class="params">(Graph *graph, Vertex *vertex)</span></span><br><span class="line">&#123;</span><br><span class="line">    visit(vertex);           <span class="comment">//visite vertex first</span></span><br><span class="line">    Visited[vertex-&gt;id] = <span class="number">1</span>; <span class="comment">//set visited true</span></span><br><span class="line">    Queue *<span class="built_in">queue</span> = createQueue();</span><br><span class="line">    add(<span class="built_in">queue</span>, vertex); <span class="comment">//add to queue to find its neighbors</span></span><br><span class="line">    <span class="keyword">while</span> (!isEmpty(<span class="built_in">queue</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        Vertex *v = delete (<span class="built_in">queue</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; v-&gt;neighborNum; ++i) <span class="comment">//find all neighbors</span></span><br><span class="line">        &#123;</span><br><span class="line">            Vertex *neighbor = v-&gt;neighbors[i];</span><br><span class="line">            <span class="keyword">if</span> (!Visited[neighbor-&gt;id]) <span class="comment">//if not visted,visit and add to queue</span></span><br><span class="line">            &#123;</span><br><span class="line">                visit(neighbor);</span><br><span class="line">                Visited[neighbor-&gt;id] = <span class="number">1</span>;</span><br><span class="line">                add(<span class="built_in">queue</span>, neighbor);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这个实现仍然是伪代码，需要更加合理的查找顶点邻居信息的方法才能工作。</p>
 <p>两种遍历的时间复杂度实际上是相同的（全部遍历时），但是对于遍历的中途退出的问题，需要认真思考选择更合适的遍历方式。如寻路问题中需要根据地图的样式选择遍历方式。</p>
-<h1 id="图的一些术语"><a class="markdownIt-Anchor" href="#图的一些术语"></a> 图的一些术语</h1>
-<ul>
+<h1 id="图的一些术语"><a href="#图的一些术语" class="headerlink" title="图的一些术语"></a>图的一些术语</h1><ul>
 <li>连通：如果从顶点 <code>v</code> 到顶点 <code>w</code> 之间存在一条（无向）路径，则称顶点 <code>v</code> 和顶点 <code>w</code> 之间是连通的。</li>
 <li>强连通：有向图中顶点 <code>v</code> 和 <code>w</code> 之间的路径是双向路径，则 <code>v</code> 和 <code>w</code> 之间是强连通的。</li>
 <li>路径：顶点 <code>v</code> 到顶点 <code>w</code> 之间的路径是一系列顶点的序列，其中任意一对相邻的顶点之间在图中都有 边 <code>(Edge)</code>  。路径的长度是路径中的边数（对于带权图，路径长度是边的权值之和）。如果路径序列中所有的顶点都不相同（路径是无环的），则称路径为 简单路径 。</li>
 <li>回路：起点等于终点的路径</li>
 <li>连通图：图的 任意两点 均连通</li>
 <li>强连通图：有向图 的 任意两点 均强连通</li>
-<li>连通分量：无向图的极大连通子图：
-<ul>
+<li>连通分量：无向图的极大连通子图：<ul>
 <li>极大顶点数：子图中再加任意一个点就不是连通图了</li>
 <li>极大边数：子图中所有顶点之间的边数</li>
 </ul>
 </li>
-<li>强连通分量：有向图 的极大强连通分量<br />
-对于不连通的图，可以对图的每个连通分量调用上面两个遍历函数实现整个图的遍历。</li>
+<li>强连通分量：有向图 的极大强连通分量<br>对于不连通的图，可以对图的每个连通分量调用上面两个遍历函数实现整个图的遍历。</li>
 </ul>
 
     </div>
@@ -472,14 +463,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">298k</span>
+    <span title="站点总字数">253k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:31</span>
+    <span title="站点阅读时长">3:50</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动

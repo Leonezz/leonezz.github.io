@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favatar.png">
@@ -36,7 +36,7 @@
 <meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E5%92%8C%E6%A0%91%E7%9A%84%E8%A1%A8%E7%A4%BA/4.png">
 <meta property="og:image" content="https://blog.zhuwenq.cc/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E5%92%8C%E6%A0%91%E7%9A%84%E8%A1%A8%E7%A4%BA/5.png">
 <meta property="article:published_time" content="2022-03-06T08:53:29.000Z">
-<meta property="article:modified_time" content="2024-06-25T02:18:31.121Z">
+<meta property="article:modified_time" content="2024-07-10T02:00:52.999Z">
 <meta property="article:author" content="zhuwenq">
 <meta property="article:tag" content="数据结构">
 <meta property="article:tag" content="树">
@@ -158,7 +158,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-number">1.</span> <span class="nav-text"> 写在前面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE"><span class="nav-number">2.</span> <span class="nav-text"> 二分查找</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">3.</span> <span class="nav-text"> 定义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AF%E8%AF%AD%E8%A7%A3%E9%87%8A"><span class="nav-number">3.1.</span> <span class="nav-text"> 术语解释</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%91%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="nav-number">4.</span> <span class="nav-text"> 树的表示</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE"><span class="nav-number">2.</span> <span class="nav-text">二分查找</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">3.</span> <span class="nav-text">定义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AF%E8%AF%AD%E8%A7%A3%E9%87%8A"><span class="nav-number">3.1.</span> <span class="nav-text">术语解释</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%91%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="nav-number">4.</span> <span class="nav-text">树的表示</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -259,7 +259,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-06-25 10:18:31" itemprop="dateModified" datetime="2024-06-25T10:18:31+08:00">2024-06-25</time>
+      <time title="修改时间：2024-07-10 10:00:52" itemprop="dateModified" datetime="2024-07-10T10:00:52+08:00">2024-07-10</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -284,7 +284,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.8k</span>
+      <span>1.7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -305,15 +305,12 @@
 <p>本文写于 2020 年 3 月 23 日，2022 年 3 月 6 日重新整理</p>
 </blockquote>
 <span id="more"></span>
-<h1 id="写在前面"><a class="markdownIt-Anchor" href="#写在前面"></a> 写在前面</h1>
-<p>客观世界中许多事物存在层次关系，如人类的族谱，社会组织的结构等。这些分层次的结构在管理方面具有一定的效率优势，树就是类似的一种具有层次结构关系的数据结构。</p>
-<h1 id="二分查找"><a class="markdownIt-Anchor" href="#二分查找"></a> 二分查找</h1>
-<p>二分查找 <code>binarySearch</code> 作为一种时间复杂度为的优秀查找算法，其在数据管理的查询方面具有重要地位。二分查找接受被查找元素所属的序列 <code>list</code> （有序的，假设为升序）和被查找元素的值 <code>target</code> 两个参数，它的基本流程如下：</p>
+<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>客观世界中许多事物存在层次关系，如人类的族谱，社会组织的结构等。这些分层次的结构在管理方面具有一定的效率优势，树就是类似的一种具有层次结构关系的数据结构。</p>
+<h1 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h1><p>二分查找 <code>binarySearch</code> 作为一种时间复杂度为的优秀查找算法，其在数据管理的查询方面具有重要地位。二分查找接受被查找元素所属的序列 <code>list</code> （有序的，假设为升序）和被查找元素的值 <code>target</code> 两个参数，它的基本流程如下：</p>
 <ol>
 <li>定义两个变量 <code>left</code> 和 <code>right</code> 指向序列的左端和右端，变量 <code>mid</code> 指向两端的中间位置，查找将在这两端之间进行。</li>
 <li>初始化 <code>left = 1</code> ， <code>right = list.length</code> ， <code>mid = (left + right) / 2</code> 。</li>
-<li>比较 <code>mid</code> 处的元素与待查找元素 <code>target</code> 之间的关系：
-<ol>
+<li>比较 <code>mid</code> 处的元素与待查找元素 <code>target</code> 之间的关系：<ol>
 <li>若 <code>list[mid] = target</code> ，说明在 <code>mid</code> 处找到了元素 <code>target</code> ，返回 <code>mid</code> 。</li>
 <li>若 <code>list[mid] &lt; target</code> ，说明 <code>target</code> 在 <code>mid</code> 的右侧，这时应把 <code>left</code> 右移为 <code>mid + 1</code> ，然后更新 <code>mid</code> 为 <code>(left + right) / 2</code> ，重复过程 3。</li>
 <li>若 <code>list[mid] &gt; target</code> ，说明 <code>target</code> 在 <code>mid</code> 的左侧，这时应把 <code>right</code> 左移到 <code>mid - 1</code> ，然后更新 <code>mid</code> 为 <code>(left + right) / 2</code> ，重复过程 3。</li>
@@ -325,15 +322,13 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">binarySearch</span><span class="params">(ElementType *<span class="built_in">list</span>, <span class="type">int</span> listLength, ElementType target)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> left = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> right = listLength - <span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> mid = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (left &lt;= right)</span><br><span class="line">    &#123;</span><br><span class="line">        mid = (left + right) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">list</span>[mid] == target)</span><br><span class="line">            <span class="keyword">return</span> mid;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">list</span>[mid] &gt; target)</span><br><span class="line">            right = mid - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            left = mid + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>; <span class="comment">//means not frond!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>二分查找算法之所以能获得较高的时间效率，原因之一就是它的搜索过程实际上是一颗搜索树。例如序列 <code>[1,2,3,4,5,6,7,8,9,10,11]</code> ，按照二分法建立树状结构如下：</p>
 <img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E5%92%8C%E6%A0%91%E7%9A%84%E8%A1%A8%E7%A4%BA/1.png" class="">
-<p>则对于任何一个元素的搜索次数都将不超过树的深度 <code>4</code> 。而对于一颗有 <code>n</code> 个节点的树（长度为 <code>n</code> 的序列），其搜索树的深度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo><mi>log</mi><mo>⁡</mo></mo><mn>2</mn></msub><mi>n</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\log_2 n + 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.93858em;vertical-align:-0.24414em;"></span><span class="mop"><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.20696799999999996em;"><span style="top:-2.4558600000000004em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.24414em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> ，因此二分搜索的最坏时间复杂度是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msub><mo><mi>log</mi><mo>⁡</mo></mo><mn>2</mn></msub><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\log_2 n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mop"><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.20696799999999996em;"><span style="top:-2.4558600000000004em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.24414em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></p>
-<h1 id="定义"><a class="markdownIt-Anchor" href="#定义"></a> 定义</h1>
-<p>树是由 <code>n</code> 个元素构成的有穷集合。当 <code>n = 0</code> 时，称为空树。对于任何一颗非空树，它具有以下性质：</p>
+<p>则对于任何一个元素的搜索次数都将不超过树的深度 <code>4</code> 。而对于一颗有 <code>n</code> 个节点的树（长度为 <code>n</code> 的序列），其搜索树的深度为 $\log_2 n + 1$ ，因此二分搜索的最坏时间复杂度是 $O(\log_2 n)$</p>
+<h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><p>树是由 <code>n</code> 个元素构成的有穷集合。当 <code>n = 0</code> 时，称为空树。对于任何一颗非空树，它具有以下性质：</p>
 <ul>
 <li>一颗树有一个根节点 <code>root</code></li>
 <li>其余节点可分为m个互不相交的有限集，其中每个集合本身又可以视为一颗树，称为原树的子树 <code>SubTree</code> 。</li>
 </ul>
-<h2 id="术语解释"><a class="markdownIt-Anchor" href="#术语解释"></a> 术语解释</h2>
-<p>树的一些基本术语：</p>
+<h2 id="术语解释"><a href="#术语解释" class="headerlink" title="术语解释"></a>术语解释</h2><p>树的一些基本术语：</p>
 <ul>
 <li>节点的度 <code>Degree</code> ：节点的子树个数</li>
 <li>树的度：树的所有节点中最大的度数</li>
@@ -347,8 +342,7 @@
 <li>节点的层次 <code>Level</code> ：规定根节点在 <code>1</code> 层，其他节点的层次为其父节点层次 <code>+1</code></li>
 <li>树的深度 <code>Depth</code> ：树中所有节点的最大层次称为树的深度</li>
 </ul>
-<h1 id="树的表示"><a class="markdownIt-Anchor" href="#树的表示"></a> 树的表示</h1>
-<p>对于下图所示的树：</p>
+<h1 id="树的表示"><a href="#树的表示" class="headerlink" title="树的表示"></a>树的表示</h1><p>对于下图所示的树：</p>
 <img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E5%92%8C%E6%A0%91%E7%9A%84%E8%A1%A8%E7%A4%BA/2.png" class="">
 <p>可以用链表表示节点：</p>
 <img data-src="/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E5%92%8C%E6%A0%91%E7%9A%84%E8%A1%A8%E7%A4%BA/3.png" class="">
@@ -472,14 +466,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">298k</span>
+    <span title="站点总字数">253k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:31</span>
+    <span title="站点阅读时长">3:50</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动

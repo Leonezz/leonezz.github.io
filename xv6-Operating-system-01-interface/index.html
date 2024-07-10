@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.2.0">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favatar.png">
@@ -31,7 +31,7 @@
 <meta property="og:description" content="操作系统的职责是在多个程序(进程)之间共享计算机提供的物理资源，并提供一系列比直接操作硬件更有用的服务。具体地说，操作系统为计算机硬件提供一层抽象，使软件程序不需要关心硬件的具体实现。操作系统还必须通过某种时分复用的机制使得多个程序可以共享底层硬件。最后，操作系统也必须为不同程序进程提供某种通信机制。 操作系统中，运行的程序被抽象成进程，一个进程的内容即它所占用的内存及其他资源。其中，在内存中存有">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-03-02T14:36:49.000Z">
-<meta property="article:modified_time" content="2024-06-25T02:18:31.109Z">
+<meta property="article:modified_time" content="2024-07-10T02:00:52.991Z">
 <meta property="article:author" content="zhuwenq">
 <meta property="article:tag" content="Operating System">
 <meta property="article:tag" content="xv6">
@@ -152,7 +152,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E5%92%8C%E5%86%85%E5%AD%98"><span class="nav-number">1.</span> <span class="nav-text"> 进程和内存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fork-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text"> fork 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exit-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text"> exit 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wait-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text"> wait 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exec-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">1.4.</span> <span class="nav-text"> exec 系统调用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#io-%E5%92%8C%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6file-descriptors"><span class="nav-number">2.</span> <span class="nav-text"> IO 和文件描述符(file descriptors)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#read-%E5%92%8C-write-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">2.1.</span> <span class="nav-text"> read 和 write 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#open-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">2.2.</span> <span class="nav-text"> open 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#close-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">2.3.</span> <span class="nav-text"> close 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dup-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">2.4.</span> <span class="nav-text"> dup 系统调用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E9%81%93-pipe"><span class="nav-number">3.</span> <span class="nav-text"> 管道 (pipe)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9Ffile-system"><span class="nav-number">4.</span> <span class="nav-text"> 文件系统(File system)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fstat-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">4.1.</span> <span class="nav-text"> fstat 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chdir-open-mkdir-mknod-link-unlink-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">4.2.</span> <span class="nav-text"> chdir, open, mkdir, mknod, link, unlink 系统调用</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E5%92%8C%E5%86%85%E5%AD%98"><span class="nav-number">1.</span> <span class="nav-text">进程和内存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fork-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">fork 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exit-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">exit 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wait-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">wait 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exec-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">1.4.</span> <span class="nav-text">exec 系统调用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IO-%E5%92%8C%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6-file-descriptors"><span class="nav-number">2.</span> <span class="nav-text">IO 和文件描述符(file descriptors)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#read-%E5%92%8C-write-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">2.1.</span> <span class="nav-text">read 和 write 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#open-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">2.2.</span> <span class="nav-text">open 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#close-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">2.3.</span> <span class="nav-text">close 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dup-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">2.4.</span> <span class="nav-text">dup 系统调用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E9%81%93-pipe"><span class="nav-number">3.</span> <span class="nav-text">管道 (pipe)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-File-system"><span class="nav-number">4.</span> <span class="nav-text">文件系统(File system)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fstat-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">4.1.</span> <span class="nav-text">fstat 系统调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chdir-open-mkdir-mknod-link-unlink-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="nav-number">4.2.</span> <span class="nav-text">chdir, open, mkdir, mknod, link, unlink 系统调用</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -253,7 +253,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-06-25 10:18:31" itemprop="dateModified" datetime="2024-06-25T10:18:31+08:00">2024-06-25</time>
+      <time title="修改时间：2024-07-10 10:00:52" itemprop="dateModified" datetime="2024-07-10T10:00:52+08:00">2024-07-10</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -278,14 +278,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4.9k</span>
+      <span>5k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
+      <span>5 分钟</span>
     </span>
 </div>
 
@@ -299,6 +299,7 @@
 <p>操作系统中，运行的程序被抽象成进程，一个进程的内容即它所占用的内存及其他资源。其中，在内存中存有进程的指令，数据，堆栈等运行时上下文。操作系统接口即操作系统内核为其他进程提供的一系列服务的接口，称为系统调用 (system call) 。当进程需要调用系统服务时，其只能通过调用操作系统接口实现.</p>
 <span id="more"></span>
 <p>xv6 提供的系统调用有:</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -393,32 +394,27 @@
 </tr>
 </tbody>
 </table>
-<h2 id="进程和内存"><a class="markdownIt-Anchor" href="#进程和内存"></a> 进程和内存</h2>
-<p>xv6 的进程拥有用户态内存(指令，数据，堆栈)和由内核管理的进程状态。xv6 在进程之间时分复用处理器，即它透明地切换待执行的进程进入处理器执行。当进程被切换出处理器不再执行时，xv6 会为其保存 CPU 寄存器(保存上下文)，并在该进程下次执行时将保存的 CPU 寄存器重新加载 (恢复上下文)。操作系统内核为每个进程分配一个标识符，即 PID, 作为该进程的索引。</p>
-<h3 id="fork-系统调用"><a class="markdownIt-Anchor" href="#fork-系统调用"></a> <code>fork</code> 系统调用</h3>
-<ol>
+</div>
+<h2 id="进程和内存"><a href="#进程和内存" class="headerlink" title="进程和内存"></a>进程和内存</h2><p>xv6 的进程拥有用户态内存(指令，数据，堆栈)和由内核管理的进程状态。xv6 在进程之间时分复用处理器，即它透明地切换待执行的进程进入处理器执行。当进程被切换出处理器不再执行时，xv6 会为其保存 CPU 寄存器(保存上下文)，并在该进程下次执行时将保存的 CPU 寄存器重新加载 (恢复上下文)。操作系统内核为每个进程分配一个标识符，即 PID, 作为该进程的索引。</p>
+<h3 id="fork-系统调用"><a href="#fork-系统调用" class="headerlink" title="fork 系统调用"></a><code>fork</code> 系统调用</h3><ol>
 <li>一个进程可以使用 <code>fork</code> 系统调用创建一个新进程</li>
 <li>新创建的进程具有和 caller process 相同的内存内容，称为子进程</li>
 <li><code>fork</code> 函数创建子进程成功后立刻返回到 caller process ，返回值是子进程的 PID。在子进程中，<code>fork</code> 返回值是 0， 可以利用这一点为父进程和子进程设计不同的执行分支</li>
 </ol>
-<h3 id="exit-系统调用"><a class="markdownIt-Anchor" href="#exit-系统调用"></a> <code>exit</code> 系统调用</h3>
-<ol>
+<h3 id="exit-系统调用"><a href="#exit-系统调用" class="headerlink" title="exit 系统调用"></a><code>exit</code> 系统调用</h3><ol>
 <li>一个进程可以使用 <code>exit</code> 系统调用终止自己的执行，并释放自己占用的所有资源</li>
 <li><code>exit</code> 接受一个参数用于指示 caller process 的退出状态，按照惯例，状态 0 表示正常退出，状态 1 表示进程因错误退出。</li>
 </ol>
-<h3 id="wait-系统调用"><a class="markdownIt-Anchor" href="#wait-系统调用"></a> <code>wait</code> 系统调用</h3>
-<ol>
+<h3 id="wait-系统调用"><a href="#wait-系统调用" class="headerlink" title="wait 系统调用"></a><code>wait</code> 系统调用</h3><ol>
 <li>一个进程可以使用 <code>wait</code> 系统调用等待其子进程执行完成，同时阻塞自己的执行</li>
 <li>如果 caller process 的子进程之一退出，<code>wait</code> 返回退出子进程的 PID，如果 caller process 没有子进程， <code>wait</code> 立即返回 -1</li>
 <li><code>wait</code> 接受一个指针作为参数，子进程的退出状态将被拷贝到该指针位置. 如果 caller process 不关心子进程的退出状态，可以传递空指针 (0)</li>
 </ol>
-<h3 id="exec-系统调用"><a class="markdownIt-Anchor" href="#exec-系统调用"></a> <code>exec</code> 系统调用</h3>
-<ol>
+<h3 id="exec-系统调用"><a href="#exec-系统调用" class="headerlink" title="exec 系统调用"></a><code>exec</code> 系统调用</h3><ol>
 <li>一个进程可以使用 <code>exec</code> 系统调用将自己的进程内存替换为从文件系统中新加载的内存镜像，并保留原进程的文件描述符表。</li>
 <li><code>exec</code> 函数执行成功后并不返回 caller process ，它会直接执行其内存中的指令(即从文件系统加载的指令). <code>exec</code> 只有在错误时 (加载文件或替换进程内存时的错误，而非新的程序执行时的错误) 才返回, 因此 caller process 中 <code>exec</code> 函数之后的程序应该只有错误处理过程。</li>
 </ol>
-<h2 id="io-和文件描述符file-descriptors"><a class="markdownIt-Anchor" href="#io-和文件描述符file-descriptors"></a> IO 和文件描述符(file descriptors)</h2>
-<p>文件描述符是一个整数值，其代表一个指向内核管理的对象的指针。进程可以通过 <code>open</code> 文件、文件夹、或设备，创建  <code>pipe</code>, 或 <code>dup</code> 一个已有的文件描述符来获取文件描述符。</p>
+<h2 id="IO-和文件描述符-file-descriptors"><a href="#IO-和文件描述符-file-descriptors" class="headerlink" title="IO 和文件描述符(file descriptors)"></a>IO 和文件描述符(file descriptors)</h2><p>文件描述符是一个整数值，其代表一个指向内核管理的对象的指针。进程可以通过 <code>open</code> 文件、文件夹、或设备，创建  <code>pipe</code>, 或 <code>dup</code> 一个已有的文件描述符来获取文件描述符。</p>
 <p>文件描述符旨在提供一种抽象的接口，它使得操作系统管理的 IO 设备在接口上没有差异，都是字节流的形式。</p>
 <p>值得注意的是文件描述符的管理是逐 process 的，操作系统会为每个 process 维护一张文件描述符表。其中三个特殊的文件描述符是:</p>
 <ul>
@@ -427,8 +423,7 @@
 <li><code>2</code> 代表标准错误 (standard error)</li>
 </ul>
 <p>文件描述符的数值会递增地分配，即: 新获取的文件描述符将总是所有未占用文件描述符中数值最小的。</p>
-<h3 id="read-和-write-系统调用"><a class="markdownIt-Anchor" href="#read-和-write-系统调用"></a> <code>read</code> 和 <code>write</code> 系统调用</h3>
-<p><code>read</code> 和 <code>write</code> 从文件描述符指向的已打开的文件中读取或向其写入字节。</p>
+<h3 id="read-和-write-系统调用"><a href="#read-和-write-系统调用" class="headerlink" title="read 和 write 系统调用"></a><code>read</code> 和 <code>write</code> 系统调用</h3><p><code>read</code> 和 <code>write</code> 从文件描述符指向的已打开的文件中读取或向其写入字节。</p>
 <p>对于指向文件的文件描述符，其总是具备一个偏移量 <code>offset</code>，该 <code>offset</code> 指示该从该文件读取或向该文件写入的字节起点。</p>
 <ul>
 <li>对于 <code>read</code>， <code>read(fd, buf, n)</code> 表示从文件描述符 <code>fd</code> 指向的文件中读取最多 <code>n</code> 个字节，并将读取的数据复制到指针 <code>buf</code> 所指向的内存中，同时返回本次读取到的字节长度。值得注意的是 <code>read</code> 会从文件描述符 <code>fd</code> 所具备的 <code>offset</code> 位置开始读取，并在读取后将 <code>offset</code> 的值递增到本次读取的终点，即：下次对 <code>fd</code> 的读取将从本次读取的终点之后开始。当 <code>offset</code> 到达文件的终点时，新的 <code>read</code> 调用将返回 0， 代表文件已读取完毕。</li>
@@ -437,8 +432,7 @@
 <div class="note info"><p>关于文件描述符的 <code>offset</code>:</p>
 <p>如果一个文件描述符是从另一个已经存在的文件描述符得到的，即通过 <code>fork</code> 复制文件描述符表或 <code>dup</code> 复制文件描述符的方法，那么该文件描述符与原文件描述共享同一个 <code>offset</code>。否则，新的文件描述符(如通过 <code>open</code> 同一个文件)即使指向相同的 IO 设备，也不会共享 <code>offset</code></p>
 </div>
-<h3 id="open-系统调用"><a class="markdownIt-Anchor" href="#open-系统调用"></a> <code>open</code> 系统调用</h3>
-<p><code>open</code> 系统调用打开一个文件并为其分配文件描述符，<code>open(filename, flag)</code> 表示以 <code>flag</code> 模式打开文件 <code>filename</code>. 可选的 <code>flag</code> 有：</p>
+<h3 id="open-系统调用"><a href="#open-系统调用" class="headerlink" title="open 系统调用"></a><code>open</code> 系统调用</h3><p><code>open</code> 系统调用打开一个文件并为其分配文件描述符，<code>open(filename, flag)</code> 表示以 <code>flag</code> 模式打开文件 <code>filename</code>. 可选的 <code>flag</code> 有：</p>
 <ol>
 <li><code>O_RDONLY</code>: 只读模式</li>
 <li><code>O_WRONLY</code>: 只写模式</li>
@@ -446,16 +440,12 @@
 <li><code>O_CREATE</code>: 文件不存在则创建</li>
 <li><code>O_TRUNC</code>: 截断模式，打开时将文件内容清空</li>
 </ol>
-<h3 id="close-系统调用"><a class="markdownIt-Anchor" href="#close-系统调用"></a> <code>close</code> 系统调用</h3>
-<p><code>close</code> 系统调用释放一个文件描述符，使其在后续的分配中可用。</p>
+<h3 id="close-系统调用"><a href="#close-系统调用" class="headerlink" title="close 系统调用"></a><code>close</code> 系统调用</h3><p><code>close</code> 系统调用释放一个文件描述符，使其在后续的分配中可用。</p>
 <p>操作系统会保证新分配的文件描述符总是所有可用文件描述符中数值最小的(否则随着系统的运行，文件描述符的数值终将导致溢出)</p>
-<h3 id="dup-系统调用"><a class="markdownIt-Anchor" href="#dup-系统调用"></a> <code>dup</code> 系统调用</h3>
-<p><code>dup</code> 系统调用复制一个已有的文件描述符并返回，两个文件描述符将指向同一个 IO 设备，并共享一个 <code>offset</code></p>
-<h2 id="管道-pipe"><a class="markdownIt-Anchor" href="#管道-pipe"></a> 管道 (<code>pipe</code>)</h2>
-<p><code>pipe</code> 是一个小型内核缓冲区，其以<mark>一对</mark>文件描述符的形式暴露给用户进程：一个用于读取，另一个用于写入。读取端文件描述符可以读取向写入端文件描述符写入的数据，内核以这种形式向用户态提供了一种<strong>跨进程通信</strong>的方式。</p>
-<p><code>pipe</code> 以如下方式调用:</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> pipefds[<span class="number">2</span>];</span><br><span class="line">pipe(pipefds);</span><br><span class="line"><span class="comment">// pipefds[0] is for reading</span></span><br><span class="line"><span class="comment">// pipefds[1] is for writing</span></span><br></pre></td></tr></table></figure>
-<p>值得注意的是 <code>pipe</code> 以<mark>阻塞式语义</mark>进行读写，即: 对读取端文件描述符的读取操作 (<code>read</code>) 会等待写入端的写入。</p>
+<h3 id="dup-系统调用"><a href="#dup-系统调用" class="headerlink" title="dup 系统调用"></a><code>dup</code> 系统调用</h3><p><code>dup</code> 系统调用复制一个已有的文件描述符并返回，两个文件描述符将指向同一个 IO 设备，并共享一个 <code>offset</code></p>
+<h2 id="管道-pipe"><a href="#管道-pipe" class="headerlink" title="管道 (pipe)"></a>管道 (<code>pipe</code>)</h2><p><code>pipe</code> 是一个小型内核缓冲区，其以==一对==文件描述符的形式暴露给用户进程：一个用于读取，另一个用于写入。读取端文件描述符可以读取向写入端文件描述符写入的数据，内核以这种形式向用户态提供了一种<strong>跨进程通信</strong>的方式。</p>
+<p><code>pipe</code> 以如下方式调用:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> pipefds[<span class="number">2</span>];</span><br><span class="line">pipe(pipefds);</span><br><span class="line"><span class="comment">// pipefds[0] is for reading</span></span><br><span class="line"><span class="comment">// pipefds[1] is for writing</span></span><br></pre></td></tr></table></figure></p>
+<p>值得注意的是 <code>pipe</code> 以==阻塞式语义==进行读写，即: 对读取端文件描述符的读取操作 (<code>read</code>) 会等待写入端的写入。</p>
 <p>这一特性还可以重述为：对读取端文件操作符的读取会一直阻塞到写入端文件描述符有数据写入。另一种结束读取端阻塞的情况是: 所有指向 <code>pipe</code> 写入端的文件描述符都被关闭，此时对 <code>pipe</code> 读取端的 <code>read</code> 操作会返回 0，与对非 <code>pipe</code> IO 设备 <code>read</code> 时遇到 <code>EOF</code> 相似。</p>
 <p>跨进程通信也可以通过向临时文件读写数据实现，但 <code>pipe</code> 相比这种方式至少有以下四点优势:</p>
 <ol>
@@ -470,39 +460,27 @@
 <li>还是因为 <code>pipe</code> 的阻塞读写语义，在构建跨进程通信程序时不需要在如何同步读写操作上花费功夫，因此更加高效</li>
 </ol>
 </div>
-<h2 id="文件系统file-system"><a class="markdownIt-Anchor" href="#文件系统file-system"></a> 文件系统(File system)</h2>
-<p>文件系统中，文件名 (file name / file path) 只是对文件系统中文件本体的一个具名引用。文件系统中的文件本体叫做 <code>inode</code>.</p>
+<h2 id="文件系统-File-system"><a href="#文件系统-File-system" class="headerlink" title="文件系统(File system)"></a>文件系统(File system)</h2><p>文件系统中，文件名 (file name / file path) 只是对文件系统中文件本体的一个具名引用。文件系统中的文件本体叫做 <code>inode</code>.</p>
 <p>一个 <code>inode</code> 可以有多个文件名，称为 <code>links</code>. 一个 <code>link</code> 即目录中的一个条目，包含一个文件名和一个指向 <code>inode</code> 的引用。</p>
 <p><code>inode</code> 描述了文件的元数据 <code>metadata</code>, 包括文件的类型 (文件/目录/设备)，长度，文件在磁盘上的地址，该文件的 <code>link</code> 数目。</p>
-<h3 id="fstat-系统调用"><a class="markdownIt-Anchor" href="#fstat-系统调用"></a> <code>fstat</code> 系统调用</h3>
-<p><code>fstat</code> 系统调用通过一个文件描述符查询该文件描述符所指向的 <code>inode</code> 的信息，其结果以结构体 <code>stat</code> 的形式返回：</p>
+<h3 id="fstat-系统调用"><a href="#fstat-系统调用" class="headerlink" title="fstat 系统调用"></a><code>fstat</code> 系统调用</h3><p><code>fstat</code> 系统调用通过一个文件描述符查询该文件描述符所指向的 <code>inode</code> 的信息，其结果以结构体 <code>stat</code> 的形式返回：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> T_DIR    1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> T_FILE   2</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> T_DEVICE 3</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> dev; <span class="comment">// disk device of the file system</span></span><br><span class="line">    uint ino; <span class="comment">// inode number</span></span><br><span class="line">    <span class="type">short</span> type; <span class="comment">// type of file</span></span><br><span class="line">    <span class="type">short</span> nlink; <span class="comment">// number of links</span></span><br><span class="line">    uint64 size; <span class="comment">// size of the file in bytes</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="chdir-open-mkdir-mknod-link-unlink-系统调用"><a class="markdownIt-Anchor" href="#chdir-open-mkdir-mknod-link-unlink-系统调用"></a> <code>chdir</code>, <code>open</code>, <code>mkdir</code>, <code>mknod</code>, <code>link</code>, <code>unlink</code> 系统调用</h3>
-<ul>
-<li>
-<p><code>chdir</code> 系统调用可以改变当前进程所在的当前文件夹。当计算相对路径时，进程的当前文件夹被用作参照</p>
+<h3 id="chdir-open-mkdir-mknod-link-unlink-系统调用"><a href="#chdir-open-mkdir-mknod-link-unlink-系统调用" class="headerlink" title="chdir, open, mkdir, mknod, link, unlink 系统调用"></a><code>chdir</code>, <code>open</code>, <code>mkdir</code>, <code>mknod</code>, <code>link</code>, <code>unlink</code> 系统调用</h3><ul>
+<li><code>chdir</code> 系统调用可以改变当前进程所在的当前文件夹。当计算相对路径时，进程的当前文件夹被用作参照</li>
+<li><code>open</code> 系统调用当使用 <code>O_CREATE</code> flag 时可以创建新的文件</li>
+<li><code>mkdir</code> 系统调用用于创建新的文件夹</li>
+<li><p><code>mknod</code> 系统调用于创建新的其他设备文件。具体地说，<code>mknod</code> 为一个已有的设备创建一个文件，这个文件的路径指向该设备。 </p>
+<p>  该设备的主设备号和次设备号需要作为参数传入 <code>mknod</code>, 并于新创建的设备文件关联。这样一来，当用于进程访问该设备文件时，内核会将对该设备文件的 <code>read</code> 和 <code>write</code> 系统调用转发给内核中的设备实现，而不是调用文件系统中的实现。</p>
 </li>
-<li>
-<p><code>open</code> 系统调用当使用 <code>O_CREATE</code> flag 时可以创建新的文件</p>
-</li>
-<li>
-<p><code>mkdir</code> 系统调用用于创建新的文件夹</p>
-</li>
-<li>
-<p><code>mknod</code> 系统调用于创建新的其他设备文件。具体地说，<code>mknod</code> 为一个已有的设备创建一个文件，这个文件的路径指向该设备。</p>
-<p>该设备的主设备号和次设备号需要作为参数传入 <code>mknod</code>, 并于新创建的设备文件关联。这样一来，当用于进程访问该设备文件时，内核会将对该设备文件的 <code>read</code> 和 <code>write</code> 系统调用转发给内核中的设备实现，而不是调用文件系统中的实现。</p>
-</li>
-<li>
-<p><code>link</code> 系统调用为一个已有文件创建一个新的 <code>link</code></p>
-</li>
-<li>
-<p><code>unlink</code> 系统调用</p>
-<p><code>unlink</code> 系统调用从文件系统删除一个 <code>link</code></p>
-  <div class="note primary"><p>在典型 unix 系统中，一个文件的 <code>inode</code> 以及文件在磁盘中的本体只有在文件系统中没有 <code>link</code> 指向该 <code>inode</code>, 并且所有进程中都不存在指向该文件的文件描述符时才会被释放和删除。</p>
-</div>
+<li><code>link</code> 系统调用为一个已有文件创建一个新的 <code>link</code></li>
+<li><p><code>unlink</code> 系统调用</p>
+<p>  <code>unlink</code> 系统调用从文件系统删除一个 <code>link</code></p>
 </li>
 </ul>
-
+<pre><code>&#123;% note primary %&#125;
+    在典型 unix 系统中，一个文件的 `inode` 以及文件在磁盘中的本体只有在文件系统中没有 `link` 指向该 `inode`, 并且所有进程中都不存在指向该文件的文件描述符时才会被释放和删除。
+    &#123;% endnote %&#125;
+</code></pre>
     </div>
 
     
@@ -616,14 +594,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">298k</span>
+    <span title="站点总字数">253k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:31</span>
+    <span title="站点阅读时长">3:50</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
