@@ -11,7 +11,7 @@ categories:
     - 知识类
 ---
 
-C++ 标准库中提供的 `std::string` 类型有一些坑, 不小心使用的话很可能对程序性能造成影响. 例如字符串拼接这一常见简单的操作, 在 C++ 中大约有 4 种方式实现:
+偶然的机会在工作中对 `std::string` 的拼接操作进行了对比, 本文记录对 4 种拼接方式的简单 benchmark:
 1. `+` 操作符
 2. `+=` 操作符
 3. `append` 成员
@@ -114,5 +114,3 @@ int main() {
 ```
 
 也可以在 compiler explorer 上查看: https://godbolt.org/z/cMPddcrfq
-
-至于具体的分析以后有空再补...
