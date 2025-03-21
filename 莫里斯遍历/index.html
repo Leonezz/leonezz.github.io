@@ -32,7 +32,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog.zhuwenq.cc/%E8%8E%AB%E9%87%8C%E6%96%AF%E9%81%8D%E5%8E%86/1.jpg">
 <meta property="article:published_time" content="2022-03-20T08:47:29.000Z">
-<meta property="article:modified_time" content="2024-07-10T02:00:52.999Z">
+<meta property="article:modified_time" content="2025-03-21T16:09:05.031Z">
 <meta property="article:author" content="zhuwenq">
 <meta property="article:tag" content="遍历">
 <meta property="article:tag" content="算法">
@@ -155,7 +155,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%AB%E9%87%8C%E6%96%AF%E9%81%8D%E5%8E%86"><span class="nav-number">1.</span> <span class="nav-text">莫里斯遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86"><span class="nav-number">1.1.</span> <span class="nav-text">中序遍历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86"><span class="nav-number">1.2.</span> <span class="nav-text">前序遍历</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%AB%E9%87%8C%E6%96%AF%E9%81%8D%E5%8E%86"><span class="nav-number">1.</span> <span class="nav-text"> 莫里斯遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86"><span class="nav-number">1.1.</span> <span class="nav-text"> 中序遍历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86"><span class="nav-number">1.2.</span> <span class="nav-text"> 前序遍历</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number">2.</span> <span class="nav-text"> Reference</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -256,7 +256,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-10 10:00:52" itemprop="dateModified" datetime="2024-07-10T10:00:52+08:00">2024-07-10</time>
+      <time title="修改时间：2025-03-22 00:09:05" itemprop="dateModified" datetime="2025-03-22T00:09:05+08:00">2025-03-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -303,19 +303,24 @@
 </blockquote>
 <span id="more"></span>
 <p>莫里斯遍历 <code>(Morris Traversal)</code> 是一种时间复杂度为 <code>O(n)</code> ，空间复杂度为 <code>O(1)</code> ，且不改变树的结构的二叉树遍历算法。</p>
-<h1 id="莫里斯遍历"><a href="#莫里斯遍历" class="headerlink" title="莫里斯遍历"></a>莫里斯遍历</h1><p>通常的二叉树遍历算法使用堆栈或者递归完成，它们的空间复杂度通常是 <code>O(n)</code> 的。<br>要使用 <code>O(1)</code> 的空间实现遍历，最主要的难点是如何在指针到达叶节点的时候回到父节点，在不能使用堆栈的情况下，莫里斯遍历使用线索二叉树 <code>(Threaded Binary Tree)</code> 的思想，莫里斯方法中不需要额外的空间来保存叶子节点的前驱 <code>(predecessor)</code> 节点和后继 <code>(successor)</code> 节点，只需要利用叶子节点的空闲左右子节点按照一定的顺序指向前驱或后继节点就可以。</p>
+<h1 id="莫里斯遍历"><a class="markdownIt-Anchor" href="#莫里斯遍历"></a> 莫里斯遍历</h1>
+<p>通常的二叉树遍历算法使用堆栈或者递归完成，它们的空间复杂度通常是 <code>O(n)</code> 的。<br />
+要使用 <code>O(1)</code> 的空间实现遍历，最主要的难点是如何在指针到达叶节点的时候回到父节点，在不能使用堆栈的情况下，莫里斯遍历使用线索二叉树 <code>(Threaded Binary Tree)</code> 的思想，莫里斯方法中不需要额外的空间来保存叶子节点的前驱 <code>(predecessor)</code> 节点和后继 <code>(successor)</code> 节点，只需要利用叶子节点的空闲左右子节点按照一定的顺序指向前驱或后继节点就可以。</p>
 <p>首先看莫里斯方法的中序遍历，通过中序遍历可以推出其他顺序的遍历。</p>
 <p>首先实现一个 LeetCode 风格的二叉树节点原型：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">TreeNode</span>&#123;</span></span><br><span class="line">    <span class="type">int</span> val;</span><br><span class="line">    TreeNode* left;</span><br><span class="line">    TreeNode* right;</span><br><span class="line">    TreeNode(<span class="type">int</span> _val):val(_val),left(<span class="literal">NULL</span>),right(<span class="literal">NULL</span>)&#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="中序遍历"><a href="#中序遍历" class="headerlink" title="中序遍历"></a>中序遍历</h2><p>算法流程：</p>
+<h2 id="中序遍历"><a class="markdownIt-Anchor" href="#中序遍历"></a> 中序遍历</h2>
+<p>算法流程：</p>
 <ol>
 <li>如果当前节点的左子节点为空，则访问当前节点并以当前节点的右子节点作为当前节点（与普通遍历无异）</li>
-<li>如果当前节点的左子节点不为空，则在当前节点的左子树中寻找当前节点在中序遍历下的前驱节点<ol>
+<li>如果当前节点的左子节点不为空，则在当前节点的左子树中寻找当前节点在中序遍历下的前驱节点
+<ol>
 <li>如果前驱节点的右子节点为空，则将它的右子节点设置为当前节点（设置线索）。更新当前节点为当前节点的左子节点</li>
 <li>如果前驱节点的右子节点为当前节点，则将其重设为空（断开线索，恢复树的形状）。访问当前节点并更新当前节点为当前节点的右子节点。</li>
 </ol>
 </li>
-<li>重复以上两点直到当前节点为空。<br>线索设置和遍历过程图示:</li>
+<li>重复以上两点直到当前节点为空。<br />
+线索设置和遍历过程图示:</li>
 </ol>
 <img data-src="/%E8%8E%AB%E9%87%8C%E6%96%AF%E9%81%8D%E5%8E%86/1.jpg" class="" title="莫里斯中序遍历">
 <p>代码过程如下：</p>
@@ -323,19 +328,23 @@
 <p>算法的空间复杂度是 <code>O(1)</code> 的，时间复杂度主要体现在寻找前驱节点的操作上：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (prev != <span class="literal">NULL</span> &amp;&amp; prev-&gt;right != <span class="literal">NULL</span>) <span class="comment">//find the predecessor</span></span><br><span class="line">    prev = prev-&gt;right;</span><br></pre></td></tr></table></figure>
 <p>这段代码的时间复杂度直观上是 <code>O(log n)</code> 的，但是由于要对每个左子节点非空的节点都要做一次，因此总体上是 <code>O(n)</code> 的。</p>
-<h2 id="前序遍历"><a href="#前序遍历" class="headerlink" title="前序遍历"></a>前序遍历</h2><p>前序遍历与中序遍历总体上是相同的，只是访问节点的时机略有不同</p>
+<h2 id="前序遍历"><a class="markdownIt-Anchor" href="#前序遍历"></a> 前序遍历</h2>
+<p>前序遍历与中序遍历总体上是相同的，只是访问节点的时机略有不同</p>
 <p>算法流程：</p>
 <ol>
 <li>如果当前节点的左子节点为空，则访问当前节点并以当前节点的右子节点作为当前节点（与普通遍历无异）</li>
-<li>如果当前节点的左子节点不为空，则在当前节点的左子树中寻找当前节点在中序遍历下的前驱节点<ol>
+<li>如果当前节点的左子节点不为空，则在当前节点的左子树中寻找当前节点在中序遍历下的前驱节点
+<ol>
 <li>如果前驱节点的右子节点为空，则将它的右子节点设置为当前节点（设置线索）之后访问当前节点。更新当前节点为当前节点的左子节点</li>
 <li>如果前驱节点的右子节点为当前节点，则将其重设为空（断开线索，恢复树的形状）。更新当前节点为当前节点的右子节点。</li>
 </ol>
 </li>
-<li>重复以上两点直到当前节点为空。<br>代码过程：</li>
+<li>重复以上两点直到当前节点为空。<br />
+代码过程：</li>
 </ol>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">preOrderTraversal</span><span class="params">(TreeNode *root)</span></span><br><span class="line">&#123;</span><br><span class="line">    TreeNode *cur = root;</span><br><span class="line">    TreeNode *prev = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">while</span> (cur != <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (cur != <span class="literal">NULL</span>) &#123;</span><br><span class="line">            visit(cur);</span><br><span class="line">            cur = cur-&gt;right;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            prev = cur-&gt;left;</span><br><span class="line">            <span class="keyword">while</span> (prev-&gt;right != <span class="literal">NULL</span> &amp;&amp; prev-&gt;right != cur)</span><br><span class="line">                prev = prev-&gt;right;</span><br><span class="line">            <span class="keyword">if</span> (prev-&gt;right == <span class="literal">NULL</span>) &#123;</span><br><span class="line">                prev-&gt;right = cur;</span><br><span class="line">                visit(cur);</span><br><span class="line">                cur = cur-&gt;left;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                prev-&gt;right = <span class="literal">NULL</span>;</span><br><span class="line">                cur = cur-&gt;right;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/anniekim/archive/2013/06/15/morristraversal.html">Morris Traversal方法遍历二叉树（非递归，不用栈，O(1)空间）</a></p>
+<h1 id="reference"><a class="markdownIt-Anchor" href="#reference"></a> Reference</h1>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/anniekim/archive/2013/06/15/morristraversal.html">Morris Traversal方法遍历二叉树（非递归，不用栈，O(1)空间）</a></p>
 
     </div>
 
@@ -439,7 +448,7 @@
 
 <div class="copyright">
   &copy; 2020 – 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -451,14 +460,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">253k</span>
+    <span title="站点总字数">298k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:50</span>
+    <span title="站点阅读时长">4:31</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
@@ -523,7 +532,7 @@
 
 
 <script class="next-config" data-name="exif" type="application/json">"{FocalLength}mm f/{FNumber} {ExposureTime}s. zhuwenq © 2023"</script>
-<script src="https://fastly.jsdelivr.net/npm/exif-js@2/exif.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exifreader@4/dist/exif-reader.min.js"></script>
 <script src="/lib/exif.js"></script><script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"Leonezz/blog_comment","issue_term":"pathname","theme":"github-light"}</script>
 <script src="/js/third-party/comments/utterances.js"></script>
 

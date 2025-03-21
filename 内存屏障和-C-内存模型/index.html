@@ -32,7 +32,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog.zhuwenq.cc/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/1.png">
 <meta property="article:published_time" content="2023-04-08T14:47:44.000Z">
-<meta property="article:modified_time" content="2024-07-10T02:00:52.991Z">
+<meta property="article:modified_time" content="2025-03-21T16:09:05.022Z">
 <meta property="article:author" content="zhuwenq">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="CPU Cache">
@@ -156,7 +156,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96%E8%AF%B4%E8%B5%B7"><span class="nav-number">1.</span> <span class="nav-text">从编译器优化说起</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CPU-%E9%87%8D%E6%8E%92"><span class="nav-number">1.1.</span> <span class="nav-text">CPU 重排</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="nav-number">1.2.</span> <span class="nav-text">内存可见性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Memory-Barrier"><span class="nav-number">1.3.</span> <span class="nav-text">Memory Barrier</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Memory-Order"><span class="nav-number">2.</span> <span class="nav-text">Memory Order</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sequential-Consistent"><span class="nav-number">2.1.</span> <span class="nav-text">Sequential Consistent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Happens-Before"><span class="nav-number">2.2.</span> <span class="nav-text">Happens Before</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Synchronizes-With"><span class="nav-number">2.3.</span> <span class="nav-text">Synchronizes With</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#std-atomic-%E5%92%8C-std-memory-order"><span class="nav-number">3.</span> <span class="nav-text">std::atomic 和 std::memory_order</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#memory-order-relaxed-Relaxed-Ordering"><span class="nav-number">3.1.</span> <span class="nav-text">memory_order_relaxed(Relaxed Ordering)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory-order-acquire-%E5%92%8C-memory-order-release-Acquire-Release-Ordering"><span class="nav-number">3.2.</span> <span class="nav-text">memory_order_acquire 和 memory_order_release (Acquire-Release Ordering)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory-order-consume"><span class="nav-number">3.3.</span> <span class="nav-text">memory_order_consume</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory-order-acq-rel"><span class="nav-number">3.4.</span> <span class="nav-text">memory_order_acq_rel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory-order-seq-cst-Sequentially-Consistent-Ordering"><span class="nav-number">3.5.</span> <span class="nav-text">memory_order_seq_cst(Sequentially Consistent Ordering)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-number">4.</span> <span class="nav-text">Conclusion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">5.</span> <span class="nav-text">References</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96%E8%AF%B4%E8%B5%B7"><span class="nav-number">1.</span> <span class="nav-text"> 从编译器优化说起</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cpu-%E9%87%8D%E6%8E%92"><span class="nav-number">1.1.</span> <span class="nav-text"> CPU 重排</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="nav-number">1.2.</span> <span class="nav-text"> 内存可见性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory-barrier"><span class="nav-number">1.3.</span> <span class="nav-text"> Memory Barrier</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#memory-order"><span class="nav-number">2.</span> <span class="nav-text"> Memory Order</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sequential-consistent"><span class="nav-number">2.1.</span> <span class="nav-text"> Sequential Consistent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#happens-before"><span class="nav-number">2.2.</span> <span class="nav-text"> Happens Before</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#synchronizes-with"><span class="nav-number">2.3.</span> <span class="nav-text"> Synchronizes With</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stdatomic-%E5%92%8C-stdmemory_order"><span class="nav-number">3.</span> <span class="nav-text"> std::atomic 和 std::memory_order</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#memory_order_relaxedrelaxed-ordering"><span class="nav-number">3.1.</span> <span class="nav-text"> memory_order_relaxed(Relaxed Ordering)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory_order_acquire-%E5%92%8C-memory_order_release-acquire-release-ordering"><span class="nav-number">3.2.</span> <span class="nav-text"> memory_order_acquire 和 memory_order_release (Acquire-Release Ordering)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory_order_consume"><span class="nav-number">3.3.</span> <span class="nav-text"> memory_order_consume</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory_order_acq_rel"><span class="nav-number">3.4.</span> <span class="nav-text"> memory_order_acq_rel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memory_order_seq_cstsequentially-consistent-ordering"><span class="nav-number">3.5.</span> <span class="nav-text"> memory_order_seq_cst(Sequentially Consistent Ordering)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#conclusion"><span class="nav-number">4.</span> <span class="nav-text"> Conclusion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#references"><span class="nav-number">5.</span> <span class="nav-text"> References</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -257,7 +257,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-10 10:00:52" itemprop="dateModified" datetime="2024-07-10T10:00:52+08:00">2024-07-10</time>
+      <time title="修改时间：2025-03-22 00:09:05" itemprop="dateModified" datetime="2025-03-22T00:09:05+08:00">2025-03-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -306,7 +306,8 @@
 </ol>
 <p>Memory Order 是 C++ 11 提供的一种并发编程机制, 它允许显式地限制编译器/CPU 对指令的重排 (Reordering), 以及显式地控制多核 CPU Cache 之间的同步. 其效果是使得不同线程/不同 CPU Core 所观察到的原子操作附近的内存操作具有可预测的顺序.</p>
 <span id="more"></span>
-<h2 id="从编译器优化说起"><a href="#从编译器优化说起" class="headerlink" title="从编译器优化说起"></a>从编译器优化说起</h2><p>众所周知, 编译器不会忠实地将程序代码翻译为机器码, 而是在遵守 As-if 原则的前提下使用一定程度的指令重排以提高程序效率. As-if 原则是指优化前后的程序在单线程执行时应该具有相同的行为. 因此, 在多线程并发情况下, 无法完全假定程序中位于前面的代码会先于后面的代码执行. 例如如下的简单程序:</p>
+<h2 id="从编译器优化说起"><a class="markdownIt-Anchor" href="#从编译器优化说起"></a> 从编译器优化说起</h2>
+<p>众所周知, 编译器不会忠实地将程序代码翻译为机器码, 而是在遵守 As-if 原则的前提下使用一定程度的指令重排以提高程序效率. As-if 原则是指优化前后的程序在单线程执行时应该具有相同的行为. 因此, 在多线程并发情况下, 无法完全假定程序中位于前面的代码会先于后面的代码执行. 例如如下的简单程序:</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a&#123;&#125;;</span><br><span class="line"><span class="type">int</span> b&#123;&#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  ++a;++b;</span><br><span class="line">  a = a + b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在 <code>g++ -S p1.cpp -o p1.s -O3</code> 命令下编译得到的汇编代码 (部分) 为:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">main:</span><br><span class="line">	movl	b(%rip), %eax       ; move b to %eax</span><br><span class="line">	movl	a(%rip), %edx       ; move a to %edx</span><br><span class="line">	addl	$1, %eax            ; ++b</span><br><span class="line">	movl	%eax, b(%rip)       ; move (b + 1) back to b</span><br><span class="line">	leal	1(%rax,%rdx), %eax  ; move (1 + b + a) to %eax</span><br><span class="line">	movl	%eax, a(%rip)       ; move (1 + b + a) to a</span><br><span class="line">	xorl	%eax, %eax</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
@@ -316,8 +317,10 @@
 <li>汇编代码没有计算 <code>++a</code>, 而是直接计算出了 <code>a</code> 的最终值 <code>a = 1 + b + 1 + a</code></li>
 </ol>
 <p>如果在多线程环境下, 一个线程读到 <code>b</code> 自增了 <code>1</code> 就错误地假设 <code>a</code> 已经完成了自增, 那么程序的行为就无法定义.</p>
-<h3 id="CPU-重排"><a href="#CPU-重排" class="headerlink" title="CPU 重排"></a>CPU 重排</h3><p>另一个会重排指令的地方是 CPU 指令执行模型. 在现代 CPU 设计中, 设计者利用很多机制如乱序发射, 分治预测等提高指令执行的并行性. 这种设计加速程序执行的同时也使得在并发情况下程序的指令执行顺序不可预测.</p>
-<h3 id="内存可见性"><a href="#内存可见性" class="headerlink" title="内存可见性"></a>内存可见性</h3><p>CPU Cache 的存在使得指令执行的结果 (内存的变动) 可能不会立即被其他 CPU Core 观察到. 对这个现象的理解需要了解 CPU Cache 的架构和缓存一致性协议.</p>
+<h3 id="cpu-重排"><a class="markdownIt-Anchor" href="#cpu-重排"></a> CPU 重排</h3>
+<p>另一个会重排指令的地方是 CPU 指令执行模型. 在现代 CPU 设计中, 设计者利用很多机制如乱序发射, 分治预测等提高指令执行的并行性. 这种设计加速程序执行的同时也使得在并发情况下程序的指令执行顺序不可预测.</p>
+<h3 id="内存可见性"><a class="markdownIt-Anchor" href="#内存可见性"></a> 内存可见性</h3>
+<p>CPU Cache 的存在使得指令执行的结果 (内存的变动) 可能不会立即被其他 CPU Core 观察到. 对这个现象的理解需要了解 CPU Cache 的架构和缓存一致性协议.</p>
 <p>大致地说, CPU 直接能够访问的 Cache 是存在于每个 CPU Core 上的, 即, 每个内核独占地使用一份 Cache. 而 Cache 实际上是主存的缓存, 即一份副本, 那么为了保持每个 CPU Core 中的内存副本是一致的, 就需要一套 cache coherence protocol. Cache coherence Protocol 定义了 Cache line (Cache 操作的最小单位) 的几种状态, 以及 Core 之间沟通的几种消息:</p>
 <p>Cache line 状态:</p>
 <ol>
@@ -342,11 +345,13 @@
 </ul>
 <p>但是 CPU 设计者不满足于这样的等待, 于是他们又引入了两层缓存, 即 Store Buffer 和 Invalidate Queue.</p>
 <ul>
-<li><p>Store Buffer 位于 Core 和 Cache 之间. 这一层 buffer 提供了这样的功能: 当 Core A 执行写入操作时, 不需要等待来自 Core B 的 Invalidate Ack 消息, 而是直接写入在 Store Buffer 中, 然后执行后续的操作. 等收到 Invalidate Ack 消息后再将 Store Buffer 同步到 Cache 中.</p>
-<p>  值得注意的是, 由于 Store Buffer 的存在, Core 需要 <code>load</code> 数据时需要先在 Store Buffer 中查找以保证 <code>load</code> 的数据是最新的. 这一过程叫做 Store Forwarding</p>
+<li>
+<p>Store Buffer 位于 Core 和 Cache 之间. 这一层 buffer 提供了这样的功能: 当 Core A 执行写入操作时, 不需要等待来自 Core B 的 Invalidate Ack 消息, 而是直接写入在 Store Buffer 中, 然后执行后续的操作. 等收到 Invalidate Ack 消息后再将 Store Buffer 同步到 Cache 中.</p>
+<p>值得注意的是, 由于 Store Buffer 的存在, Core 需要 <code>load</code> 数据时需要先在 Store Buffer 中查找以保证 <code>load</code> 的数据是最新的. 这一过程叫做 Store Forwarding</p>
 </li>
-<li><p>Invalidate Queue 位于 Core Cache 和 memory 之间. 当 Core A 向 Core B 发送 Invalidate 消息时, Core B 可以直接将该消息放入自己的 Invalidate Queue, 并立即返回 Invalidate Ack.</p>
-<p>  需要注意的是, 如果 Core A 的 Invalidate Queue 中已经存在了该 cache line 的 Invalidate 消息, 那么它必须处理该 cache line 的 Invalidate 事件. 总的来说, 带有 Invalidate Queue 的 Core 提供这样一种保证: 在传输任何关于该 cache line 的 MESI 消息之前处理该条目.</p>
+<li>
+<p>Invalidate Queue 位于 Core Cache 和 memory 之间. 当 Core A 向 Core B 发送 Invalidate 消息时, Core B 可以直接将该消息放入自己的 Invalidate Queue, 并立即返回 Invalidate Ack.</p>
+<p>需要注意的是, 如果 Core A 的 Invalidate Queue 中已经存在了该 cache line 的 Invalidate 消息, 那么它必须处理该 cache line 的 Invalidate 事件. 总的来说, 带有 Invalidate Queue 的 Core 提供这样一种保证: 在传输任何关于该 cache line 的 MESI 消息之前处理该条目.</p>
 </li>
 </ul>
 <img data-src="/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%92%8C-C-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/1.png" class="" title="Paul E. McKenney. Is Parallel Programming Hard, And, If So,What Can You Do About It? v2022.09.25a-P438">
@@ -354,44 +359,59 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;assert.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="type">int</span> a&#123;&#125;;</span><br><span class="line"><span class="type">int</span> b&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  a = <span class="number">1</span>;</span><br><span class="line">  b = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">bar</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">while</span> (b == <span class="number">0</span>) <span class="keyword">continue</span>;</span><br><span class="line">  <span class="built_in">assert</span>(a == <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>假设 Core A 上运行的线程 1 和 Core B 上的线程 2 分别运行 <code>foo()</code> 和 <code>bar()</code>. 那么理想情况下, 当线程 2 从 <code>while</code> 循环退出时, 全局变量 <code>a</code> 的值应该已经变为了 <code>1</code>, 即断言会成功. 但实际上, 由于内存可见性以及可见性顺序的不确定性, 断言可能会失败:</p>
 <ol>
-<li>假设此时 <code>a</code> 不存在于 Core A 的 Cache 中, <code>b</code> 存在于 Core A 的 Cache 中且状态为 M. 那么:<ol>
-<li>Core A 执行 <code>a = 1</code> 之后将 <code>a</code> 的值放进 Store Buffer, 然后继续执行 <code>b = 1</code>, 因为 <code>b</code> 在 Core A 上是 M 状态, 因此对 <code>b</code> 的修改不需要和其他 core 同步. </li>
+<li>假设此时 <code>a</code> 不存在于 Core A 的 Cache 中, <code>b</code> 存在于 Core A 的 Cache 中且状态为 M. 那么:
+<ol>
+<li>Core A 执行 <code>a = 1</code> 之后将 <code>a</code> 的值放进 Store Buffer, 然后继续执行 <code>b = 1</code>, 因为 <code>b</code> 在 Core A 上是 M 状态, 因此对 <code>b</code> 的修改不需要和其他 core 同步.</li>
 <li>此时 Core B 执行 <code>while(b == 0)</code> 时发现 <code>b == 1</code>, 那么就会退出循环执行 <code>assert</code>.</li>
 <li>但此时如果 Core A 的 Store Buffer 还没有将 <code>a</code> 的值同步到 Cache 的话, Core B 获取到的 <code>a</code> 值将为 0. 此时结果不符合预期.</li>
 </ol>
 </li>
-<li>假设 Core A 及时将 Store Buffer 中的值刷到 Cache 中.<ol>
+<li>假设 Core A 及时将 Store Buffer 中的值刷到 Cache 中.
+<ol>
 <li>那么 Cache 会向 Core B 发送 Invalidate 消息, 提醒其关于 <code>a</code> 的值已经失效. 这个消息会 push 到 Core B 的 Invalidate Queue 中</li>
 <li>当 Core B 发现 <code>b == 1</code> 退出循环时, 如果它还没有处理 Invalidate Queue 中的消息, 即 Core B 中 <code>a</code> 的 Cache Line 状态不为 <code>l</code>, 那么 Core B 此时获取到的 <code>a</code> 的取值仍然是 0. 结果不符合预期.</li>
 </ol>
 </li>
 </ol>
 <p>上面两种情况下不符合预期的行为是无法在 CPU 层面解决的: 读取变量的 CPU Core 并不知道读取的变量与其他 Core 有什么关系.</p>
-<h3 id="Memory-Barrier"><a href="#Memory-Barrier" class="headerlink" title="Memory Barrier"></a>Memory Barrier</h3><p>为了保证程序的正确性, CPU 设计者提供了 Memory Barrier 机制. 它具体的形式是一种指令, 它的执行效果是将 Store Buffer 和 Invalidate Queue 与 Cache 同步, 即要求 CPU Core 立即处理这些缓存.</p>
+<h3 id="memory-barrier"><a class="markdownIt-Anchor" href="#memory-barrier"></a> Memory Barrier</h3>
+<p>为了保证程序的正确性, CPU 设计者提供了 Memory Barrier 机制. 它具体的形式是一种指令, 它的执行效果是将 Store Buffer 和 Invalidate Queue 与 Cache 同步, 即要求 CPU Core 立即处理这些缓存.</p>
 <p>更具体地说, CPU 设计者为读写操作分别引入了不同的 Memory Barrier 指令:</p>
 <ul>
 <li>对于读操作, Read Memory Barrier 会将 Invalidate Queue 与 Cache 同步</li>
 <li>对于写操作, Write Memory Barrier 会将 Store Buffer 与 Cache 同步</li>
 </ul>
-<h2 id="Memory-Order"><a href="#Memory-Order" class="headerlink" title="Memory Order"></a>Memory Order</h2><p>由于以上的原因, 并发编程在没有设置 Memory Barrier 时难以获取跨线程一致的内存顺序. C++ 对这些现代多核 CPU 并行运行时的内存可见性提供的抽象是 Memory Order.</p>
+<h2 id="memory-order"><a class="markdownIt-Anchor" href="#memory-order"></a> Memory Order</h2>
+<p>由于以上的原因, 并发编程在没有设置 Memory Barrier 时难以获取跨线程一致的内存顺序. C++ 对这些现代多核 CPU 并行运行时的内存可见性提供的抽象是 Memory Order.</p>
 <p>具体地说, C++ 抽象了 3 种内存顺序模型:</p>
-<h3 id="Sequential-Consistent"><a href="#Sequential-Consistent" class="headerlink" title="Sequential Consistent"></a>Sequential Consistent</h3><p>即顺序一致性模型, 这种模型下编译器和 CPU 严格按照代码顺序生成和执行指令. 同时所有的内核观察到的内存顺序都一致, 即内存修改的顺序以及可见的顺序是全局一致的 (global memory order)</p>
-<h3 id="Happens-Before"><a href="#Happens-Before" class="headerlink" title="Happens Before"></a>Happens Before</h3><p>即按照代码顺序, 如果语句 A 在语句 B 的前面, 那么 <strong>语句 A 的执行所产生的效果需能够被语句 B 的执行观察到</strong>, 则称语句 A <em>Happens Before</em> 语句 B. 值得注意的是 Happens Before 强调内存修改的可见性顺序, 并不强调 「实际的执行顺序」.</p>
-<h3 id="Synchronizes-With"><a href="#Synchronizes-With" class="headerlink" title="Synchronizes With"></a>Synchronizes With</h3><p>如果线程 A 中的一个 atomic store 操作是 「Release 操作」, 线程 B 种对同一个变量的 atomic load 操作是 「Acquire 操作」, 并且线程 B 中的 load 操作读取到了线程 A 中的 store 操作所写入的值, 那么称线程 A 中的 Store 操作 <em>synchronizes with</em> 线程 B 中的 Load 操作.</p>
-<h2 id="std-atomic-和-std-memory-order"><a href="#std-atomic-和-std-memory-order" class="headerlink" title="std::atomic 和 std::memory_order"></a><code>std::atomic</code> 和 <code>std::memory_order</code></h2><p>对于上面三种抽象内存顺序模型, C++ 标准提供了 6 个 flag 用于控制对 atomic 变量 load 和 store 操作, 以使得原子变量周围的内存可见性顺序能够满足以上顺序模型.</p>
-<h3 id="memory-order-relaxed-Relaxed-Ordering"><a href="#memory-order-relaxed-Relaxed-Ordering" class="headerlink" title="memory_order_relaxed(Relaxed Ordering)"></a><code>memory_order_relaxed</code>(Relaxed Ordering)</h3><p>松散模型, 用该 flag 标记的原子变量操作只保证原子变量本身的内存一致性, 对其他内存的读写操作没有任何的同步和重排限制.</p>
-<h3 id="memory-order-acquire-和-memory-order-release-Acquire-Release-Ordering"><a href="#memory-order-acquire-和-memory-order-release-Acquire-Release-Ordering" class="headerlink" title="memory_order_acquire 和 memory_order_release (Acquire-Release Ordering)"></a><code>memory_order_acquire</code> 和 <code>memory_order_release</code> (Acquire-Release Ordering)</h3><p>C++ 借鉴 lock 的 lock 和 unlock 操作, 引入了两个概念: Acquire 和 Release.</p>
+<h3 id="sequential-consistent"><a class="markdownIt-Anchor" href="#sequential-consistent"></a> Sequential Consistent</h3>
+<p>即顺序一致性模型, 这种模型下编译器和 CPU 严格按照代码顺序生成和执行指令. 同时所有的内核观察到的内存顺序都一致, 即内存修改的顺序以及可见的顺序是全局一致的 (global memory order)</p>
+<h3 id="happens-before"><a class="markdownIt-Anchor" href="#happens-before"></a> Happens Before</h3>
+<p>即按照代码顺序, 如果语句 A 在语句 B 的前面, 那么 <strong>语句 A 的执行所产生的效果需能够被语句 B 的执行观察到</strong>, 则称语句 A <em>Happens Before</em> 语句 B. 值得注意的是 Happens Before 强调内存修改的可见性顺序, 并不强调 「实际的执行顺序」.</p>
+<h3 id="synchronizes-with"><a class="markdownIt-Anchor" href="#synchronizes-with"></a> Synchronizes With</h3>
+<p>如果线程 A 中的一个 atomic store 操作是 「Release 操作」, 线程 B 种对同一个变量的 atomic load 操作是 「Acquire 操作」, 并且线程 B 中的 load 操作读取到了线程 A 中的 store 操作所写入的值, 那么称线程 A 中的 Store 操作 <em>synchronizes with</em> 线程 B 中的 Load 操作.</p>
+<h2 id="stdatomic-和-stdmemory_order"><a class="markdownIt-Anchor" href="#stdatomic-和-stdmemory_order"></a> <code>std::atomic</code> 和 <code>std::memory_order</code></h2>
+<p>对于上面三种抽象内存顺序模型, C++ 标准提供了 6 个 flag 用于控制对 atomic 变量 load 和 store 操作, 以使得原子变量周围的内存可见性顺序能够满足以上顺序模型.</p>
+<h3 id="memory_order_relaxedrelaxed-ordering"><a class="markdownIt-Anchor" href="#memory_order_relaxedrelaxed-ordering"></a> <code>memory_order_relaxed</code>(Relaxed Ordering)</h3>
+<p>松散模型, 用该 flag 标记的原子变量操作只保证原子变量本身的内存一致性, 对其他内存的读写操作没有任何的同步和重排限制.</p>
+<h3 id="memory_order_acquire-和-memory_order_release-acquire-release-ordering"><a class="markdownIt-Anchor" href="#memory_order_acquire-和-memory_order_release-acquire-release-ordering"></a> <code>memory_order_acquire</code> 和 <code>memory_order_release</code> (Acquire-Release Ordering)</h3>
+<p>C++ 借鉴 lock 的 lock 和 unlock 操作, 引入了两个概念: Acquire 和 Release.</p>
 <p>Acquire 操作是一种 load 操作, 它保证该 load 操作之后的操作不会被重排到该 load 操作之前. 如果对同一个原子变量的一个 Release 操作 synchronizes with 该 Acquire 操作, 那么这个 Release 操作之前所有的写操作对内存的影响对于该 Acquire 操作以及之后的操作都可见.</p>
 <p>Release 操作是一种 store 操作, 它保证该 store 操作之前的操作不会重排到该 store 操作之后. Release 操作和 Acquire 操作一般配合使用.</p>
-<h3 id="memory-order-consume"><a href="#memory-order-consume" class="headerlink" title="memory_order_consume"></a><code>memory_order_consume</code></h3><p>Consume 操作类似于 Acquire 操作, 也是一种 load 操作, 但是其要求更加宽松. 一个某原子变量上的 Consume 操作仅能看到对于 <strong>该原子变量依赖于的内存</strong> 的修改, 而不是所有对于该原子变量的 Release 操作之前的内存修改.</p>
-<h3 id="memory-order-acq-rel"><a href="#memory-order-acq-rel" class="headerlink" title="memory_order_acq_rel"></a><code>memory_order_acq_rel</code></h3><p>该操作用于 read-modify-write 操作, 即一个即读取, 又修改, 又写入的原子变量操作. 它保证该 rmw 操作前后的语句都不会跨越该操作而重排. 该操作兼容 Acquire 和 Store 操作, 且整体上是原子的.</p>
-<h3 id="memory-order-seq-cst-Sequentially-Consistent-Ordering"><a href="#memory-order-seq-cst-Sequentially-Consistent-Ordering" class="headerlink" title="memory_order_seq_cst(Sequentially Consistent Ordering)"></a><code>memory_order_seq_cst</code>(Sequentially Consistent Ordering)</h3><p>即 Sequential Consistent 操作, 可以用于 load/store/read-modify-write 操作. 且所有操作都保证有双向屏障 (读写 memory barrier), 操作的前后语句都保证不会重排, 所有变量的内存可见顺序对于所有的线程都是一致的.</p>
-<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>本文从编译器优化会重排程序代码的执行顺序说起, 对于会产生代码执行顺序变化的 <em>编译器优化</em> 和 <em>CPU reordering</em> 进行了讨论. 对于一个确定的指令执行顺序, <strong>内存可见性顺序</strong> 也会影响程序在 <strong>并发</strong> 时的行为. 针对这一现象, 本文从 CPU Cache 的结构和缓存一致性协议说起, 介绍了引起内存可见性顺序不定的原因: store buffer 和 invalidate queue. 针对这些原因, 本文介绍了 CPU 设计者提供的 Memory Barrier 指令. 基于上述基础, 本文介绍了 C++ 对内存可见性顺序的抽象: Memory Order, 并分别对 C++ 提供的 6 个 memory order flag 和它们能够组合成的 3 种 memory order model 进行了介绍.</p>
-<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
+<h3 id="memory_order_consume"><a class="markdownIt-Anchor" href="#memory_order_consume"></a> <code>memory_order_consume</code></h3>
+<p>Consume 操作类似于 Acquire 操作, 也是一种 load 操作, 但是其要求更加宽松. 一个某原子变量上的 Consume 操作仅能看到对于 <strong>该原子变量依赖于的内存</strong> 的修改, 而不是所有对于该原子变量的 Release 操作之前的内存修改.</p>
+<h3 id="memory_order_acq_rel"><a class="markdownIt-Anchor" href="#memory_order_acq_rel"></a> <code>memory_order_acq_rel</code></h3>
+<p>该操作用于 read-modify-write 操作, 即一个即读取, 又修改, 又写入的原子变量操作. 它保证该 rmw 操作前后的语句都不会跨越该操作而重排. 该操作兼容 Acquire 和 Store 操作, 且整体上是原子的.</p>
+<h3 id="memory_order_seq_cstsequentially-consistent-ordering"><a class="markdownIt-Anchor" href="#memory_order_seq_cstsequentially-consistent-ordering"></a> <code>memory_order_seq_cst</code>(Sequentially Consistent Ordering)</h3>
+<p>即 Sequential Consistent 操作, 可以用于 load/store/read-modify-write 操作. 且所有操作都保证有双向屏障 (读写 memory barrier), 操作的前后语句都保证不会重排, 所有变量的内存可见顺序对于所有的线程都是一致的.</p>
+<h2 id="conclusion"><a class="markdownIt-Anchor" href="#conclusion"></a> Conclusion</h2>
+<p>本文从编译器优化会重排程序代码的执行顺序说起, 对于会产生代码执行顺序变化的 <em>编译器优化</em> 和 <em>CPU reordering</em> 进行了讨论. 对于一个确定的指令执行顺序, <strong>内存可见性顺序</strong> 也会影响程序在 <strong>并发</strong> 时的行为. 针对这一现象, 本文从 CPU Cache 的结构和缓存一致性协议说起, 介绍了引起内存可见性顺序不定的原因: store buffer 和 invalidate queue. 针对这些原因, 本文介绍了 CPU 设计者提供的 Memory Barrier 指令. 基于上述基础, 本文介绍了 C++ 对内存可见性顺序的抽象: Memory Order, 并分别对 C++ 提供的 6 个 memory order flag 和它们能够组合成的 3 种 memory order model 进行了介绍.</p>
+<h2 id="references"><a class="markdownIt-Anchor" href="#references"></a> References</h2>
+<ol>
 <li><a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/atomic/memory_order#Relaxed_ordering">std::memory_order - cppreference.com</a></li>
 <li>Paul E McKenney. <strong>Is Parallel Programming Hard, And, If So, What Can You Do About It?</strong>.</li>
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/382372072">现代C++的内存模型 - 知乎 (zhihu.com)</a></li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/48157076">高并发编程—多处理器编程中的一致性问题(上) - 知乎 (zhihu.com)</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/48157076">高并发编程–多处理器编程中的一致性问题(上) - 知乎 (zhihu.com)</a></li>
 <li><a target="_blank" rel="noopener" href="https://luyuhuang.tech/2022/06/25/cpp-memory-order.html">谈谈 C++ 中的内存顺序 (Memory Order) - Luyu Huang’s Blog</a></li>
 </ol>
 
@@ -498,7 +518,7 @@
 
 <div class="copyright">
   &copy; 2020 – 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -510,14 +530,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">253k</span>
+    <span title="站点总字数">298k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:50</span>
+    <span title="站点阅读时长">4:31</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
@@ -582,7 +602,7 @@
 
 
 <script class="next-config" data-name="exif" type="application/json">"{FocalLength}mm f/{FNumber} {ExposureTime}s. zhuwenq © 2023"</script>
-<script src="https://fastly.jsdelivr.net/npm/exif-js@2/exif.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exifreader@4/dist/exif-reader.min.js"></script>
 <script src="/lib/exif.js"></script><script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"Leonezz/blog_comment","issue_term":"pathname","theme":"github-light"}</script>
 <script src="/js/third-party/comments/utterances.js"></script>
 

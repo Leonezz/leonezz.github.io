@@ -31,7 +31,7 @@
 <meta property="og:description" content="程序从源代码到可执行文件需要经过 4 个步骤, 链接就是其中重要的一步. 链接器的主要工作是将具备引用关系的不同编译单元的编译结果 (i.e. 可重定位目标文件) 相互连接, 组成一个可执行文件. 静态链接器以一组可重定位目标文件和命令行参数作为输入, 生成一个完全链接的, 可以加载运行的可执行目标文件.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-04-02T11:13:52.000Z">
-<meta property="article:modified_time" content="2024-07-10T02:00:52.903Z">
+<meta property="article:modified_time" content="2025-03-21T16:09:04.944Z">
 <meta property="article:author" content="zhuwenq">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="CS:APP">
@@ -154,7 +154,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">目标文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7%E8%A7%A3%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">符号解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E7%AC%A6%E5%8F%B7%E8%A7%A3%E6%9E%90"><span class="nav-number">2.1.</span> <span class="nav-text">全局符号解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9-%E9%9D%99%E6%80%81%E5%BA%93-%E7%9A%84%E8%A7%A3%E6%9E%90"><span class="nav-number">2.2.</span> <span class="nav-text">对[[静态库]]的解析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%AE%9A%E4%BD%8D"><span class="nav-number">3.</span> <span class="nav-text">重定位</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text"> 目标文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7%E8%A7%A3%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text"> 符号解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E7%AC%A6%E5%8F%B7%E8%A7%A3%E6%9E%90"><span class="nav-number">2.1.</span> <span class="nav-text"> 全局符号解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E9%9D%99%E6%80%81%E5%BA%93%E7%9A%84%E8%A7%A3%E6%9E%90"><span class="nav-number">2.2.</span> <span class="nav-text"> 对[[静态库]]的解析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%AE%9A%E4%BD%8D"><span class="nav-number">3.</span> <span class="nav-text"> 重定位</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -255,7 +255,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-10 10:00:52" itemprop="dateModified" datetime="2024-07-10T10:00:52+08:00">2024-07-10</time>
+      <time title="修改时间：2025-03-22 00:09:04" itemprop="dateModified" datetime="2025-03-22T00:09:04+08:00">2025-03-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -280,7 +280,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.5k</span>
+      <span>1.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -304,17 +304,20 @@
 <p>链接器必须实现两个主要功能以实现链接:</p>
 <ol>
 <li>符号解析 (symbol resolution): 目标文件中会定义和引用符号, 每个符号对应于一个函数, 全局变量或静态变量. 符号解析的目的是将符号引用和符号定义关联起来.</li>
-<li>重定位 (relocation): 编译器和汇编器生成从 0 开始的代码和数据节. 链接器需要通过将每个符号定义与一个内存地址关联起来实现 ==重定位== . 随后链接器需要修改所有对该符号定义的引用, 使其指向该地址. 链接器使用汇编器所产生的 <strong>重定位条目(relocation entry)</strong> 进行这样的重定位.</li>
+<li>重定位 (relocation): 编译器和汇编器生成从 0 开始的代码和数据节. 链接器需要通过将每个符号定义与一个内存地址关联起来实现 <mark>重定位</mark> . 随后链接器需要修改所有对该符号定义的引用, 使其指向该地址. 链接器使用汇编器所产生的 <strong>重定位条目(relocation entry)</strong> 进行这样的重定位.</li>
 </ol>
-<h2 id="目标文件"><a href="#目标文件" class="headerlink" title="目标文件"></a>目标文件</h2><p>目标文件有三种形式:</p>
+<h2 id="目标文件"><a class="markdownIt-Anchor" href="#目标文件"></a> 目标文件</h2>
+<p>目标文件有三种形式:</p>
 <ol>
-<li><a href="../可重定位目标文件/">可重定位目标文件</a></li>
-<li><a href="../可执行目标文件/">可执行目标文件</a></li>
-<li><a href="../共享目标文件/">共享目标文件</a></li>
+<li><a href="../%E5%8F%AF%E9%87%8D%E5%AE%9A%E4%BD%8D%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/">可重定位目标文件</a></li>
+<li><a href="../%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/">可执行目标文件</a></li>
+<li><a href="../%E5%85%B1%E4%BA%AB%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/">共享目标文件</a></li>
 </ol>
 <p>编译器和汇编器可以生成可重定位目标文件和共享目标文件, 链接器根据这些文件生成可执行目标文件</p>
-<h2 id="符号解析"><a href="#符号解析" class="headerlink" title="符号解析"></a>符号解析</h2><p>链接器进行符号解析的方法是将每个引用和它输入的可重定位目标文件符号表中定义的一个确定符号定义关联起来.</p>
-<h3 id="全局符号解析"><a href="#全局符号解析" class="headerlink" title="全局符号解析"></a>全局符号解析</h3><p>全局符号分为 <em>强</em> 和 <em>弱</em> 两种:</p>
+<h2 id="符号解析"><a class="markdownIt-Anchor" href="#符号解析"></a> 符号解析</h2>
+<p>链接器进行符号解析的方法是将每个引用和它输入的可重定位目标文件符号表中定义的一个确定符号定义关联起来.</p>
+<h3 id="全局符号解析"><a class="markdownIt-Anchor" href="#全局符号解析"></a> 全局符号解析</h3>
+<p>全局符号分为 <em>强</em> 和 <em>弱</em> 两种:</p>
 <ul>
 <li><em>强</em> 符号: 函数和已初始化的全局变量</li>
 <li><em>弱</em> 符号: 未初始化的全局变量</li>
@@ -325,30 +328,34 @@
 <li>如果有一个强符号和多个弱符号同名, 选择强符号</li>
 <li>如果多个弱符号同名, 从中任选一个</li>
 </ol>
-<h3 id="对-静态库-的解析"><a href="#对-静态库-的解析" class="headerlink" title="对[[静态库]]的解析"></a>对[[静态库]]的解析</h3><p>链接器按照文件在命令行参数中出现的顺序依次解析符号, 当涉及静态库时, 具体地说, 链接器维护三个集合:</p>
+<h3 id="对静态库的解析"><a class="markdownIt-Anchor" href="#对静态库的解析"></a> 对[[静态库]]的解析</h3>
+<p>链接器按照文件在命令行参数中出现的顺序依次解析符号, 当涉及静态库时, 具体地说, 链接器维护三个集合:</p>
 <ul>
-<li>可重定位目标文件集合 $E$: $E$ 中的文件会被组合成可执行目标文件</li>
-<li>未解析的符号集合 $U$: 即引用但尚未发现定义的符号集合</li>
-<li>已发现定义的符号集合 $D$: 即在之前的输入文件中已经找到定义的符号集合</li>
+<li>可重定位目标文件集合 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span></span>: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span></span> 中的文件会被组合成可执行目标文件</li>
+<li>未解析的符号集合 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span>: 即引用但尚未发现定义的符号集合</li>
+<li>已发现定义的符号集合 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span></span></span></span>: 即在之前的输入文件中已经找到定义的符号集合</li>
 </ul>
 <p>初始时, 三个集合均为空:</p>
 <ul>
-<li>对于命令行参数中每个文件 $f$, 链接器首先判断 $f$ 是 <em>目标文件</em> 还是 <em>存档文件</em><ul>
-<li>如果是 <em>目标文件</em>: 链接器将 $f$ 添加到 $E$, 同时修改 $D$ 和 $U$ 反映 $f$ 中符号的定义和引用</li>
-<li>如果是 <em>存档文件</em>: 链接器尝试匹配 $U$ 中未解析的符号和存档文件 $f$ 中定义的符号.<ul>
-<li>对于 ==匹配到的模块 $m$ ($m$ 在 $f$ 中被定义且其引用存在于 $U$ 中)== , 链接器将 $m$ 添加到 $E$, 并修改 $U$ 和 $D$ 以反映 $m$.</li>
-<li>对于 ==所有未匹配到的模块== , 链接器简单地丢弃这些模块</li>
+<li>对于命令行参数中每个文件 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span>, 链接器首先判断 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 是 <em>目标文件</em> 还是 <em>存档文件</em>
+<ul>
+<li>如果是 <em>目标文件</em>: 链接器将 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 添加到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span></span>, 同时修改 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span> 反映 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 中符号的定义和引用</li>
+<li>如果是 <em>存档文件</em>: 链接器尝试匹配 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span> 中未解析的符号和存档文件 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 中定义的符号.
+<ul>
+<li>对于 <mark>匹配到的模块 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">m</span></span></span></span> (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">m</span></span></span></span> 在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 中被定义且其引用存在于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span> 中)</mark> , 链接器将 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">m</span></span></span></span> 添加到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span></span>, 并修改 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span></span></span></span> 以反映 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">m</span></span></span></span>.</li>
+<li>对于 <mark>所有未匹配到的模块</mark> , 链接器简单地丢弃这些模块</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>链接器处理完参数中所有的文件后, 如果 $U$ 是非空的, 那么说明存在被引用但未定义的符号, 链接器会输出错误并终止. 否则链接器会合并和重定位 $E$ 中的目标文件, 构建可执行目标文件</li>
+<li>链接器处理完参数中所有的文件后, 如果 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span> 是非空的, 那么说明存在被引用但未定义的符号, 链接器会输出错误并终止. 否则链接器会合并和重定位 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span></span> 中的目标文件, 构建可执行目标文件</li>
 </ul>
-<h2 id="重定位"><a href="#重定位" class="headerlink" title="重定位"></a>重定位</h2><p>符号解析之后, 代码中每个符号的引用和一个符号定义关联起来. 链接器此时就知道了他的输入目标模块中代码节 (<code>.text</code>) 以及数据节 (<code>.data .rodata</code>) 的确切大小, 即具备了为每个符号分配运行时地址的信息.</p>
+<h2 id="重定位"><a class="markdownIt-Anchor" href="#重定位"></a> 重定位</h2>
+<p>符号解析之后, 代码中每个符号的引用和一个符号定义关联起来. 链接器此时就知道了他的输入目标模块中代码节 (<code>.text</code>) 以及数据节 (<code>.data .rodata</code>) 的确切大小, 即具备了为每个符号分配运行时地址的信息.</p>
 <p>重定位由两个步骤组成:</p>
 <ol>
 <li>重定位节和符号定义: 链接器将所有相同类型的节合并为同一个聚合的节. 即, 把来自所有输入模块的 <code>.text</code>, <code>.data</code> 等分别聚合为一个. 随后, 链接器为所有的节以及所有的符号赋予运行时内存地址, 这一步完成时, 程序中所有的指令和全局变量都被分配了唯一的运行时地址.</li>
-<li>重定位节中的符号引用: 链接器修改代码节和数据节中对每个符号的引用, 使得它们指向正确的运行时地址. 这一步的进行依赖于可重定位目标模块中的 <a href="../可重定位目标文件#重定位条目-relocation-entry">重定位条目 (relocation entry)</a> 数据结构</li>
+<li>重定位节中的符号引用: 链接器修改代码节和数据节中对每个符号的引用, 使得它们指向正确的运行时地址. 这一步的进行依赖于可重定位目标模块中的 <a href="../%E5%8F%AF%E9%87%8D%E5%AE%9A%E4%BD%8D%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6#%E9%87%8D%E5%AE%9A%E4%BD%8D%E6%9D%A1%E7%9B%AE-relocation-entry">重定位条目 (relocation entry)</a> 数据结构</li>
 </ol>
 
     </div>
@@ -454,7 +461,7 @@
 
 <div class="copyright">
   &copy; 2020 – 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -466,14 +473,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">253k</span>
+    <span title="站点总字数">298k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:50</span>
+    <span title="站点阅读时长">4:31</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
@@ -538,7 +545,7 @@
 
 
 <script class="next-config" data-name="exif" type="application/json">"{FocalLength}mm f/{FNumber} {ExposureTime}s. zhuwenq © 2023"</script>
-<script src="https://fastly.jsdelivr.net/npm/exif-js@2/exif.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exifreader@4/dist/exif-reader.min.js"></script>
 <script src="/lib/exif.js"></script><script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"Leonezz/blog_comment","issue_term":"pathname","theme":"github-light"}</script>
 <script src="/js/third-party/comments/utterances.js"></script>
 

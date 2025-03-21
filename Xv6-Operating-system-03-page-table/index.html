@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://blog.zhuwenq.cc/Xv6-Operating-system-03-page-table/1.png">
 <meta property="og:image" content="https://blog.zhuwenq.cc/Xv6-Operating-system-03-page-table/2.png">
 <meta property="article:published_time" content="2023-03-09T11:13:11.000Z">
-<meta property="article:modified_time" content="2024-07-10T02:00:52.987Z">
+<meta property="article:modified_time" content="2025-03-21T16:09:05.019Z">
 <meta property="article:author" content="zhuwenq">
 <meta property="article:tag" content="Operating System">
 <meta property="article:tag" content="xv6">
@@ -155,7 +155,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8D%A2%E9%A1%B5%E7%A1%AC%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">换页硬件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E4%B8%8A"><span class="nav-number">1.1.</span> <span class="nav-text">逻辑上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E9%99%85%E4%B8%8A"><span class="nav-number">1.2.</span> <span class="nav-text">实际上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PTE-%E6%A0%87%E5%BF%97%E4%BD%8D"><span class="nav-number">1.3.</span> <span class="nav-text">PTE 标志位</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="nav-number">2.</span> <span class="nav-text">内核地址空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="nav-number">3.</span> <span class="nav-text">物理内存分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%A9%BA%E9%97%B4-%E7%94%A8%E6%88%B7%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="nav-number">4.</span> <span class="nav-text">进程空间(用户地址空间)</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8D%A2%E9%A1%B5%E7%A1%AC%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text"> 换页硬件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E4%B8%8A"><span class="nav-number">1.1.</span> <span class="nav-text"> 逻辑上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E9%99%85%E4%B8%8A"><span class="nav-number">1.2.</span> <span class="nav-text"> 实际上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pte-%E6%A0%87%E5%BF%97%E4%BD%8D"><span class="nav-number">1.3.</span> <span class="nav-text"> PTE 标志位</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="nav-number">2.</span> <span class="nav-text"> 内核地址空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="nav-number">3.</span> <span class="nav-text"> 物理内存分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%A9%BA%E9%97%B4%E7%94%A8%E6%88%B7%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="nav-number">4.</span> <span class="nav-text"> 进程空间(用户地址空间)</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -256,7 +256,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-10 10:00:52" itemprop="dateModified" datetime="2024-07-10T10:00:52+08:00">2024-07-10</time>
+      <time title="修改时间：2025-03-22 00:09:05" itemprop="dateModified" datetime="2025-03-22T00:09:05+08:00">2025-03-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -302,15 +302,19 @@
 <span id="more"></span>
 <p>操作系统使用页表管理物理内存，由页表决定内存地址的意义，以及物理内存的访问。</p>
 <p>通过页表提供的中间层，操作系统还可以实现一些额外的 tricks, 例如将同一块内存映射到多个进程的地址空间 (如所有进程地址空间中都一样的内核代码和数据区)，或者通过永远不映射内核所在的内存实现内核和进程之间的隔离。</p>
-<h2 id="换页硬件"><a href="#换页硬件" class="headerlink" title="换页硬件"></a>换页硬件</h2><p>xv6 操作系统是为 RISK-V 处理器设计的，因此这里描述的换页硬件可能和其他系统的有所不同。</p>
+<h2 id="换页硬件"><a class="markdownIt-Anchor" href="#换页硬件"></a> 换页硬件</h2>
+<p>xv6 操作系统是为 RISK-V 处理器设计的，因此这里描述的换页硬件可能和其他系统的有所不同。</p>
 <p>在 xv6 所运行在的 Sv39 RISK-V 处理器上，64 位地址的中只有低 39 位被使用，其余 25 位留空。</p>
-<h3 id="逻辑上"><a href="#逻辑上" class="headerlink" title="逻辑上"></a>逻辑上</h3><p>一个 RISK-V 页表是一个 $2^{27}$ 长的 page table entries(PTE) 数组. 而每个 PTE 由一个 44 位宽的物理页编号 (physical page number, PPN) 和一些标志位组成。</p>
+<h3 id="逻辑上"><a class="markdownIt-Anchor" href="#逻辑上"></a> 逻辑上</h3>
+<p>一个 RISK-V 页表是一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>27</mn></msup></mrow><annotation encoding="application/x-tex">2^{27}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mord mtight">7</span></span></span></span></span></span></span></span></span></span></span></span> 长的 page table entries(PTE) 数组. 而每个 PTE 由一个 44 位宽的物理页编号 (physical page number, PPN) 和一些标志位组成。</p>
 <p>换页硬件翻译虚拟地址时，利用虚拟地址低 39 位中的高 27 位在页表中定位 PTE， 然后将找到的 PTE 的 44 位物理页编号和虚拟地址低 39 位中的剩余 12 位组合成一个 56 位的物理地址。</p>
 <img data-src="/Xv6-Operating-system-03-page-table/1.png" class="">
-<h3 id="实际上"><a href="#实际上" class="headerlink" title="实际上"></a>实际上</h3><p>xv6 的页表在实现上并不是一个长度为 $2^27$ 的数组，而是一个三级的树状结构. 数的根部是一个 4096 字节大小的页表页 (储存着页表的页), 其内部保存了 512 个 PTE，其中每个 PTE 保存了下一级页表页的物理地址。</p>
+<h3 id="实际上"><a class="markdownIt-Anchor" href="#实际上"></a> 实际上</h3>
+<p>xv6 的页表在实现上并不是一个长度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>2</mn></msup><mn>7</mn></mrow><annotation encoding="application/x-tex">2^27</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord">7</span></span></span></span> 的数组，而是一个三级的树状结构. 数的根部是一个 4096 字节大小的页表页 (储存着页表的页), 其内部保存了 512 个 PTE，其中每个 PTE 保存了下一级页表页的物理地址。</p>
 <p>换页硬件使用虚拟地址的 27 位页表地址的高 9 位定位根页表中的 PTE，然后根据该 PTE 定位二级页表，然后使用中间 9 位定位二级页表中的 PTE，并根据二级页表中的 PTE 定位三级页表，最后使用低 9 位定位最终的 PTE。该最终 PTE 的 44 位地址会用来访问实际的页，而虚拟地址中剩余的 12 位会用来在该页中定位字节。</p>
 <p>如果三级 PTE 中任意一个不存在 ( 根据虚拟地址检索不到 )，换页硬件会产生页错误异常 (page-fault exception), 将由内核负责处理该异常</p>
-<h3 id="PTE-标志位"><a href="#PTE-标志位" class="headerlink" title="PTE 标志位"></a>PTE 标志位</h3><p>每个 PTE 都包含一系列标志位 (flags)， 标识着该 PTE 中的地址被允许的用法：</p>
+<h3 id="pte-标志位"><a class="markdownIt-Anchor" href="#pte-标志位"></a> PTE 标志位</h3>
+<p>每个 PTE 都包含一系列标志位 (flags)， 标识着该 PTE 中的地址被允许的用法：</p>
 <ul>
 <li><code>PTE_V (valid)</code>: 该 PTE 是否可见，如果没有设置 (not set), 对该 PTE 指向的页的引用会导致异常</li>
 <li><code>PTE_R (readable)</code>: 该 PTE 指向的页是否可读</li>
@@ -319,19 +323,22 @@
 <li><code>PTE_U (user)</code>: 该 PTE 指向的页是否可以由用户态指令访问</li>
 </ul>
 <img data-src="/Xv6-Operating-system-03-page-table/2.png" class="">
-<h2 id="内核地址空间"><a href="#内核地址空间" class="headerlink" title="内核地址空间"></a>内核地址空间</h2><p>xv6 为每个进程维护一个页表，该页表描述了进程的用户地址空间。此外，xv6 还维护一个页表用于描述内核的地址空间。</p>
+<h2 id="内核地址空间"><a class="markdownIt-Anchor" href="#内核地址空间"></a> 内核地址空间</h2>
+<p>xv6 为每个进程维护一个页表，该页表描述了进程的用户地址空间。此外，xv6 还维护一个页表用于描述内核的地址空间。</p>
 <p>内核将配置自己的地址空间使其能够在可预测的地址上访问物理内存和其他硬件设备。即，内核使用直接映射 (direct mapping) 的方式获取 RAM 和硬件设备寄存器的访问地址。</p>
 <p>直接映射即将硬件设备的地址映射为跟它们的物理地址一样的虚拟地址。如内核本身将自己加载到虚拟内存 <code>KERNBASE=0x80000000</code> 的位置，同时该地址数值也是其在物理内存中的位置。</p>
 <p>内核地址空间中也有一些不是直接映射的虚拟地址:</p>
 <ol>
-<li>顶部的 trampoline 页被映射到内核地址空间的顶部，同时它也被映射到用户地址空间的顶部。 ==值得注意的是这个页在物理内存中的位置同时也会被内核的直接映射映射在内核中的某个位置。 </li>
+<li>顶部的 trampoline 页被映射到内核地址空间的顶部，同时它也被映射到用户地址空间的顶部。 ==值得注意的是这个页在物理内存中的位置同时也会被内核的直接映射映射在内核中的某个位置。</li>
 <li>内核栈页. 每个进程都有一个自己的内核栈，所有的内核栈都会被映射在内核地址空间的高处，并且每个内核栈下方会防止一个页的隔离区。该隔离页的 <code>PTE_V</code> 没有设置，因此当内核栈溢出到隔离页时，对 invalid 内存的访问会导致异常，并造成 kernel panic.</li>
 </ol>
 <div class="note info"><p>内核没有全部使用直接映射而是将内核栈以及 trampoline 页映射到顶部主要目的是提供保护机制 (隔离区)</p>
 </div>
-<h2 id="物理内存分配"><a href="#物理内存分配" class="headerlink" title="物理内存分配"></a>物理内存分配</h2><p>xv6 使用链表管理物理内存, 管理的最小单位是 4096 字节大小的页. 具体地说, xv6 通过链表串起物理内存中所有的页 (从内核地址的结尾到物理内存的结尾) , 分配内存即从链表中移除对应的页节点, 回收内存即将待回收的内存加回到链表</p>
-<h2 id="进程空间-用户地址空间"><a href="#进程空间-用户地址空间" class="headerlink" title="进程空间(用户地址空间)"></a>进程空间(用户地址空间)</h2><p>进程的地址空间从虚拟地址 0 一直到 <code>MAXVA</code>. </p>
-<p>当进程向 xv6 要求更多内存时, xv6 首先调用 <code>kalloc</code> 分配物理页, 随后 xv6 向进程的页表添加指向新分配的物理页的 PTE, 同时为这些 PTE 设置标志位. </p>
+<h2 id="物理内存分配"><a class="markdownIt-Anchor" href="#物理内存分配"></a> 物理内存分配</h2>
+<p>xv6 使用链表管理物理内存, 管理的最小单位是 4096 字节大小的页. 具体地说, xv6 通过链表串起物理内存中所有的页 (从内核地址的结尾到物理内存的结尾) , 分配内存即从链表中移除对应的页节点, 回收内存即将待回收的内存加回到链表</p>
+<h2 id="进程空间用户地址空间"><a class="markdownIt-Anchor" href="#进程空间用户地址空间"></a> 进程空间(用户地址空间)</h2>
+<p>进程的地址空间从虚拟地址 0 一直到 <code>MAXVA</code>.</p>
+<p>当进程向 xv6 要求更多内存时, xv6 首先调用 <code>kalloc</code> 分配物理页, 随后 xv6 向进程的页表添加指向新分配的物理页的 PTE, 同时为这些 PTE 设置标志位.</p>
 <p>大多数进程用不到全部的地址空间, xv6 将没有使用的 PTE 设置成不可用状态.</p>
 <p>页表管理用户地址空间的几点好处:</p>
 <ol>
@@ -441,7 +448,7 @@
 
 <div class="copyright">
   &copy; 2020 – 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -453,14 +460,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">253k</span>
+    <span title="站点总字数">298k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:50</span>
+    <span title="站点阅读时长">4:31</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
@@ -525,7 +532,7 @@
 
 
 <script class="next-config" data-name="exif" type="application/json">"{FocalLength}mm f/{FNumber} {ExposureTime}s. zhuwenq © 2023"</script>
-<script src="https://fastly.jsdelivr.net/npm/exif-js@2/exif.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exifreader@4/dist/exif-reader.min.js"></script>
 <script src="/lib/exif.js"></script><script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"Leonezz/blog_comment","issue_term":"pathname","theme":"github-light"}</script>
 <script src="/js/third-party/comments/utterances.js"></script>
 

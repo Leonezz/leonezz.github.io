@@ -23,15 +23,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"blog.zhuwenq.cc","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":false,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="IntroductionRoBERTa是一种新的BERT训练方法，超过了所有的post-BERT方法的性能。 本文通过重复BERT的研究过程，发现BERT是严重欠训练的。本文旨在仔细评估超参数和训练集的大小对模型性能的影响。 RoBERTa对BERT做出的修改如下： 总体上，本文的贡献为：  展示了一系列BERT设计和训练的选择和策略，介绍了可以提高下游任务性能的选择 使用了一个新的数据集：CC-">
+    <meta name="description" content="Introduction RoBERTa是一种新的BERT训练方法，超过了所有的post-BERT方法的性能。 本文通过重复BERT的研究过程，发现BERT是严重欠训练的。本文旨在仔细评估超参数和训练集的大小对模型性能的影响。 RoBERTa对BERT做出的修改如下： 总体上，本文的贡献为：  展示了一系列BERT设计和训练的选择和策略，介绍了可以提高下游任务性能的选择 使用了一个新的数据集：C">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RoBERTa: A Robustly Optimized BERT Pre-training Approach">
 <meta property="og:url" content="https://blog.zhuwenq.cc/RoBERTa-A-Robustly-Optimized-BERT-Pretraining-Approach/index.html">
 <meta property="og:site_name" content="zhuwenq">
-<meta property="og:description" content="IntroductionRoBERTa是一种新的BERT训练方法，超过了所有的post-BERT方法的性能。 本文通过重复BERT的研究过程，发现BERT是严重欠训练的。本文旨在仔细评估超参数和训练集的大小对模型性能的影响。 RoBERTa对BERT做出的修改如下： 总体上，本文的贡献为：  展示了一系列BERT设计和训练的选择和策略，介绍了可以提高下游任务性能的选择 使用了一个新的数据集：CC-">
+<meta property="og:description" content="Introduction RoBERTa是一种新的BERT训练方法，超过了所有的post-BERT方法的性能。 本文通过重复BERT的研究过程，发现BERT是严重欠训练的。本文旨在仔细评估超参数和训练集的大小对模型性能的影响。 RoBERTa对BERT做出的修改如下： 总体上，本文的贡献为：  展示了一系列BERT设计和训练的选择和策略，介绍了可以提高下游任务性能的选择 使用了一个新的数据集：C">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-09-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-07-10T02:00:52.947Z">
+<meta property="article:modified_time" content="2025-03-21T16:09:04.983Z">
 <meta property="article:author" content="zhuwenq">
 <meta property="article:tag" content="PLM">
 <meta property="article:tag" content="NLP">
@@ -153,7 +153,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#BERT%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.1.</span> <span class="nav-text">BERT的介绍</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Experimental-Setup"><span class="nav-number">3.</span> <span class="nav-text">Experimental Setup</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0BERT"><span class="nav-number">3.1.</span> <span class="nav-text">实现BERT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE"><span class="nav-number">3.2.</span> <span class="nav-text">数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%84%E4%BC%B0"><span class="nav-number">3.3.</span> <span class="nav-text">评估</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90"><span class="nav-number">4.</span> <span class="nav-text">训练过程分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81-%E5%8A%A8%E6%80%81%E9%81%AE%E7%BD%A9"><span class="nav-number">4.1.</span> <span class="nav-text">静态&#x2F;动态遮罩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%BE%93%E5%85%A5%E6%A0%BC%E5%BC%8F%E5%92%8CNSP"><span class="nav-number">4.2.</span> <span class="nav-text">模型的输入格式和NSP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%9B%B4%E5%A4%A7%E7%9A%84batch%E8%AE%AD%E7%BB%83"><span class="nav-number">4.3.</span> <span class="nav-text">使用更大的batch训练</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E7%BC%96%E7%A0%81"><span class="nav-number">4.4.</span> <span class="nav-text">文本编码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RoBERTa"><span class="nav-number">5.</span> <span class="nav-text">RoBERTa</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#introduction"><span class="nav-number">1.</span> <span class="nav-text"> Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#background"><span class="nav-number">2.</span> <span class="nav-text"> Background</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bert%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.1.</span> <span class="nav-text"> BERT的介绍</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#experimental-setup"><span class="nav-number">3.</span> <span class="nav-text"> Experimental Setup</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0bert"><span class="nav-number">3.1.</span> <span class="nav-text"> 实现BERT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE"><span class="nav-number">3.2.</span> <span class="nav-text"> 数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%84%E4%BC%B0"><span class="nav-number">3.3.</span> <span class="nav-text"> 评估</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90"><span class="nav-number">4.</span> <span class="nav-text"> 训练过程分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%8A%A8%E6%80%81%E9%81%AE%E7%BD%A9"><span class="nav-number">4.1.</span> <span class="nav-text"> 静态&#x2F;动态遮罩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%BE%93%E5%85%A5%E6%A0%BC%E5%BC%8F%E5%92%8Cnsp"><span class="nav-number">4.2.</span> <span class="nav-text"> 模型的输入格式和NSP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%9B%B4%E5%A4%A7%E7%9A%84batch%E8%AE%AD%E7%BB%83"><span class="nav-number">4.3.</span> <span class="nav-text"> 使用更大的batch训练</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E7%BC%96%E7%A0%81"><span class="nav-number">4.4.</span> <span class="nav-text"> 文本编码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#roberta"><span class="nav-number">5.</span> <span class="nav-text"> RoBERTa</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -254,7 +254,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-07-10 10:00:52" itemprop="dateModified" datetime="2024-07-10T10:00:52+08:00">2024-07-10</time>
+      <time title="修改时间：2025-03-22 00:09:04" itemprop="dateModified" datetime="2025-03-22T00:09:04+08:00">2025-03-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -279,7 +279,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.8k</span>
+      <span>3.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -296,7 +296,8 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>RoBERTa是一种新的BERT训练方法，超过了所有的post-BERT方法的性能。</p>
+    <div class="post-body" itemprop="articleBody"><h1 id="introduction"><a class="markdownIt-Anchor" href="#introduction"></a> Introduction</h1>
+<p>RoBERTa是一种新的BERT训练方法，超过了所有的post-BERT方法的性能。</p>
 <p>本文通过重复BERT的研究过程，发现BERT是严重欠训练的。本文旨在仔细评估超参数和训练集的大小对模型性能的影响。</p>
 <p>RoBERTa对BERT做出的修改如下：</p>
 <p>总体上，本文的贡献为：</p>
@@ -306,16 +307,22 @@
 <li>实验证明了MLM在正确的设计下优于最近新提出的所有方法</li>
 </ol>
 <span id="more"></span>
-<h1 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h1><h2 id="BERT的介绍"><a href="#BERT的介绍" class="headerlink" title="BERT的介绍"></a>BERT的介绍</h2><p>[[BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding]]</p>
-<h1 id="Experimental-Setup"><a href="#Experimental-Setup" class="headerlink" title="Experimental Setup"></a>Experimental Setup</h1><h2 id="实现BERT"><a href="#实现BERT" class="headerlink" title="实现BERT"></a>实现BERT</h2><p>使用原始BERT除了学习率和热身步数的优化超参数实现。在输入序列长度上，使用长度 $T = 512$的设定。不随机插入短序列，仅仅在全长度序列上训练(BERT在前90%的更新上使用缩短的序列)</p>
-<h2 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h2><p>语言模型预训练严重依赖大型数据集，很多工作使用的数据集不能公开，本文收集整理了超过160GB的未压缩文本，其中包括以下的文本语料库：</p>
+<h1 id="background"><a class="markdownIt-Anchor" href="#background"></a> Background</h1>
+<h2 id="bert的介绍"><a class="markdownIt-Anchor" href="#bert的介绍"></a> BERT的介绍</h2>
+<p>[[BERT-Pre-training-of-Deep-Bidirectional-Transformers-for-Language-Understanding]]</p>
+<h1 id="experimental-setup"><a class="markdownIt-Anchor" href="#experimental-setup"></a> Experimental Setup</h1>
+<h2 id="实现bert"><a class="markdownIt-Anchor" href="#实现bert"></a> 实现BERT</h2>
+<p>使用原始BERT除了学习率和热身步数的优化超参数实现。在输入序列长度上，使用长度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo>=</mo><mn>512</mn></mrow><annotation encoding="application/x-tex">T = 512</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">5</span><span class="mord">1</span><span class="mord">2</span></span></span></span>的设定。不随机插入短序列，仅仅在全长度序列上训练(BERT在前90%的更新上使用缩短的序列)</p>
+<h2 id="数据"><a class="markdownIt-Anchor" href="#数据"></a> 数据</h2>
+<p>语言模型预训练严重依赖大型数据集，很多工作使用的数据集不能公开，本文收集整理了超过160GB的未压缩文本，其中包括以下的文本语料库：</p>
 <ul>
-<li>$Book Corpus+ English Wikipedia$: 原始BERT预训练使用的数据（16GB）</li>
-<li>$CC-News$: 收集自CommonCraw新闻数据集的英文部分。包含2016年9月到2019年2月之间爬取的6千3百万篇英文新闻文章（过滤后76GB）</li>
-<li>$Open Web Text$: WebText语料库的开源实现，来自Reddit上至少有三个赞的web内容</li>
-<li>$Stories$: CommonCrawl数据集的符合Winograd架构故事的子集</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>o</mi><mi>o</mi><mi>k</mi><mi>C</mi><mi>o</mi><mi>r</mi><mi>p</mi><mi>u</mi><mi>s</mi><mo>+</mo><mi>E</mi><mi>n</mi><mi>g</mi><mi>l</mi><mi>i</mi><mi>s</mi><mi>h</mi><mi>W</mi><mi>i</mi><mi>k</mi><mi>i</mi><mi>p</mi><mi>e</mi><mi>d</mi><mi>i</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">Book Corpus+ English Wikipedia</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mord mathnormal">o</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">p</span><span class="mord mathnormal">u</span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mord mathnormal">h</span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mord mathnormal">i</span><span class="mord mathnormal">p</span><span class="mord mathnormal">e</span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal">a</span></span></span></span>: 原始BERT预训练使用的数据（16GB）</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>C</mi><mo>−</mo><mi>N</mi><mi>e</mi><mi>w</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">CC-News</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mord mathnormal">s</span></span></span></span>: 收集自CommonCraw新闻数据集的英文部分。包含2016年9月到2019年2月之间爬取的6千3百万篇英文新闻文章（过滤后76GB）</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mi>p</mi><mi>e</mi><mi>n</mi><mi>W</mi><mi>e</mi><mi>b</mi><mi>T</mi><mi>e</mi><mi>x</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">Open Web Text</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mord mathnormal">p</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mord mathnormal">e</span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">e</span><span class="mord mathnormal">x</span><span class="mord mathnormal">t</span></span></span></span>: WebText语料库的开源实现，来自Reddit上至少有三个赞的web内容</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>t</mi><mi>o</mi><mi>r</mi><mi>i</mi><mi>e</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">Stories</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal">t</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">i</span><span class="mord mathnormal">e</span><span class="mord mathnormal">s</span></span></span></span>: CommonCrawl数据集的符合Winograd架构故事的子集</li>
 </ul>
-<h2 id="评估"><a href="#评估" class="headerlink" title="评估"></a>评估</h2><p>在以下benchmarks上评估预训练模型的性能：</p>
+<h2 id="评估"><a class="markdownIt-Anchor" href="#评估"></a> 评估</h2>
+<p>在以下benchmarks上评估预训练模型的性能：</p>
 <ul>
 <li>GLUE：我们将模型在GLUE的每个单独的任务数据上进行微调，然后进行评估</li>
 <li>SQuAD：分别在V1.1和V2.0两个版本上进行评估。在V1.1上，使用与BERT一样的范围预测方法，在V2.0上，我们添加了一个额外的二分类层用于预测这个问题是否可回答(答案是否在给定的文本内)，然后将这个二分类层与范围预测的Loss相加来联合训练。在评估时，仅仅对二分类层输出为可以回答的问题进行预测。</li>
@@ -323,31 +330,38 @@
 </ul>
 <p>benchmark的介绍见：</p>
 <p>[[Data-Set-and-Benchmark]]</p>
-<h1 id="训练过程分析"><a href="#训练过程分析" class="headerlink" title="训练过程分析"></a>训练过程分析</h1><p>以下的实验和分析旨在探索和量化在预训练BERT的过程中重要的参数选择</p>
-<h2 id="静态-动态遮罩"><a href="#静态-动态遮罩" class="headerlink" title="静态/动态遮罩"></a>静态/动态遮罩</h2><p>原始的BERT使用static masking，在数据处理时生成静态的mask，然后在训练时使用。为了避免句子在不同的epoch中mask相同，将每个句子复制10次，生成10种不同的mask，然后在40个epoch种使用。<br>dynamic masking即每个序列在送入模型之前才随机生成mask，这种方法在我们的实验中有轻微优势</p>
-<h2 id="模型的输入格式和NSP"><a href="#模型的输入格式和NSP" class="headerlink" title="模型的输入格式和NSP"></a>模型的输入格式和NSP</h2><p>BERT的实验观察到移除NSP会对模型性能产生影响。但是最近的工作(XLNet, SpanBERT)质疑NSP的必要性。本文通过下面的实验研究NSP的作用</p>
+<h1 id="训练过程分析"><a class="markdownIt-Anchor" href="#训练过程分析"></a> 训练过程分析</h1>
+<p>以下的实验和分析旨在探索和量化在预训练BERT的过程中重要的参数选择</p>
+<h2 id="静态动态遮罩"><a class="markdownIt-Anchor" href="#静态动态遮罩"></a> 静态/动态遮罩</h2>
+<p>原始的BERT使用static masking，在数据处理时生成静态的mask，然后在训练时使用。为了避免句子在不同的epoch中mask相同，将每个句子复制10次，生成10种不同的mask，然后在40个epoch种使用。<br />
+dynamic masking即每个序列在送入模型之前才随机生成mask，这种方法在我们的实验中有轻微优势</p>
+<h2 id="模型的输入格式和nsp"><a class="markdownIt-Anchor" href="#模型的输入格式和nsp"></a> 模型的输入格式和NSP</h2>
+<p>BERT的实验观察到移除NSP会对模型性能产生影响。但是最近的工作(XLNet, SpanBERT)质疑NSP的必要性。本文通过下面的实验研究NSP的作用</p>
 <ul>
-<li>$\text{SEGMENT-PAIR+NSP}$: 原始BERT中使用的设定。输入包含两个文本段，每个段可能包含若干个句子，总的token数不超过512。两个文本段等概率地从同一文档或不同文档中采样。</li>
-<li>$\text{SENTENCE-PAIR+NSP}$: 输入中包含两个自然语言句子，两个句子从同一文档中连续采集或从不同文档分别采集的概率相等。因为句子中的token数显著少于512，我们增加了batch size以保证每个batch中的token数与 $\text{SEGMENT-PAIR + NSP}$的相近</li>
-<li>$\text{FULL-SENTENCES}$: 输入从一个或多个文档中连续采集，使得每个输入的token长度都是512。输入可能跨越文档的边界，在文档分界出添加额外的分隔符。移除了NSP Loss</li>
-<li>$\text{DOC-SENTENCES}$: 与 $\text{FULL-SENTENCES}$ 相似，但是输入不再跨文档采集。当采集到文档末尾时，输入中的token数量可能会少于512。这种情况下我们通过动态改变batch size来使token数目达到差不多的水平。移除了NSP Loss</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>SEGMENT-PAIR+NSP</mtext></mrow><annotation encoding="application/x-tex">\text{SEGMENT-PAIR+NSP}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord text"><span class="mord">SEGMENT-PAIR+NSP</span></span></span></span></span>: 原始BERT中使用的设定。输入包含两个文本段，每个段可能包含若干个句子，总的token数不超过512。两个文本段等概率地从同一文档或不同文档中采样。</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>SENTENCE-PAIR+NSP</mtext></mrow><annotation encoding="application/x-tex">\text{SENTENCE-PAIR+NSP}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord text"><span class="mord">SENTENCE-PAIR+NSP</span></span></span></span></span>: 输入中包含两个自然语言句子，两个句子从同一文档中连续采集或从不同文档分别采集的概率相等。因为句子中的token数显著少于512，我们增加了batch size以保证每个batch中的token数与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>SEGMENT-PAIR + NSP</mtext></mrow><annotation encoding="application/x-tex">\text{SEGMENT-PAIR + NSP}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord text"><span class="mord">SEGMENT-PAIR + NSP</span></span></span></span></span>的相近</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>FULL-SENTENCES</mtext></mrow><annotation encoding="application/x-tex">\text{FULL-SENTENCES}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">FULL-SENTENCES</span></span></span></span></span>: 输入从一个或多个文档中连续采集，使得每个输入的token长度都是512。输入可能跨越文档的边界，在文档分界出添加额外的分隔符。移除了NSP Loss</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>DOC-SENTENCES</mtext></mrow><annotation encoding="application/x-tex">\text{DOC-SENTENCES}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">DOC-SENTENCES</span></span></span></span></span>: 与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>FULL-SENTENCES</mtext></mrow><annotation encoding="application/x-tex">\text{FULL-SENTENCES}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">FULL-SENTENCES</span></span></span></span></span> 相似，但是输入不再跨文档采集。当采集到文档末尾时，输入中的token数量可能会少于512。这种情况下我们通过动态改变batch size来使token数目达到差不多的水平。移除了NSP Loss</li>
 </ul>
 <p>实验结果：</p>
 
 <ol>
 <li>使用句子作为输入会降低模型在下游任务的性能。这可能是因为使用句子而不是文本段使模型无法学习长距离依赖。</li>
-<li>移除NSP Loss不影响甚至略有提高在下游任务的性能。这与BERT的实验结果相反，可能是因为BERT的实验中仅仅去除了NSP Loss，但是其输入格式仍然保持 $\text{SEGMENT-PAIR}$ 的格式(两个分段可能从不同文档采集)</li>
-<li>让输入序列从同一个文档中采集( $\text{DOC-SENTENCES}$ )相比将不同文档的句子打包在一起 ( $\text{FULL-SENTENCES}$ )有轻微的优势。但是由于 $\text{DOC-SENTENCES}$ 需要动态改变batch size，因此后续的实验中使用 $\text{FULL-SENTENCES}$</li>
+<li>移除NSP Loss不影响甚至略有提高在下游任务的性能。这与BERT的实验结果相反，可能是因为BERT的实验中仅仅去除了NSP Loss，但是其输入格式仍然保持 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>SEGMENT-PAIR</mtext></mrow><annotation encoding="application/x-tex">\text{SEGMENT-PAIR}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">SEGMENT-PAIR</span></span></span></span></span> 的格式(两个分段可能从不同文档采集)</li>
+<li>让输入序列从同一个文档中采集( <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>DOC-SENTENCES</mtext></mrow><annotation encoding="application/x-tex">\text{DOC-SENTENCES}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">DOC-SENTENCES</span></span></span></span></span> )相比将不同文档的句子打包在一起 ( <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>FULL-SENTENCES</mtext></mrow><annotation encoding="application/x-tex">\text{FULL-SENTENCES}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">FULL-SENTENCES</span></span></span></span></span> )有轻微的优势。但是由于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>DOC-SENTENCES</mtext></mrow><annotation encoding="application/x-tex">\text{DOC-SENTENCES}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">DOC-SENTENCES</span></span></span></span></span> 需要动态改变batch size，因此后续的实验中使用 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>FULL-SENTENCES</mtext></mrow><annotation encoding="application/x-tex">\text{FULL-SENTENCES}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">FULL-SENTENCES</span></span></span></span></span></li>
 </ol>
-<h2 id="使用更大的batch训练"><a href="#使用更大的batch训练" class="headerlink" title="使用更大的batch训练"></a>使用更大的batch训练</h2><p>原始的 $\text{BERT}_\text{BASE}$ 使用 batch size = 256个序列训练了1M 步，这在计算量上相当于通过梯度累积在 batch size = 2K 个序列训练 125K 步，或者 batch size = 8K 个序列训练 31K 步</p>
+<h2 id="使用更大的batch训练"><a class="markdownIt-Anchor" href="#使用更大的batch训练"></a> 使用更大的batch训练</h2>
+<p>原始的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>BERT</mtext><mtext>BASE</mtext></msub></mrow><annotation encoding="application/x-tex">\text{BERT}_\text{BASE}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">BERT</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">BASE</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 使用 batch size = 256个序列训练了1M 步，这在计算量上相当于通过梯度累积在 batch size = 2K 个序列训练 125K 步，或者 batch size = 8K 个序列训练 31K 步</p>
 
 <p>后续的实验采用 batch size = 8K 的设置</p>
-<h2 id="文本编码"><a href="#文本编码" class="headerlink" title="文本编码"></a>文本编码</h2><p>原始的BERT使用字符级的BPE，本文使用字节级的BPE。两者在性能上相差无几，但是字节级的BPE更具通用性。</p>
+<h2 id="文本编码"><a class="markdownIt-Anchor" href="#文本编码"></a> 文本编码</h2>
+<p>原始的BERT使用字符级的BPE，本文使用字节级的BPE。两者在性能上相差无几，但是字节级的BPE更具通用性。</p>
 <p>Byte-Pair Encoding, BPE:</p>
-<h1 id="RoBERTa"><a href="#RoBERTa" class="headerlink" title="RoBERTa"></a>RoBERTa</h1><p>将以上提到的改进汇总，称之为Robustly optimized BERT approach, RoBERTa。具体地说，包括以下改进：</p>
+<h1 id="roberta"><a class="markdownIt-Anchor" href="#roberta"></a> RoBERTa</h1>
+<p>将以上提到的改进汇总，称之为Robustly optimized BERT approach, RoBERTa。具体地说，包括以下改进：</p>
 <ol>
 <li>动态遮罩</li>
-<li>$\text{FULL-SENTENCES}$ with out NSP</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>FULL-SENTENCES</mtext></mrow><annotation encoding="application/x-tex">\text{FULL-SENTENCES}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">FULL-SENTENCES</span></span></span></span></span> with out NSP</li>
 <li>更大的batch size</li>
 <li>字节级BPE</li>
 <li>预训练数据</li>
@@ -460,7 +474,7 @@
 
 <div class="copyright">
   &copy; 2020 – 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -472,14 +486,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">253k</span>
+    <span title="站点总字数">298k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:50</span>
+    <span title="站点阅读时长">4:31</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
@@ -544,7 +558,7 @@
 
 
 <script class="next-config" data-name="exif" type="application/json">"{FocalLength}mm f/{FNumber} {ExposureTime}s. zhuwenq © 2023"</script>
-<script src="https://fastly.jsdelivr.net/npm/exif-js@2/exif.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exifreader@4/dist/exif-reader.min.js"></script>
 <script src="/lib/exif.js"></script><script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"Leonezz/blog_comment","issue_term":"pathname","theme":"github-light"}</script>
 <script src="/js/third-party/comments/utterances.js"></script>
 
