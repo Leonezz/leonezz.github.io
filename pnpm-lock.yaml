@@ -39,8 +39,8 @@ importers:
         specifier: ^4.2.3
         version: 4.2.3
       hexo-generator-searchdb:
-        specifier: ^1.4.1
-        version: 1.4.1(chokidar@3.6.0)
+        specifier: ^1.5.0
+        version: 1.5.0(chokidar@3.6.0)
       hexo-generator-sitemap:
         specifier: ^3.0.1
         version: 3.0.1(chokidar@3.6.0)
@@ -55,7 +55,7 @@ importers:
         version: 5.0.0
       hexo-next-exif:
         specifier: github:next-theme/hexo-next-exif
-        version: https://codeload.github.com/next-theme/hexo-next-exif/tar.gz/1705266144f6d44d8d469aaeece0a04dd9c437e4
+        version: https://codeload.github.com/next-theme/hexo-next-exif/tar.gz/03326fb565cdd1bfdaef70fbfbec42c6655adefc
       hexo-renderer-ejs:
         specifier: ^2.0.0
         version: 2.0.0
@@ -884,8 +884,8 @@ packages:
   hexo-generator-json-content@4.2.3:
     resolution: {integrity: sha512-XGqCaTUr6+X8Ty/YvRi+0eh0DJgHcp+lgBhn+Sgyh6ev40P0cwamwJyaZroTdHt8GPoBwbSGVu0H/CdzEf0lFA==}
 
-  hexo-generator-searchdb@1.4.1:
-    resolution: {integrity: sha512-7m8IBpZbI6iKb2jRYxs4pghD6Ln8ylQSRGl6MIC4G9wws21vYSXSD8rvC3MoCO+pWBHs6E/mTA/rjG+p2AZfVg==}
+  hexo-generator-searchdb@1.5.0:
+    resolution: {integrity: sha512-d0b5SueDxJimTFaHpPg430FQFx7DtMkmEIHo0UTOjXWRy+eDqNSp1CuS04P7fWzMnH2h+aQc6O9D2yY+3sdAUg==}
 
   hexo-generator-sitemap@3.0.1:
     resolution: {integrity: sha512-n+0KLNmq6TLbiZPTQF6NY5MbEem/O+DFx0lgQZNQcU4tdjXIZRrQJs+KRKeT66NTkdlYTqb4WwCxswLqQz0crA==}
@@ -917,8 +917,8 @@ packages:
     resolution: {integrity: sha512-Yz7sHMc5BQPWC7Y4NL+I+eWB39i3oPnZjpRFeql7Ok7g8tGEOSFZkK5ImqMPNvtGZxbwJt8ks8NqJwJMb0YnXg==}
     engines: {node: '>= 14'}
 
-  hexo-next-exif@https://codeload.github.com/next-theme/hexo-next-exif/tar.gz/1705266144f6d44d8d469aaeece0a04dd9c437e4:
-    resolution: {tarball: https://codeload.github.com/next-theme/hexo-next-exif/tar.gz/1705266144f6d44d8d469aaeece0a04dd9c437e4}
+  hexo-next-exif@https://codeload.github.com/next-theme/hexo-next-exif/tar.gz/03326fb565cdd1bfdaef70fbfbec42c6655adefc:
+    resolution: {tarball: https://codeload.github.com/next-theme/hexo-next-exif/tar.gz/03326fb565cdd1bfdaef70fbfbec42c6655adefc}
     version: 2.5.0
 
   hexo-pagination@1.0.0:
@@ -3155,7 +3155,7 @@ snapshots:
       keyword-extractor: 0.0.28
       moment: 2.30.1
 
-  hexo-generator-searchdb@1.4.1(chokidar@3.6.0):
+  hexo-generator-searchdb@1.5.0(chokidar@3.6.0):
     dependencies:
       nunjucks: 3.2.4(chokidar@3.6.0)
     transitivePeerDependencies:
@@ -3198,7 +3198,7 @@ snapshots:
       katex: 0.16.21
       mathjax: 3.2.2
 
-  hexo-next-exif@https://codeload.github.com/next-theme/hexo-next-exif/tar.gz/1705266144f6d44d8d469aaeece0a04dd9c437e4:
+  hexo-next-exif@https://codeload.github.com/next-theme/hexo-next-exif/tar.gz/03326fb565cdd1bfdaef70fbfbec42c6655adefc:
     dependencies:
       '@next-theme/utils': 1.3.0
 
